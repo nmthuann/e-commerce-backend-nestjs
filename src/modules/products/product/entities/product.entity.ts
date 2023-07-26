@@ -1,9 +1,10 @@
 import { BaseEntity } from "src/modules/bases/base.entity"
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, ManyToOne, OneToMany } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, ManyToOne, OneToMany, BeforeUpdate, BeforeInsert } from "typeorm"
 import { CategoryEntity } from "../../category/category.entity"
-import { ProductDetailEntity } from "./product-detail.entity"
+// import { ProductDetailEntity } from "./product-detail.entity"
 import { ImageEntity } from "./image.entity"
-import { DiscountEntity } from "../../product-discount/discount.entity"
+import { DiscountEntity } from "../../discount/discount.entity"
+import { CartDetailEntity } from "src/modules/orders/cart/cart-detail.entity"
 
 
 @Entity({name: 'Products'})
@@ -20,20 +21,54 @@ export class ProductEntity extends BaseEntity{
     @Column({nullable: false})
     price: number
 
-    @Column()
+    @Column({nullable: false})
+    unit_price: number
+
+    @Column({nullable: false, default: 0})
     quantity: number
 
+    @Column({ default: 1 })
+    status: boolean
+
+    
+
+
+    /**
+     * Chi tiết sản phẩm
+     */
+
+    @Column()
+    description: string;
+    @Column({nullable: false})
+    brand: string;  //  thương hiệu
+    @Column({nullable: false})
+    origin: string;  //  xuất xứ
+    @Column()
+    warranty_time: number  // thới gian bảo hành
+
+
+
     @OneToMany(() => ImageEntity, image => image.product)
+    @JoinColumn({name: 'image_id'})
     images: ImageEntity[];
 
-    @ManyToOne(() => CategoryEntity, (category) => category.products, { lazy: true })
+    @ManyToOne(() => CategoryEntity, (category) => category.products, { lazy: true }, )
     category: CategoryEntity
 
-    @OneToOne(() => DiscountEntity)
-    @JoinColumn({name: 'discount_id'})
+    @ManyToOne(() => DiscountEntity, (discount) => discount.products, { lazy: true },)
     discount: DiscountEntity
 
-    @OneToOne(() => ProductDetailEntity, (product_detail) => product_detail.product)
-    @JoinColumn()
-    product_detail: ProductDetailEntity
+
+
+    @BeforeInsert()
+    @BeforeUpdate()
+    validateUnitPrice() {
+        if (this.unit_price > this.price) {
+            throw new Error("Unit price must be less than price");
+        }
+    }
+
+
+    @ManyToOne(() => CartDetailEntity, (cart_detail) => cart_detail.products)
+    cart_detail: CartDetailEntity
 }
