@@ -14,7 +14,7 @@ export class CartEntity extends BaseEntity{
     @Column()
     status: number
 
-    @ManyToOne(() => CartDetailEntity, (cart_detail) => cart_detail.carts)
-    cart_detail: CartDetailEntity
+    // @ManyToOne(() => CartDetailEntity, (cart_detail) => cart_detail.carts)
+    // cart_detail: CartDetailEntity
 }
 

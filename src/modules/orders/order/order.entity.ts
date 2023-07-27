@@ -1,8 +1,8 @@
 import { BaseEntity, Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { CartEntity } from "../cart/cart.entity";
 import { CartDetailEntity } from "../cart/cart-detail.entity";
-import { ShippingEntity } from "./shipping.entity";
-import { PaymentEntity } from "./payment.entity";
+import { ShippingEntity } from "../shipping/shipping.entity";
+import { PaymentEntity } from "../payment/payment.entity";
 import { EmployeeEntity } from "src/modules/users/employee/employee.entity";
 import { UserEntity } from "src/modules/users/user/user.entity";
 import { DiscountEntity } from "src/modules/products/discount/discount.entity";
@@ -12,9 +12,9 @@ export class OrderEntity extends BaseEntity{
     @PrimaryGeneratedColumn()
     order_id: number
 
-    @OneToOne(() => CartDetailEntity)
-    @JoinColumn({name: 'cart_detail_id'})
-    cart_detail: CartDetailEntity
+    // @OneToOne(() => CartDetailEntity)
+    // @JoinColumn({name: 'cart_detail_id'})
+    // cart_detail: CartDetailEntity
 
     @OneToOne(() => ShippingEntity)
     @JoinColumn({name: 'shipping_id'})

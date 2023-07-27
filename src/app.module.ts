@@ -14,9 +14,22 @@ import { AccountEntity } from './modules/users/account/account.entity';
 import { EmployeeEntity } from './modules/users/employee/employee.entity';
 import { PositionEntity } from './modules/users/position/position.entity';
 import { CartDetailEntity } from './modules/orders/cart/cart-detail.entity';
-import { ImageEntity } from './modules/products/product/entities/image.entity';
-import { ShippingEntity } from './modules/orders/order/shipping.entity';
-import { PaymentEntity } from './modules/orders/order/payment.entity';
+import { ImageEntity } from './modules/products/image/image.entity';
+import { ShippingEntity } from './modules/orders/shipping/shipping.entity';
+import { PaymentEntity } from './modules/orders/payment/payment.entity';
+import { OrderDetailEntity } from './modules/orders/order/order-detail.entity';
+import { DiscountModule } from './modules/products/discount/discount.module';
+import { ProductModule } from './modules/products/product/product.module';
+import { ImageModule } from './modules/products/image/image.module';
+import { CartModule } from './modules/orders/cart/cart.module';
+import { CartDetailModule } from './modules/orders/cart/cart-detail/cart-detail.module';
+import { OrderModule } from './modules/orders/order/order.module';
+import { OrderDetailModule } from './modules/orders/order/order-detail/order-detail.module';
+import { ShippingModule } from './modules/orders/shipping/shipping.module';
+import { PaymentModule } from './modules/orders/payment/payment.module';
+import { UserModule } from './modules/users/user/user.module';
+import { EmployeeModule } from './modules/users/employee/employee.module';
+import { PositionModule } from './modules/users/position/position.module';
 
 @Module({
   imports: [
@@ -28,7 +41,7 @@ import { PaymentEntity } from './modules/orders/order/payment.entity';
         username: 'sa',
         password: '123456',
         database: 'TTTN_DongHoOnline',
-        synchronize: true,
+        synchronize: false,
         options: {
           trustServerCertificate: true, // Allow self-signed certificates
         },
@@ -38,9 +51,12 @@ import { PaymentEntity } from './modules/orders/order/payment.entity';
           ProductEntity,
           ImageEntity,
 
-          OrderEntity,
+
           CartEntity,
           CartDetailEntity,
+
+          OrderEntity,
+          OrderDetailEntity,
           ShippingEntity,
           PaymentEntity,
 
@@ -52,7 +68,20 @@ import { PaymentEntity } from './modules/orders/order/payment.entity';
       }
     ),
 
-    CategoryModule,
+  CategoryModule,
+  DiscountModule,
+  ProductModule,
+  ImageModule,
+  CartModule,
+  CartDetailModule,
+  OrderModule,
+  OrderDetailModule,
+  ShippingModule,
+  PaymentModule,
+  UserModule,
+  DiscountModule,
+  EmployeeModule,
+  PositionModule,
 ],
   controllers: [AppController],
   providers: [AppService],

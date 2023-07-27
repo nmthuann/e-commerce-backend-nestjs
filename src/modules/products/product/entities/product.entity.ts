@@ -2,7 +2,7 @@ import { BaseEntity } from "src/modules/bases/base.entity"
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, ManyToOne, OneToMany, BeforeUpdate, BeforeInsert } from "typeorm"
 import { CategoryEntity } from "../../category/category.entity"
 // import { ProductDetailEntity } from "./product-detail.entity"
-import { ImageEntity } from "./image.entity"
+import { ImageEntity } from "../../image/image.entity"
 import { DiscountEntity } from "../../discount/discount.entity"
 import { CartDetailEntity } from "src/modules/orders/cart/cart-detail.entity"
 
@@ -69,6 +69,6 @@ export class ProductEntity extends BaseEntity{
     }
 
 
-    @ManyToOne(() => CartDetailEntity, (cart_detail) => cart_detail.products)
-    cart_detail: CartDetailEntity
+    // @ManyToOne(() => CartDetailEntity, (cart_detail) => cart_detail.products)
+    // cart_detail: CartDetailEntity
 }

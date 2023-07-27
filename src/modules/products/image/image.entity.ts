@@ -1,7 +1,7 @@
 // image.entity.ts
 
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
-import { ProductEntity } from './product.entity';
+import { ProductEntity } from '../product/entities/product.entity';
 import { BaseEntity } from 'src/modules/bases/base.entity';
 
 
