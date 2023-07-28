@@ -41,29 +41,15 @@ import { PositionModule } from './modules/users/position/position.module';
         username: 'sa',
         password: '123456',
         database: 'TTTN_DongHoOnline',
-        synchronize: false,
+        synchronize: false, //true,
         options: {
           trustServerCertificate: true, // Allow self-signed certificates
         },
         entities: [
-          CategoryEntity,
-          DiscountEntity,
-          ProductEntity,
-          ImageEntity,
-
-
-          CartEntity,
-          CartDetailEntity,
-
-          OrderEntity,
-          OrderDetailEntity,
-          ShippingEntity,
-          PaymentEntity,
-
-          UserEntity,
-          AccountEntity,
-          EmployeeEntity,
-          PositionEntity
+          CategoryEntity, DiscountEntity, ProductEntity, ImageEntity,
+          CartEntity, CartDetailEntity,
+          OrderEntity, OrderDetailEntity, ShippingEntity, PaymentEntity,
+          UserEntity, AccountEntity, EmployeeEntity, PositionEntity
         ]
       }
     ),
@@ -72,16 +58,16 @@ import { PositionModule } from './modules/users/position/position.module';
   DiscountModule,
   ProductModule,
   ImageModule,
-  CartModule,
-  CartDetailModule,
-  OrderModule,
-  OrderDetailModule,
-  ShippingModule,
-  PaymentModule,
-  UserModule,
-  DiscountModule,
-  EmployeeModule,
-  PositionModule,
+  // CartModule,
+  // CartDetailModule,
+  // OrderModule,
+  // OrderDetailModule,
+  // ShippingModule,
+  // PaymentModule,
+  // UserModule,
+  // DiscountModule,
+  // EmployeeModule,
+  // PositionModule,
 ],
   controllers: [AppController],
   providers: [AppService],

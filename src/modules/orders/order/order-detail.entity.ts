@@ -10,7 +10,7 @@ export class OrderDetailEntity{
     @PrimaryColumn()
     product_id: number
 
-    @Column()
+    @Column({nullable: false})
     quantity: number
 
     

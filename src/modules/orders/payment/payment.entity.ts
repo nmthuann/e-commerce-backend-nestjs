@@ -1,12 +1,12 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import {  Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
 import { OrderEntity } from "../order/order.entity";
 
 @Entity({ name: 'Payments' })
-export class PaymentEntity extends BaseEntity {
+export class PaymentEntity{
     @PrimaryGeneratedColumn()
     payment_id: number;
 
-    @Column({ nullable: false })
+    @Column({type: "nvarchar", length: 100, nullable: false })
     payment_name: string;
 
     @Column()

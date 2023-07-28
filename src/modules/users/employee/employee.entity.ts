@@ -1,14 +1,15 @@
-import { BaseEntity, Column, Entity, JoinColumn, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 import { PositionEntity } from "../position/position.entity";
 import { UserEntity } from "../user/user.entity";
 import { OrderEntity } from "src/modules/orders/order/order.entity";
+import { BaseEntity } from "src/modules/bases/base.entity";
 
 @Entity({name:  'Employees'})
 export class EmployeeEntity extends BaseEntity {
-  @PrimaryColumn()
+  @PrimaryColumn({type: "nvarchar", length: 50})
   employee_id: string; //  cccd
 
-  @Column({default: 0})
+  @Column({type: "int", default: 0})
   salary: number;
 
   @Column({default: true})

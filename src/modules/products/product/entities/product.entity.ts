@@ -18,16 +18,16 @@ export class ProductEntity extends BaseEntity{
     @Column({ default: 0 })
     vote: number
 
-    @Column({nullable: false})
+    @Column({default: 0, nullable: false})
     price: number
 
-    @Column({nullable: false})
+    @Column({default: 0, nullable: false})
     unit_price: number
 
     @Column({nullable: false, default: 0})
     quantity: number
 
-    @Column({ default: 1 })
+    @Column({ default: true })
     status: boolean
 
     
@@ -39,13 +39,12 @@ export class ProductEntity extends BaseEntity{
 
     @Column()
     description: string;
-    @Column({nullable: false})
+    @Column({type: "nvarchar", length: 100, nullable: false})
     brand: string;  //  thương hiệu
-    @Column({nullable: false})
+    @Column({type: "nvarchar", length: 100, nullable: false})
     origin: string;  //  xuất xứ
     @Column()
     warranty_time: number  // thới gian bảo hành
-
 
 
     @OneToMany(() => ImageEntity, image => image.product)

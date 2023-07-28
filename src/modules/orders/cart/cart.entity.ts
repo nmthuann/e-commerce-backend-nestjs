@@ -1,6 +1,7 @@
 import { UserEntity } from "src/modules/users/user/user.entity";
-import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { CartDetailEntity } from "./cart-detail.entity";
+import { BaseEntity } from "src/modules/bases/base.entity";
 
 @Entity({name: 'Carts'})
 export class CartEntity extends BaseEntity{
@@ -12,7 +13,7 @@ export class CartEntity extends BaseEntity{
     user: UserEntity
 
     @Column()
-    status: number
+    status: boolean
 
     // @ManyToOne(() => CartDetailEntity, (cart_detail) => cart_detail.carts)
     // cart_detail: CartDetailEntity

@@ -13,7 +13,7 @@ export class CategoryEntity extends BaseEntity {
     @PrimaryGeneratedColumn()
     category_id: number
 
-    @Column({nullable: false})
+    @Column({type: "nvarchar", length: 50, nullable: false})
     category_name: string
 
     @Column()

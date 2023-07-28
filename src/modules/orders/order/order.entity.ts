@@ -1,4 +1,4 @@
-import { BaseEntity, Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { CartEntity } from "../cart/cart.entity";
 import { CartDetailEntity } from "../cart/cart-detail.entity";
 import { ShippingEntity } from "../shipping/shipping.entity";
@@ -6,15 +6,19 @@ import { PaymentEntity } from "../payment/payment.entity";
 import { EmployeeEntity } from "src/modules/users/employee/employee.entity";
 import { UserEntity } from "src/modules/users/user/user.entity";
 import { DiscountEntity } from "src/modules/products/discount/discount.entity";
+import { BaseEntity } from "src/modules/bases/base.entity";
 
 @Entity({name: 'Orders'})
 export class OrderEntity extends BaseEntity{
+
     @PrimaryGeneratedColumn()
     order_id: number
 
-    // @OneToOne(() => CartDetailEntity)
-    // @JoinColumn({name: 'cart_detail_id'})
-    // cart_detail: CartDetailEntity
+    @Column({default: 0})
+    total_price:number
+
+    @Column({ nullable: false })
+    status: string
 
     @OneToOne(() => ShippingEntity)
     @JoinColumn({name: 'shipping_id'})
@@ -36,12 +40,4 @@ export class OrderEntity extends BaseEntity{
     @OneToOne(() => DiscountEntity)
     @JoinColumn({name: 'discount_id'})
     discount: DiscountEntity
-
-
-    @Column()
-    total_price:number
-
-    @Column({ nullable: false })
-    status: string
-
 }

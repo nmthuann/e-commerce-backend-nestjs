@@ -14,7 +14,10 @@ export class ProductDto {
   brand: string;
   origin: string;
   warranty_time: number;
-  images: ImageDto[]; // You need to import ImageEntity if not already imported
-  category: CategoryDto;
-  discount: DiscountDto;
+  images: ImageDto[];
+  // category: CategoryDto;
+  // discount: DiscountDto;
+  categoryCategoryId: number;
+  discountDiscountId: number;
+
 }

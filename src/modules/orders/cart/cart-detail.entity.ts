@@ -4,17 +4,12 @@ import { CartEntity } from "./cart.entity";
 
 @Entity({name: 'CartDetails'})
 export class CartDetailEntity{
-
-    // @PrimaryGeneratedColumn()
-    // cart_detail_id: number
-
     @PrimaryColumn()
     cart_id: number
-
     @PrimaryColumn()
     product_id: number
 
-    @Column()
+    @Column({default: 1, nullable: false})
     quantity: number
 
 

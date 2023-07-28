@@ -6,22 +6,22 @@ import { UserEntity } from "../user/user.entity";
 
 
 @Entity({name:'Accounts'})
-export class AccountEntity extends BaseEntity { 
-    @PrimaryColumn()
+export class AccountEntity { 
+    @PrimaryColumn({ type: "nvarchar", length: 50})
     email: string
 
     @Column({nullable: false})
     password: string
 
-    @Column({ default: 'active' })
-    status: string;
+    @Column({  default: true }) // 0: false  1: true
+    status: boolean;
 
     @Column({default: null})
     refresh_token: string;
 
     //@Column({type: 'enum', enum: Role}) // , default: Role.User
-    @Column({ type: 'int', default: Role.User })
-    role: number
+    @Column({ type: "nvarchar", length: 10 , default: Role.User })
+    role: string
 
     @OneToOne(() => UserEntity, (user) => user.account ) // { cascade: true }
     user: UserEntity;
@@ -30,6 +30,5 @@ export class AccountEntity extends BaseEntity {
     emailToLowerCase(){
         this.email = this.email.toLowerCase();
     } 
-
     
 }

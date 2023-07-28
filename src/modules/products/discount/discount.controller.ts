@@ -29,7 +29,7 @@ export class DiscountController {
     }
 
     
-    @Get('get-discount')
+    @Get('get-discounts')
     async getDiscounts(): Promise<DiscountDto[]> {
         return await this.discountService.getAll();
     }
