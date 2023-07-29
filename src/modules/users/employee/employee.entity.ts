@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 import { PositionEntity } from "../position/position.entity";
 import { UserEntity } from "../user/user.entity";
 import { OrderEntity } from "src/modules/orders/order/order.entity";
@@ -15,13 +15,22 @@ export class EmployeeEntity extends BaseEntity {
   @Column({default: true})
   work_status: boolean;
 
-  @OneToOne(() => PositionEntity)
-  @JoinColumn({name: 'position_id'})
-  position: PositionEntity
+  // @OneToOne(() => PositionEntity)
+  // @JoinColumn({name: 'position_id'})
+  // position: PositionEntity
 
   @OneToOne(() => UserEntity, (user) => user.employee) // specify inverse side as a second parameter
   user: UserEntity
 
-  @OneToOne(() => OrderEntity, (order) => order.employee) // specify inverse side as a second parameter
-  order: OrderEntity
+  // @OneToOne(() => OrderEntity, (order) => order.employee) // specify inverse side as a second parameter
+  // order: OrderEntity
+
+    @OneToMany(() => OrderEntity, (order) => order.employee)
+    orders: OrderEntity[]
+
+
+    @ManyToOne(() => PositionEntity, (position) => position.employees, { lazy: true })
+    @JoinColumn({ name: 'position_id' })
+    position: PositionEntity
+
 }

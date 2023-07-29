@@ -8,11 +8,15 @@ export class AccountDto {
     @IsNotEmpty()
     @IsEmail()
     email: string;
+
     status: string;
+
     refresh_token: string;
+
     role: Role;
 
-    @Exclude() //  @IsNotEmpty()
+    @Exclude()
+    @IsNotEmpty()
     password: string;
 
     user: UserDto;

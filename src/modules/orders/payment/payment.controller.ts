@@ -29,7 +29,7 @@ export class PaymentController {
     }
 
     
-    @Get('get-payment')
+    @Get('get-payments')
     async getPayments(): Promise<PaymentDto[]> {
         return await this.paymentService.getAll();
     }

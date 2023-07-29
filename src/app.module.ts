@@ -30,6 +30,7 @@ import { PaymentModule } from './modules/orders/payment/payment.module';
 import { UserModule } from './modules/users/user/user.module';
 import { EmployeeModule } from './modules/users/employee/employee.module';
 import { PositionModule } from './modules/users/position/position.module';
+import { AccountModule } from './modules/users/account/account.module';
 
 @Module({
   imports: [
@@ -41,7 +42,7 @@ import { PositionModule } from './modules/users/position/position.module';
         username: 'sa',
         password: '123456',
         database: 'TTTN_DongHoOnline',
-        synchronize: false, //true,
+        synchronize: true, // false, 
         options: {
           trustServerCertificate: true, // Allow self-signed certificates
         },
@@ -56,18 +57,20 @@ import { PositionModule } from './modules/users/position/position.module';
 
   CategoryModule,
   DiscountModule,
-  ProductModule,
+  // ProductModule,
   ImageModule,
+
   // CartModule,
   // CartDetailModule,
   // OrderModule,
   // OrderDetailModule,
-  // ShippingModule,
-  // PaymentModule,
-  // UserModule,
-  // DiscountModule,
-  // EmployeeModule,
-  // PositionModule,
+  ShippingModule,
+  PaymentModule,
+
+  UserModule,
+  EmployeeModule,
+  PositionModule,
+  AccountModule
 ],
   controllers: [AppController],
   providers: [AppService],

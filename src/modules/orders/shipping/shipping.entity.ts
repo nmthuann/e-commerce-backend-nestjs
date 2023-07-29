@@ -14,4 +14,8 @@ export class ShippingEntity {
 
     @Column({ nullable: false })
     estimated_time: number  // thời gian dự kiến
+
+    @OneToMany(() => OrderEntity, (order) => order.shipping)
+    orders: OrderEntity[]
+
 }

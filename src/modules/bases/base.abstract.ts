@@ -8,7 +8,7 @@ export abstract class BaseService<T> implements IBaseService<T>{
     return await this.baseRepository.find();
   }
 
-  async getOneById(id: number): Promise<T> {
+  async getOneById(id: number | string): Promise<T> {
     return await this.baseRepository.findOneById(id);
   }
 

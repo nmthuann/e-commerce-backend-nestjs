@@ -11,4 +11,8 @@ export class PaymentEntity{
 
     @Column()
     description: string;
+
+
+    @OneToMany(() => OrderEntity, (order) => order.payment)
+    orders: OrderEntity[]
 }

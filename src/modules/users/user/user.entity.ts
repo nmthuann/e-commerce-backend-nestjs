@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { AccountEntity } from "../account/account.entity";
 import { EmployeeEntity } from "../employee/employee.entity";
 import { OrderEntity } from "src/modules/orders/order/order.entity";
@@ -43,6 +43,9 @@ export class UserEntity extends BaseEntity {
     @JoinColumn({name: 'employee_id'})
     employee: EmployeeEntity
 
-    @OneToOne(() => OrderEntity, (order) => order.user) // specify inverse side as a second parameter
-    order: OrderEntity
+    // @OneToOne(() => OrderEntity, (order) => order.user) // specify inverse side as a second parameter
+    // order: OrderEntity
+
+    @OneToMany(() => OrderEntity, (order) => order.user)
+    orders: OrderEntity[]
 }

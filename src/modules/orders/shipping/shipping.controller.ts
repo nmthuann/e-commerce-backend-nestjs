@@ -29,7 +29,7 @@ export class ShippingController {
     }
 
     
-    @Get('get-shipping')
+    @Get('get-shippings')
     async getShippings(): Promise<ShippingDto[]> {
         return await this.shippingService.getAll();
     }

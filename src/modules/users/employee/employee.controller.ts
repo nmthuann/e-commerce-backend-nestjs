@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Inject, UseGuards } from '@nestjs/common';
 import { EmployeeDto } from '../employee/employee-dto/employee.dto';
 import { IEmployeeService } from './Employee.service.interface';
+import { CreateEmployeeDto } from './employee-dto/create-employee.dto';
 
 // working with DTO
 @Controller('employee') 

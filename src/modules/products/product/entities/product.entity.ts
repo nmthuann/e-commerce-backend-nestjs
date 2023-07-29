@@ -48,13 +48,14 @@ export class ProductEntity extends BaseEntity{
 
 
     @OneToMany(() => ImageEntity, image => image.product)
-    @JoinColumn({name: 'image_id'})
+    //@JoinColumn({name: 'image_id'})
     images: ImageEntity[];
 
     @ManyToOne(() => CategoryEntity, (category) => category.products, { lazy: true }, )
     category: CategoryEntity
 
-    @ManyToOne(() => DiscountEntity, (discount) => discount.products, { lazy: true },)
+    @ManyToOne(() => DiscountEntity, (discount) => discount.products, { lazy: true })
+    @JoinColumn({ name: 'discount_id' })
     discount: DiscountEntity
 
 
