@@ -1,6 +1,8 @@
 import { Body, Controller, Inject,  Post, Put, Delete, Get, Param } from "@nestjs/common";
 import { IProductService } from "./product.service.interface";
 import { ProductDto } from "./product-dto/product.dto";
+import { ProductEntity } from "./entities/product.entity";
+import { plainToClass } from "class-transformer";
 
 // working with DTO
 @Controller('product') 
@@ -12,7 +14,8 @@ export class ProductController {
 
     @Post('create')
     async createProduct(@Body() product: ProductDto): Promise<ProductDto> {
-        return await this.productService.createOne(product);
+        const createProduct = await this.productService.createOne(product);
+        return plainToClass(ProductDto, createProduct)
     }
 
 
@@ -35,7 +38,7 @@ export class ProductController {
 
 
     @Get(':id')
-    async getProduct(@Param('id') id: number): Promise<ProductDto> {
+    async getProduct(@Param('id') id: number): Promise<ProductEntity> {
         return await this.productService.getOneById(id);
     }
 }

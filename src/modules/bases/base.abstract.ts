@@ -1,18 +1,21 @@
-import { DeleteResult, Repository } from "typeorm";
+import { DeleteResult, ObjectId, Repository } from "typeorm";
 import { IBaseService } from "./base.interface";
+import { InjectRepository } from "@nestjs/typeorm";
 
-export abstract class BaseService<T> implements IBaseService<T>{
-  constructor(private readonly baseRepository: Repository<T>) {}
+export abstract class BaseService<T> implements IBaseService <T>{
+  constructor(
+     // @InjectRepository(<T>) 
+    private readonly baseRepository: Repository<T>) {}
 
   async getAll(): Promise<T[]> {
     return await this.baseRepository.find();
   }
 
-  async getOneById(id: number | string): Promise<T> {
+  async getOneById(id: number | string | ObjectId): Promise<T | any> {
     return await this.baseRepository.findOneById(id);
   }
 
-  async createOne(data: T): Promise<T> {
+  async createOne(data: T | any): Promise<T> {
     return await this.baseRepository.save(data);
   }
 

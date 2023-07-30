@@ -2,10 +2,10 @@ import { Expose } from "class-transformer"
 import { IsString } from "class-validator"
 
 export class CategoryDto {
-    @Expose()
+    //@Expose()
     category_id: number
 
-    @IsString()
+    //@IsString()
     category_name: string
     description: string
 }

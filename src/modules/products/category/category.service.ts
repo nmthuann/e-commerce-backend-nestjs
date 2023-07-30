@@ -7,10 +7,10 @@ import { ICategoryService } from './category.service.interface';
 import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
-export class CategoryService extends BaseService<CategoryDto> implements ICategoryService {
+export class CategoryService extends BaseService<CategoryEntity> implements ICategoryService {
   constructor(
     @InjectRepository(CategoryEntity) 
-    private categoryRepository: Repository<CategoryDto>) {
+    private categoryRepository: Repository<CategoryEntity>) {
         super(categoryRepository);
     }
 }

@@ -14,10 +14,39 @@ export class ProductDto {
   brand: string;
   origin: string;
   warranty_time: number;
-  images: ImageDto[];
-  // category: CategoryDto;
-  // discount: DiscountDto;
-  categoryCategoryId: number;
-  discountDiscountId: number;
+  //images: ImageDto[];
+  category: CategoryDto;
+  discount: DiscountDto;
+
+
+
+  constructor(
+    product_name: string,
+    vote: number,
+    price: number,
+    unit_price: number,
+    quantity: number,
+    status: boolean,
+    description: string,
+    brand: string,
+    origin: string,
+    warranty_time: number,
+    category: CategoryDto,
+    discount: DiscountDto
+  ) {
+
+    this.product_name = product_name;
+    this.vote = vote;
+    this.price = price;
+    this.unit_price = unit_price;
+    this.quantity = quantity;
+    this.status = status;
+    this.description = description;
+    this.brand = brand;
+    this.origin = origin;
+    this.warranty_time = warranty_time;
+    this.category = category;
+    this.discount= discount;
+  }
 
 }

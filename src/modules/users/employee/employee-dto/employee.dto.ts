@@ -9,7 +9,10 @@ export class EmployeeDto {
   employee_id: string; // cccd
   salary: number;
   work_status: boolean;
-  position: PositionDto; 
-  user: UserDto; 
+  // position: PositionDto; 
+  // user: UserDto; 
+
+  position: number; 
+  user: number; 
   // order: OrderDto; 
 }

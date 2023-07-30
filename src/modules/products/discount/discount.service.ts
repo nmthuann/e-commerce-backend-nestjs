@@ -7,10 +7,10 @@ import { DiscountDto } from "./discount-dto/discount.dto";
 import { IDiscountService } from "./discount.service.interface";
 
 @Injectable()
-export class DiscountService extends BaseService<DiscountDto> implements IDiscountService {
+export class DiscountService extends BaseService<DiscountEntity> implements IDiscountService {
   constructor(
     @InjectRepository(DiscountEntity) 
-    private discountRepository: Repository<DiscountDto>) {
+    private discountRepository: Repository<DiscountEntity>) {
         super(discountRepository);
     }
 }

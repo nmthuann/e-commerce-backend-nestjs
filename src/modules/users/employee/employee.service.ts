@@ -33,19 +33,19 @@ export class EmployeeService extends BaseService<EmployeeDto> implements IEmploy
 
       const user_id = employee.user;
       const findUser = await this.userService.getOneById(user_id);
-      console.log(employee.user, "findUser : ", findUser);
+      console.log(findPosition, "findPosition", employee.user, "findUser : ", findUser);
       
-      const newEmployee = await this.employeeRepository.save({...findPosition, ...employee});
-      console.log("newEmployee: ", newEmployee);
+     //const newEmployee = await this.employeeRepository.save({...findPosition, ...employee});
+      //console.log("newEmployee: ", newEmployee);
 
 
  
-      findUser.employee = newEmployee;
+      //findUser.employee = newEmployee;
       
-      const updateUser = await this.userService.updateOneById(employee.user.user_id, findUser);
-      console.log("updateUser : ", updateUser);
+      // const updateUser = await this.userService.updateOneById(employee.user.user_id, findUser);
+      // console.log("updateUser : ", updateUser);
 
-      return newEmployee;
+      return ;
     }catch (error) {
       throw new Error(`An unexpected error occurred while creating the user ${error}`);
     }
