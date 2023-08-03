@@ -34,6 +34,7 @@ import { AccountModule } from './modules/users/account/account.module';
 import * as redisStore from 'cache-manager-redis-store';
 import { CacheModule } from '@nestjs/cache-manager';
 import { AuthModule } from './modules/apis/authentication/auth.module';
+import { StoreModule } from './modules/apis/store/store.module';
 // import { CacheModule } from '@nestjs/cache-manager';
 
 
@@ -48,7 +49,7 @@ import { AuthModule } from './modules/apis/authentication/auth.module';
         username: 'sa',
         password: '123456',
         database: 'TTTN_DongHoOnline',
-        synchronize: true, // false, 
+        synchronize: false, // false, 
         options: {
           trustServerCertificate: true, // Allow self-signed certificates
         },
@@ -61,10 +62,11 @@ import { AuthModule } from './modules/apis/authentication/auth.module';
       }
     ),
 
-  // CategoryModule,
+  CategoryModule,
   // DiscountModule,
-  // ProductModule,
+  ProductModule,
   // ImageModule,
+  StoreModule,
 
   // CartModule,
   // CartDetailModule,

@@ -6,7 +6,7 @@ import { IsEmpty } from "class-validator";
 export class DiscountDto {
 
   @Expose()
-  id: number;
+  discount_id: number;
 
   @IsEmpty()
   description: string;

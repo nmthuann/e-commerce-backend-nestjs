@@ -2,7 +2,7 @@ import { CategoryDto } from "../../category/category-dto/category.dto";
 import { DiscountDto } from "../../discount/discount-dto/discount.dto";
 import { ImageDto } from "../../image/image.dto";
 
-export class ProductDto {
+export class CreateProductDto {
   product_id: number;
   product_name: string;
   vote: number;
@@ -15,8 +15,8 @@ export class ProductDto {
   origin: string;
   warranty_time: number;
   images: ImageDto[];
-  __category__: CategoryDto;
-  __discount__: DiscountDto;
+  category: CategoryDto;
+  discount: DiscountDto;
 
 
 
@@ -45,8 +45,7 @@ export class ProductDto {
     this.brand = brand;
     this.origin = origin;
     this.warranty_time = warranty_time;
-    this.__category__ = category;
-    this.__discount__ = discount;
+    this.category = category;
+    this.discount = discount;
   }
-
 }

@@ -13,4 +13,13 @@ export class CategoryService extends BaseService<CategoryEntity> implements ICat
     private categoryRepository: Repository<CategoryEntity>) {
         super(categoryRepository);
     }
+
+  // async getAll(): Promise<CategoryEntity[]> {
+  //     const findCategorys = await this.categoryRepository.find({
+  //     relations: {
+  //       product: true,
+  //     },
+  //      })
+  //   return findCategorys;
+  // }
 }

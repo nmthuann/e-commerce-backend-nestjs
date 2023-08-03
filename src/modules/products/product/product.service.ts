@@ -4,12 +4,14 @@ import { ProductDto } from "./product-dto/product.dto";
 import { IProductService } from "./product.service.interface";
 import { InjectRepository } from "@nestjs/typeorm";
 import { ProductEntity } from "./entities/product.entity";
-import { Repository } from "typeorm";
+import { And, Between, Repository } from "typeorm";
 import { ICategoryService } from "../category/category.service.interface";
 import { IDiscountService } from "../discount/discount.service.interface";
 import { CategoryDto } from "../category/category-dto/category.dto";
 import { CategoryEntity } from "../category/category.entity";
 import { DiscountEntity } from "../discount/discount.entity";
+import { CreateProductDto } from "./product-dto/create-product.dto";
+import { ProductFilterDto } from "./product-dto/product-filter.dto";
 
 @Injectable()
 export class ProductService extends BaseService<ProductEntity> implements IProductService {
@@ -26,7 +28,7 @@ export class ProductService extends BaseService<ProductEntity> implements IProdu
     }
 
 
-  async createOne(data: ProductDto): Promise<ProductEntity> {
+  async createOne(data: CreateProductDto): Promise<ProductEntity> {
     try {
       const newProduct = new ProductEntity();
       newProduct.product_name = data.product_name;
@@ -44,7 +46,6 @@ export class ProductService extends BaseService<ProductEntity> implements IProdu
       const createProduct = await this.productRepository.save(newProduct);
       
       return createProduct ;
-
     } catch (error) {
       throw new Error(`An unexpected error occurred while creating the Product ${error}`);
     }
@@ -58,28 +59,124 @@ export class ProductService extends BaseService<ProductEntity> implements IProdu
       relations: {
         category: true,
         discount: true,
+        images: true
       },
     })
+    return findProduct;
+  }
 
-      return findProduct;
+  async getAll(): Promise<ProductEntity[]> {
+    const findProducts = await this.productRepository.find({
+      relations: {
+        category: true,
+        discount: true,
+        images: true
+      },
+       })
+    return findProducts;
   }
 
 
-  // private mapProductEntityToDto(entity: ProductEntity): ProductDto {
-  // const dto: ProductDto = {
-  //   product_name: entity.product_name,
-  //   vote: entity.vote,
-  //   price: entity.price,
-  //   unit_price: entity.unit_price,
-  //   quantity: entity.quantity,
-  //   status: entity.status,
-  //   description: entity.description,
-  //   brand: entity.brand,
-  //   origin: entity.origin,
-  //   warranty_time: entity.warranty_time,
-  //   category: entity.category, // Assuming category is a relation and we want to store only the category id in the DTO
-  //   discount: entity.discount, // Assuming discount is a relation and we want to store only the discount id in the DTO
-  // };
-  //   return dto;
-  // }
+  async getSomeFields(): Promise<Partial<ProductEntity>[]> {
+    const findProducts = await this.productRepository
+      .createQueryBuilder('product')
+      .select([
+        'product.product_id',
+        'product.product_name',
+        'product.vote',
+        'product.price',
+        'product.discount',
+      ])
+      .leftJoinAndSelect('product.discount', 'discount')
+      .getMany();
+
+    return findProducts;
+  }
+
+  async getProductsByOptions(data: any): Promise<Partial<ProductEntity>[]> {
+    const findProducts = await this.productRepository.find({})
+    return;
+  }
+
+  async getProductsByCategoryId(category_id: number): Promise<ProductEntity[]> {
+  
+    const findProducts = await this.productRepository.find(
+      {
+        where: {
+          category: {
+            category_id: category_id
+          }
+        },
+        relations: {
+          category: true,
+          discount: true,
+          images: true
+        },
+      }
+    )
+    return findProducts;
+  }
+
+
+  async getProductsByPriceRange(category_id:number, maxPrice: number): Promise<ProductEntity[]> {
+    return await this.productRepository.find({
+      where: {
+        category: {
+            category_id: category_id
+          }, 
+          price: Between(0, maxPrice),
+      },
+      relations: {
+          category: true,
+          discount: true,
+          images: true
+        },
+    });
+  }
+
+
+  async getProductsByBrand(category_id:number,brand: string): Promise<ProductEntity[]> {
+    return await this.productRepository.find({
+      where: {
+        category: {
+            category_id: category_id
+          }, 
+          brand: brand
+      },
+      relations: {
+          category: true,
+          discount: true,
+          images: true
+        },
+    });
+  }
+
+
+  async getProductsByFilter(category_id: number, filterDto: ProductFilterDto): Promise<ProductEntity[]> {
+    const {price, brand } = filterDto;
+    console.log(filterDto);
+    const query = this.productRepository.createQueryBuilder('product');
+
+    if (category_id) {
+      query.andWhere('product.categoryCategoryId = :category_id', { category_id: category_id });
+    }
+
+    if (price) {
+      query.andWhere('product.price <= :maxPrice', { maxPrice: price });
+    }
+
+    if (brand) {
+      query.andWhere('product.brand LIKE :brand', { brand: `%${brand}%` });
+    }
+    return query.getMany();
+  }
+
+  async getProductBrandByCategoryId(category_id: number): Promise<string[]> {
+    const query = this.productRepository.createQueryBuilder('product');
+    query.select('DISTINCT product.brand');
+    query.where('product.categoryCategoryId = :category_id', { category_id });
+    const result = await query.getRawMany();
+    return result.map((item) => item.brand);
+  }
+
 }

@@ -42,11 +42,11 @@ export class AuthService {
         const [jwt, refresh] = await Promise.all([
         this.jwtService.signAsync({payload}, {
             secret: 'JWT_SECRET_KEY',
-            expiresIn: 60*60,
+            expiresIn: 60*15,
         }),
         this.jwtService.signAsync({payload}, {
             secret: 'REFRESH_JWT_SECRET_KEY',
-            expiresIn: 60 * 60 * 24,
+            expiresIn: 60*60,// 60 * 60 * 24
         })
         ]);
 
@@ -61,7 +61,7 @@ export class AuthService {
     private randomPassword(length: number, base: string): string{
         //const baseString = "0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
         const getRandomInt = (min: number, max: number) => {
-        return Math.floor(Math.random() * (max - min)) + min;
+            return Math.floor(Math.random() * (max - min)) + min;
         };
         let result = "";
         const baseLength = base.length;
@@ -95,7 +95,7 @@ export class AuthService {
 
     async checkOTP (email: string, otp: string){
         // == in cache
-        // try {
+        try {
             const otpInCache = await this.cacheService.get(email);
             if (otpInCache == otp){
                 await this.cacheService.del(email);  // xóa cache
@@ -106,8 +106,9 @@ export class AuthService {
                 return {message: "failed"}
             }
             
-        // } catch (error) {     
-        // }  
+        } catch (error) {   
+            throw new Error(`An unexpected error:: ${error}`);
+        }  
     }
 
     // đăng kí tài khoản -> Done!
@@ -119,14 +120,14 @@ export class AuthService {
 
         const tokens = await this.getTokens({
             email: newUser.email,
-            role: Role.Customer
+            role: Role.User
         });
 
         const update = new AccountDto(
-            newUser.email,
+            newUser.email,     
             'acctive',
-            newUser.password,
             tokens.refresh_token,
+            newUser.password,
             null
         );
 
@@ -173,6 +174,7 @@ export class AuthService {
         const tokens: Tokens = await this.getTokens(payload);
         findUser.refresh_token = tokens.refresh_token;
         await this.accountService.updateOneById(findUser.email, findUser);
+        console.log(`message: ${input.email} đăng nhập thành công!`)
         return tokens;
     }
 

@@ -18,6 +18,9 @@ export class CategoryEntity extends BaseEntity {
 
     @Column()
     description: string
+
+    @Column()
+    category_url: string
     
     @OneToMany(() => ProductEntity, (product) => product.category)
     products: ProductEntity[]
