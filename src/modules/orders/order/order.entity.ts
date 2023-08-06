@@ -44,7 +44,6 @@ export class OrderEntity extends BaseEntity{
     @ManyToOne(() => DiscountEntity, (discount) => discount.orders, { lazy: true })
     @JoinColumn({ name: 'discount_id' })
     discount: DiscountEntity
-
     
     @ManyToOne(() => UserEntity, (user) => user.orders, { lazy: true })
     @JoinColumn({ name: 'user_id' })

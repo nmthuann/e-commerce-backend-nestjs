@@ -13,12 +13,14 @@ export class CategoryController {
 
     @Post('create')
     async createCategory(@Body() category: CategoryDto): Promise<CategoryDto> {
+        console.log('createCategory')
         return await this.categoryService.createOne(category);
     }
 
 
-    @Put('update/:id')
-    async updateCategoryById(@Param('id') id: number, @Body() categoryDto: CategoryDto): Promise<CategoryDto> {
+    @Put('update/:category_id')
+    async updateCategoryById(@Param('category_id') id: number, @Body() categoryDto: CategoryDto): Promise<CategoryDto> {
+        console.log('updateCategory')
         return this.categoryService.updateOneById(id, categoryDto);
     }
 

@@ -6,11 +6,13 @@ import { DiscountDto } from "src/modules/products/discount/discount-dto/discount
 
 export class OrderDto {
   order_id: number;
+  total_price: number;
+  status: string;
+
+  //  5 FK: Shippings- Payment - Employee - User - Employee
   shipping: ShippingDto;
   payment: PaymentDto;
   employee: EmployeeDto;
   user: UserDto;
   discount: DiscountDto;
-  total_price: number;
-  status: string;
 }

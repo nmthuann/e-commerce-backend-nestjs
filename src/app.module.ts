@@ -62,20 +62,20 @@ import { StoreModule } from './modules/apis/store/store.module';
       }
     ),
 
-  CategoryModule,
-  // DiscountModule,
+  // CategoryModule,
+  // // DiscountModule,
   ProductModule,
   // ImageModule,
-  StoreModule,
+  // StoreModule,
 
   // CartModule,
   // CartDetailModule,
-  // // OrderModule,
+  OrderModule,
   // // OrderDetailModule,
-  // ShippingModule,
+  //ShippingModule,
   // PaymentModule,
 
-  // //UserModule,
+  UserModule,
   // EmployeeModule,
   // //PositionModule,
   // //AccountModule,

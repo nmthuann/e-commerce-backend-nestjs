@@ -4,6 +4,7 @@ import { ProductDto } from "./product-dto/product.dto";
 import { ProductEntity } from "./entities/product.entity";
 import { plainToClass } from "class-transformer";
 import { ProductFilterDto } from "./product-dto/product-filter.dto";
+import { GetProductForOrderDto } from "./product-dto/get-product-order.dto";
 
 // working with DTO
 @Controller('product') 
@@ -86,6 +87,20 @@ export class ProductController {
     // ): Promise<string[]> {
     //     return await this.productService.getProductBrandByCategoryId(category_id);  
     // }
+
+
+    @Get('get-some-field')
+    async getProductsSomeField(): Promise<Partial< ProductEntity>[]> {
+        console.log("getProductsSomeField:::");
+        return await this.productService.getSomeFields()
+;    }
+
+
+    @Get('get-product-ids')
+    async getProductsByIds(@Body() data: GetProductForOrderDto[]): Promise<ProductEntity[]> {
+        console.log("getProductsByIds - Controller:::", data);
+        return await this.productService.getProductsByIds(data);
+    }
 
 
     @Get(':id')

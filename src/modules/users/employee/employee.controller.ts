@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, Param, Post, Put, Inject, UseGuards } fr
 import { EmployeeDto } from '../employee/employee-dto/employee.dto';
 import { IEmployeeService } from './Employee.service.interface';
 import { CreateEmployeeDto } from './employee-dto/create-employee.dto';
+import { EmployeeEntity } from './employee.entity';
 
 // working with DTO
 @Controller('employee') 
@@ -12,13 +13,13 @@ export class EmployeeController {
     ) {}
 
     @Post('create')
-    async createEmployee(@Body() employee: EmployeeDto): Promise<EmployeeDto> {
+    async createEmployee(@Body() employee: EmployeeDto): Promise<EmployeeEntity> {
         return await this.employeeService.createOne(employee);
     }
 
 
     @Put('update/:id')
-    async updateEmployeeById(@Param('id') id: number, @Body() employeeDto: EmployeeDto): Promise<EmployeeDto> {
+    async updateEmployeeById(@Param('id') id: number, @Body() employeeDto: EmployeeDto): Promise<EmployeeEntity> {
         return this.employeeService.updateOneById(id, employeeDto);
     }
 
@@ -30,13 +31,13 @@ export class EmployeeController {
 
     
     @Get('get-employees')
-    async getEmployees(): Promise<EmployeeDto[]> {
+    async getEmployees(): Promise<EmployeeEntity[]> {
         return await this.employeeService.getAll();
     }
 
 
     @Get(':id')
-    async getEmployee(@Param('id') id: number): Promise<EmployeeDto> {
+    async getEmployee(@Param('id') id: number): Promise<EmployeeEntity> {
         return await this.employeeService.getOneById(id);
     }
 }

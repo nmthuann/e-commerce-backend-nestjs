@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Inject, UseGuards } from '@nestjs/common';
 import { IOrderDetailService } from './order-detail.service.interface';
-import { OrderDetailDto } from '../order-dto/order-detail.dto';
+import { OrderDetailEntity } from '../order-detail.entity';
+
 
 
 
@@ -13,14 +14,14 @@ export class OrderDetailController {
     ) {}
 
     @Post('create')
-    async createOrderDetail(@Body() orderDetail: OrderDetailDto): Promise<OrderDetailDto> {
+    async createOrderDetail(@Body() orderDetail: OrderDetailEntity): Promise<OrderDetailEntity> {
         return await this.orderDetailService.createOne(orderDetail);
     }
 
 
     @Put('update/:id')
-    async updateOrderDetailById(@Param('id') id: number, @Body() orderDetailDto: OrderDetailDto): Promise<OrderDetailDto> {
-        return this.orderDetailService.updateOneById(id, orderDetailDto);
+    async updateOrderDetailById(@Param('id') id: number, @Body() OrderDetailEntity: OrderDetailEntity): Promise<OrderDetailEntity> {
+        return this.orderDetailService.updateOneById(id, OrderDetailEntity);
     }
 
 
@@ -30,14 +31,14 @@ export class OrderDetailController {
     }
 
     
-    @Get('get-order')
-    async getOrderDetails(): Promise<OrderDetailDto[]> {
-        return await this.orderDetailService.getAll();
-    }
+    // @Get('get-order-details')
+    // async getOrderDetails(): Promise<OrderDetailEntity[]> {
+    //     return await this.orderDetailService.findOrderDetailByOrderId(5);
+    // }
 
 
     @Get(':id')
-    async getOrderDetail(@Param('id') id: number): Promise<OrderDetailDto> {
+    async getOrderDetail(@Param('id') id: number): Promise<OrderDetailEntity> {
         return await this.orderDetailService.getOneById(id);
     }
 }

@@ -11,10 +11,10 @@ import { UserDto } from "../user/user-dto/user.dto";
 import { CreateEmployeeDto } from "./employee-dto/create-employee.dto";
 
 @Injectable()
-export class EmployeeService extends BaseService<EmployeeDto> implements IEmployeeService {
+export class EmployeeService extends BaseService<EmployeeEntity> implements IEmployeeService {
   constructor(
     @InjectRepository(EmployeeEntity) 
-    private employeeRepository: Repository<EmployeeDto>,
+    private employeeRepository: Repository<EmployeeEntity>,
     @Inject('IPositionService')
     private positionService: IPositionService,
     @Inject('IUserService')
@@ -26,7 +26,7 @@ export class EmployeeService extends BaseService<EmployeeDto> implements IEmploy
     }
 
 
-  async createOne(employee: EmployeeDto): Promise<EmployeeDto> {
+  async createOne(employee: EmployeeDto): Promise<EmployeeEntity> {
      try{
       const position_id = employee.position;
       const findPosition = await this.positionService.getOneById(position_id);

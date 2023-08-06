@@ -29,14 +29,14 @@ export class DiscountController {
     // }
 
     
-    // @Get('get-discounts')
-    // async getDiscounts(): Promise<DiscountDto[]> {
-    //     return await this.discountService.getAll();
-    // }
+    @Get('get-discounts')
+    async getDiscounts(): Promise<DiscountDto[]> {
+        return await this.discountService.getAll();
+    }
 
 
-    // @Get(':id')
-    // async getDiscount(@Param('id') id: number): Promise<DiscountDto> {
-    //     return await this.discountService.getOneById(id);
-    // }
+    @Get(':discount_id')
+    async getDiscount(@Param('discount_id') id: number): Promise<DiscountDto> {
+        return await this.discountService.getOneById(id);
+    }
 }

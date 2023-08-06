@@ -12,6 +12,7 @@ import { CategoryEntity } from "../category/category.entity";
 import { DiscountEntity } from "../discount/discount.entity";
 import { CreateProductDto } from "./product-dto/create-product.dto";
 import { ProductFilterDto } from "./product-dto/product-filter.dto";
+import { GetProductForOrderDto } from "./product-dto/get-product-order.dto";
 
 @Injectable()
 export class ProductService extends BaseService<ProductEntity> implements IProductService {
@@ -178,5 +179,42 @@ export class ProductService extends BaseService<ProductEntity> implements IProdu
     const result = await query.getRawMany();
     return result.map((item) => item.brand);
   }
+
+
+
+  async getProductsByIds(data: GetProductForOrderDto[]): Promise<ProductEntity[]>{
+    const productIds: number[] = data.map((product) => product.product_id);
+    console.log("productsIds:::: ",productIds);
+
+    // const products: ProductEntity[] = [];
+
+      /// Use 'map' instead of 'forEach'
+    const getProduct = productIds.map(async (product_id) => {
+      try {
+        // Fetch the product by its ID and return it
+        const product = await this.productRepository.findOne({
+          where: {
+            product_id: product_id,
+          },
+          relations: {
+            // category: true,
+            discount: true,
+          }
+        });
+
+        return product;
+      } catch (error) {
+        console.error(`Error fetching product with ID ${product_id}:`, error.message);
+      }
+    });
+
+    // Use 'Promise.all' to wait for all the async operations to complete
+    const products = await Promise.all(getProduct);
+    
+
+    // Filter out any potential 'undefined' values (e.g., if findOne() throws an error)filter((product) => !!product) as ProductEntity[];
+    return products;
+  }
+
 
 }
