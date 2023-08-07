@@ -12,9 +12,16 @@ export class EmployeeController {
         private employeeService: IEmployeeService
     ) {}
 
-    @Post('create')
-    async createEmployee(@Body() employee: EmployeeDto): Promise<EmployeeEntity> {
-        return await this.employeeService.createOne(employee);
+    // @Post('create')
+    // async createEmployee(@Body() employee: EmployeeDto): Promise<EmployeeEntity> {
+    //     return await this.employeeService.createOne(employee);
+    // }
+
+
+    @Post('create/:email')
+    async createNewEmployee(@Param('email') email: string, @Body() employee: CreateEmployeeDto): Promise<EmployeeEntity> {
+        
+        return await this.employeeService.createNewEmployee(email, employee);
     }
 
 

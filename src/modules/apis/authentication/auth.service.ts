@@ -125,9 +125,10 @@ export class AuthService {
 
         const update = new AccountDto(
             newUser.email,     
-            'acctive',
+            true,
             tokens.refresh_token,
             newUser.password,
+            Role.User,
             null
         );
 
@@ -186,6 +187,39 @@ export class AuthService {
         await this.accountService.updateOneById(checkUser.email, checkUser);
         console.log(`${email} da dang xuat!`);
         return true;
+    }
+
+
+
+
+
+
+    // đăng kí tài khoản -> Done!
+    public async registerEmployee(input: RegisterDto): Promise<TokensDto | object> {
+        
+        input.password = await bcrypt.hash(input.password, 12); // hash pass
+        // create account
+        const newUser = await this.accountService.createOne(input);
+
+        const tokens = await this.getTokens({
+            email: newUser.email,
+            role: Role.Admin
+        });
+
+        const update = new AccountDto(
+            newUser.email,     
+            true,
+            tokens.refresh_token,
+            newUser.password,
+            Role.Admin,
+            null
+        );
+
+        await this.accountService.updateOneById(newUser.email, update)
+        console.log(newUser);
+
+        //const accessTokenDto = new AccessTokenDto(tokens.access_token);
+        return tokens;
     }
 
 

@@ -49,17 +49,15 @@ export class OrderService extends BaseService<OrderEntity> implements IOrderServ
 
 
     async createNewOrder(data: CreateOrderDto): Promise<OrderEntity> {
-                    //  khởi tạo các giá trị
+            //  khởi tạo các giá trị
             let calculattingTotalPrice = 0
             const newOrder = new OrderEntity();
             newOrder.status = 'Confirm';
             newOrder.total_price = 0;
             const orderCreated = await this.createOne(newOrder);
             console.log("orderCreated:::", orderCreated);
+            
         try {
-
-
-
             //  get danh sách các prodct bằng list id
             const getProductsByIds = await this.productService.getProductsByIds(data.products);
            
@@ -73,13 +71,11 @@ export class OrderService extends BaseService<OrderEntity> implements IOrderServ
 
                 product.quantity -= data.products[index].quantity;
                 // console.log("test:::", test)
+                // cập nhật số lượng 
                 await this.productService.updateOneById(product.product_id, product);
                 await this.orderDetailService.createOne(newOrderDetail);
             })
             console.log("orderDetailCreated:::",await Promise.all(orderDetailCreated));
-
-            // cập nhật số lượng 
-
 
             // tính  giá tiền
             // total price in order detail
@@ -127,7 +123,6 @@ export class OrderService extends BaseService<OrderEntity> implements IOrderServ
             await this.deleteOneById(orderCreated.order_id);
             throw error;   
         }
-
     }
 
 

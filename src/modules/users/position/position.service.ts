@@ -7,10 +7,10 @@ import { PositionEntity } from "./position.entity";
 import { Repository } from "typeorm";
 
 @Injectable()
-export class PositionService extends BaseService<PositionDto> implements IPositionService {
+export class PositionService extends BaseService<PositionEntity> implements IPositionService {
   constructor(
     @InjectRepository(PositionEntity) 
-    private positionRepository: Repository<PositionDto>) {
+    private positionRepository: Repository<PositionEntity>) {
         super(positionRepository);
     }
 }

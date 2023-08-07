@@ -5,4 +5,5 @@ import { EmployeeEntity } from "./employee.entity";
 
 export interface IEmployeeService extends IBaseService<EmployeeEntity>{
     // createOne(data: CreateEmployeeDto): Promise<EmployeeDto>;
+    createNewEmployee(email: string, data: CreateEmployeeDto): Promise<EmployeeEntity>
 }

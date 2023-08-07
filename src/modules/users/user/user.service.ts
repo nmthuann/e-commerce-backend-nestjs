@@ -6,31 +6,53 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { UserEntity } from "./user.entity";
 import { Repository } from "typeorm";
 import { IAccountService } from "../account/account.service.interface";
+import { AccountEntity } from "../account/account.entity";
 
 @Injectable()
-export class UserService extends BaseService<UserDto> implements IUserService {
+export class UserService extends BaseService<UserEntity> implements IUserService {
   constructor(
     @InjectRepository(UserEntity) 
-    private userRepository: Repository<UserDto>,
-    @Inject('IAccountService')
-    private accountService: IAccountService,
-    ) {
-      super(userRepository);
-    }
+    private userRepository: Repository<UserEntity>,
+    // @Inject('IAccountService')
+    // private accountService: IAccountService,
+  ) {
+    super(userRepository);
+  }
 
- 
 
-  async createOne(user: UserDto): Promise<UserDto> {
-    try{
-      const findAccount = 
-        await this.accountService.getOneById(user.account.email);
-        return await this.userRepository.save({...findAccount, ...user});
-    }catch (error) {
-      throw new Error(`An unexpected error occurred while creating the user ${error}`);
-    }
+  async getOneById(id: string | number ): Promise<UserEntity> {
+    const findUser = await this.userRepository.findOne({
+      where: {
+        user_id: id as number,
+      },
+      relations: {
+        account: true,
+        employee: true,
+      },
+    })
+    return findUser;
+  }
+
+  
+  async getUsersIsEmployee(): Promise<UserEntity[]> {
+    const findEmployees = await this.userRepository.find({
+      relations: {
+        employee: true
+      }
+    })
+    return findEmployees;
   }
 
   async createEmployee(data: UserDto): Promise<UserDto> {
     return;    
+  }
+
+  async getUserByEmail(email: string): Promise<UserEntity> {
+    const findUser = await this.userRepository
+    .createQueryBuilder("users")
+    .where("users.email = :email", { email: email})
+    .leftJoinAndSelect('users.employee', 'employee')
+    .getOne()
+    return findUser;
   }
 }

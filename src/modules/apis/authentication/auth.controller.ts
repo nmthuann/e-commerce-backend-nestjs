@@ -45,4 +45,11 @@ export class AuthController  {
     //     if (kq == true)
     //     return {message: "Ban da dang xuat!"};
     // }
+
+
+
+    @Post('register-employee') // check login hoặc chưa
+    async registerEmployee(@Body() input: RegisterDto): Promise<TokensDto | object> {
+        return await this.authService.registerEmployee(input);
+    }
 }

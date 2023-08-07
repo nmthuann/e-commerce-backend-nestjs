@@ -11,7 +11,7 @@ export class UserDto {
   birthday: Date;
   address: string;
   phone: string;
-  account: AccountDto; 
-  employee: EmployeeDto; 
-  order: OrderDto; 
+  __account__: AccountDto; 
+  __employee__: EmployeeDto; 
+  // order: OrderDto; 
 }

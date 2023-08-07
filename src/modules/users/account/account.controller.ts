@@ -1,18 +1,34 @@
 import { Body, Controller, Get, Inject, Param, Post, Put, Delete } from "@nestjs/common";
 import { IAccountService } from "./account.service.interface";
 import { AccountDto } from "./account-dto/account.dto";
+import { AccountEntity } from "./account.entity";
+import { AccountForEmployeeDto } from "./account-dto/account-employee.dto";
+import { AuthService } from "src/modules/apis/authentication/auth.service";
 
 @Controller('account') 
 export class AccountController {
     
-    constructor(@Inject('IAccountService')
-        private accountService: IAccountService
+    constructor(
+        @Inject('IAccountService')
+        private accountService: IAccountService,
+                // private authService: AuthService,
+
     ) {}
 
     @Post('create')
-    async createAccount(@Body() account: AccountDto): Promise<AccountDto> {
+    async createAccount(@Body() account: AccountDto): Promise<AccountEntity> {
         return await this.accountService.createOne(account);
     }
+
+
+    // @Post('create')
+    // async createAccountForEmployee(@Body() account: AccountForEmployeeDto): Promise<AccountEntity> {
+    //     return await 
+    // }
+
+
+
+    
 
 
     @Put('update/:id')

@@ -10,7 +10,7 @@ export class AccountEntity {
     @PrimaryColumn({ type: "nvarchar", length: 50})
     email: string
 
-    @Column({nullable: false})
+    @Column({nullable: false, select: false})
     password: string
 
     @Column({  default: true }) // 0: false  1: true

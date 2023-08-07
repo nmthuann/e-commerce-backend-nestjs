@@ -76,9 +76,9 @@ import { StoreModule } from './modules/apis/store/store.module';
   // PaymentModule,
 
   UserModule,
-  // EmployeeModule,
+  EmployeeModule,
   // //PositionModule,
-  // //AccountModule,
+  AccountModule,
     CacheModule.register({
       isGlobal: true,
       store: redisStore,
