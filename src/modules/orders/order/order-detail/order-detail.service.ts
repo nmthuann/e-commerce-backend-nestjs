@@ -81,8 +81,20 @@ export class OrderDetailService extends BaseService<OrderDetailEntity> implement
             console.error('Error calculating total price:', error.message);
             throw error;
         }
+    }
 
 
+
+    async calculateTotalProducts(order_id: number): Promise<number> {
+        // try {
+        //     const totalProducts = await orderDetailRepository.count();
+
+        //     return totalProducts;
+        // } catch (error) {
+        //     console.error('Error calculating total products:', error.message);
+        //     throw error;
+        // }
+        return
     }
 }
 

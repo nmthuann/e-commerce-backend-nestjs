@@ -3,6 +3,7 @@ import { Body, Controller, Delete, Get, Param, Post, Put, Inject, UseGuards } fr
 import { IOrderService } from './order.service.interface';
 import { OrderEntity } from './order.entity';
 import { CreateOrderDto } from './order-dto/create-order.dto';
+import { GetTaskOrdersDto } from './order-dto/get-task-orders.dto';
 
 
 // working with DTO
@@ -34,6 +35,12 @@ export class OrderController {
     @Get('get-orders')
     async getOrders(): Promise<OrderEntity[]> {
         return await this.orderService.getAll();
+    }
+
+
+    @Get('get-task-orders')
+    async getTaskOrders(): Promise<GetTaskOrdersDto[]> {
+        return await this.orderService.getTaskOrders();
     }
 
 

@@ -20,6 +20,7 @@ import { DiscountEntity } from "src/modules/products/discount/discount.entity";
 import { EmployeeEntity } from "src/modules/users/employee/employee.entity";
 import { UserEntity } from "src/modules/users/user/user.entity";
 import { PaymentEntity } from "../payment/payment.entity";
+import { GetTaskOrdersDto } from "./order-dto/get-task-orders.dto";
 
 @Injectable()
 export class OrderService extends BaseService<OrderEntity> implements IOrderService{
@@ -125,5 +126,48 @@ export class OrderService extends BaseService<OrderEntity> implements IOrderServ
         }
     }
 
+
+    async getTaskOrders(): Promise<GetTaskOrdersDto[]> {
+
+        /**
+         * get All Order[]
+         * nếu ... push vào
+         */
+
+        const taskOrderList: GetTaskOrdersDto[] = [];
+
+        const shippingSuplier = {
+            3: 'GHN',
+            1: 'GHTK',
+            2: 'GHHT',
+        };
+
+        
+        const findOrders = await this.getAll();
+        console.log(findOrders)
+        for(const order of  findOrders){
+            const orderDetail = await this.orderDetailService.findOrderDetailByOrderId(order.order_id);
+            console.log("orderDetail",orderDetail)
+
+            const customer = (await Promise.resolve(order.user)).last_name + ' ' + (await Promise.resolve(order.user)).first_name;
+            console.log(customer)
+
+            const taskOrder = new GetTaskOrdersDto();
+            taskOrder.id = String(order.order_id);
+            taskOrder.title = `Customer ${customer} bought ${orderDetail.length} product`;
+            taskOrder.label = (await Promise.resolve(order.payment)).payment_id === 2 ? 'online' : 'offline';
+            taskOrder.status = order.status;
+            taskOrder.employee = order.status === 'pending' ? 'Not Employee' : (await Promise.resolve(order.employee)).employee_id;
+            taskOrder.total_price = String(order.total_price);
+            taskOrder.priority = shippingSuplier[`${(await Promise.resolve(order.shipping)).shipping_id}`];
+            taskOrder.create = order.createdAt.toLocaleString();
+            //  `${order.createdAt.getDate()}-${order.createdAt.getMonth()}-${order.createdAt.getFullYear()}`
+            console.log(taskOrder);
+            taskOrderList.push(taskOrder);
+        }
+
+        console.log(taskOrderList)
+        return taskOrderList;
+    }
 
 }

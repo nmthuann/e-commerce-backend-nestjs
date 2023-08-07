@@ -3,6 +3,7 @@ import { EmployeeDto } from '../employee/employee-dto/employee.dto';
 import { IEmployeeService } from './Employee.service.interface';
 import { CreateEmployeeDto } from './employee-dto/create-employee.dto';
 import { EmployeeEntity } from './employee.entity';
+import { GetEmployeeListDto } from './employee-dto/get-employee-list.dto';
 
 // working with DTO
 @Controller('employee') 
@@ -40,6 +41,11 @@ export class EmployeeController {
     @Get('get-employees')
     async getEmployees(): Promise<EmployeeEntity[]> {
         return await this.employeeService.getAll();
+    }
+
+    @Get('get-employee-list')
+    async getInformationEmployees(): Promise<GetEmployeeListDto[]> {
+        return await this.employeeService.getEmployeeList();
     }
 
 

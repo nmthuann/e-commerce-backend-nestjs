@@ -10,6 +10,7 @@ import { IUserService } from "../user/user.service.interface";
 import { UserDto } from "../user/user-dto/user.dto";
 import { CreateEmployeeDto } from "./employee-dto/create-employee.dto";
 import { UserEntity } from "../user/user.entity";
+import { GetEmployeeListDto } from "./employee-dto/get-employee-list.dto";
 
 @Injectable()
 export class EmployeeService extends BaseService<EmployeeEntity> implements IEmployeeService {
@@ -80,6 +81,33 @@ export class EmployeeService extends BaseService<EmployeeEntity> implements IEmp
     //   // you need to release query runner which is manually created:
     //   await queryRunner.release();
     // }
+  }
+
+
+  async getEmployeeList(): Promise<GetEmployeeListDto[]> {
+    
+    const getEmployeeList: GetEmployeeListDto[] = [];
+    const findEmployees = await this.getAll();
+    console.log(findEmployees)
+
+    for(const employee of findEmployees){
+      const getEmployee = new GetEmployeeListDto();
+      getEmployee.avatar_url = (await Promise.resolve(employee.user)).avatar_url;
+      getEmployee.employee_id = employee.employee_id;
+      getEmployee.employee_name = 
+        (await Promise.resolve(employee.user)).last_name + ' ' + (await Promise.resolve(employee.user)).first_name;
+      getEmployee.birthday =  (await Promise.resolve(employee.user)).birthday.toLocaleDateString();
+      getEmployee.gender = (await Promise.resolve(employee.user)).gender;
+      getEmployee.salary = String(employee.salary * (await Promise.resolve(employee.position)).offer);
+      getEmployee.position = (await Promise.resolve(employee.position)).position_name;
+      getEmployee.create =  employee.createdAt.toLocaleDateString();
+      getEmployee.work_status = employee.work_status; // === true ? 'Doing' : 'Left'
+      getEmployee.address = (await Promise.resolve(employee.user)).address;
+      
+      getEmployeeList.push(getEmployee);
+    }
+
+    return getEmployeeList;
   }
 
 
