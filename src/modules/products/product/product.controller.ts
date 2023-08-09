@@ -38,12 +38,12 @@ export class ProductController {
     //     return await this.productService.getSomeFields();
     // }
 
-    // @Get('get-products/category?')
-    // async getProductsByCategoryId(
-    //     @Query('category_id') category_id: number
-    // ): Promise<ProductEntity[]> {   
-    //     return await this.productService.getProductsByCategoryId(category_id);
-    // }
+    @Get('get-products/category?')
+    async getProductsByCategoryId(
+        @Query('category_id') category_id: number
+    ): Promise<ProductEntity[]> {   
+        return await this.productService.getProductsByCategoryId(category_id);
+    }
 
 
     // @Get('get-products/price?')

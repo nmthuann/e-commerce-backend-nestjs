@@ -1,10 +1,10 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { BaseService } from "src/modules/bases/base.abstract";
-import { OrderDto } from "./order-dto/order.dto";
+import { OrderDto, RevenueByMonth } from "./order-dto/order.dto";
 import { IOrderService } from "./order.service.interface";
 import { InjectRepository } from "@nestjs/typeorm";
 import { OrderEntity } from "./order.entity";
-import { Repository } from "typeorm";
+import { IsNull, Repository } from "typeorm";
 import { IShippingService } from "../shipping/Shipping.service.interface";
 import { IPaymentService } from "../payment/payment.service.interface";
 import { IProductService } from "src/modules/products/product/product.service.interface";
@@ -21,6 +21,9 @@ import { EmployeeEntity } from "src/modules/users/employee/employee.entity";
 import { UserEntity } from "src/modules/users/user/user.entity";
 import { PaymentEntity } from "../payment/payment.entity";
 import { GetTaskOrdersDto } from "./order-dto/get-task-orders.dto";
+import { GetCustomerListDto } from "src/modules/users/user/user-dto/get-customer-list.dto";
+import { OrderStatus } from "src/modules/bases/enums/order-status.enum";
+import { Role } from "src/modules/bases/enums/role.enum";
 
 @Injectable()
 export class OrderService extends BaseService<OrderEntity> implements IOrderService{
@@ -53,7 +56,7 @@ export class OrderService extends BaseService<OrderEntity> implements IOrderServ
             //  khởi tạo các giá trị
             let calculattingTotalPrice = 0
             const newOrder = new OrderEntity();
-            newOrder.status = 'Confirm';
+            newOrder.status = OrderStatus.Confirmed;
             newOrder.total_price = 0;
             const orderCreated = await this.createOne(newOrder);
             console.log("orderCreated:::", orderCreated);
@@ -169,5 +172,160 @@ export class OrderService extends BaseService<OrderEntity> implements IOrderServ
         console.log(taskOrderList)
         return taskOrderList;
     }
+
+
+    async getCountOrdersByUserId(user_id: number): Promise<number> {
+        // const findOrdersByUserId = await this.orderRepository.
+
+        // return ;
+
+        try {
+            const count = await this.orderRepository.count({
+            where: {
+                user: { user_id },
+            },
+        });
+
+        return count;
+        } catch (error) {
+            console.error('Error fetching order count:', error.message);
+            throw error;
+        }
+    }
+
+
+    async getTotalPriceOfUser(user_id: number): Promise<number> {
+        try {
+            const totalPrice = await this.orderRepository
+            .createQueryBuilder('order')
+            .select('SUM(order.total_price)', 'total_price')
+            .where('order.user_id = :user_id', { user_id })
+            .getRawOne();
+            return totalPrice.total_price || 0;
+        } catch (error) {
+            console.error('Error calculating total price:', error.message);
+            throw error;
+        }
+    }
+
+    async getCountOrderCanceledByUserId(user_id: number): Promise<number> {
+        try {
+            const count = await this.orderRepository.count({
+            where: {
+                user: { user_id }, // Assuming there's a relationship between OrderEntity and UserEntity
+                status: OrderStatus.Canceled //'canceled', // Assuming the status indicating canceled orders is 'canceled'
+            },
+        });
+
+        return count;
+        } catch (error) {
+            console.error('Error fetching count of canceled orders:', error.message);
+            throw error;
+        }
+    }
+
+
+    async getCustomerList(): Promise<GetCustomerListDto[]> {
+
+        const getCustomerList: GetCustomerListDto[] = [];
+        const findCustomers: UserEntity[] = await this.userService.getAll();
+        console.log(findCustomers)
+
+        for(const customer of findCustomers){
+                
+            const employee = customer.employee; // No need for Promise.resolve here
+            const admin = customer.account;
+            const role = (await Promise.resolve(admin)).role;
+
+            if (employee === null && role !== Role.Admin ) {
+                const getCustomer = new GetCustomerListDto();
+                getCustomer.avatar_url = customer.avatar_url;
+                getCustomer.customer_id = String(customer.user_id);
+                getCustomer.customer_name = `${customer.last_name} ${customer.first_name}`;
+                getCustomer.birthday = customer.birthday.toLocaleDateString();
+                getCustomer.gender = customer.gender;
+                getCustomer.count_order = String(await this.getCountOrdersByUserId(customer.user_id));
+                getCustomer.total_price = String(await this.getTotalPriceOfUser(customer.user_id));
+                getCustomer.canceled = String(await this.getCountOrderCanceledByUserId(customer.user_id));
+                getCustomer.address = customer.address;
+                getCustomerList.push(getCustomer);
+            }
+            // Push into the list
+           
+        }
+        return getCustomerList;
+    }
+
+
+    async getTotalRevenue(): Promise<number> {
+        const findOrders = await this.getAll();
+        let totalRevenue: number = 0;
+        for (const order of findOrders){
+            if (order.status ==  OrderStatus.Completed){
+                totalRevenue += order.total_price
+            }
+        }
+        return totalRevenue;
+    }
+
+
+    async getCountProductSold(): Promise<number> {
+        const findOrders = await this.getAll();
+        let count : number = 0;
+        for (const order of findOrders){
+            if (order.status == OrderStatus.Completed){
+                count = count + (await this.orderDetailService.countProductSold(order.order_id))
+            }
+        }
+        return count;
+    }
+
+
+    async getOrdersHasCompletedStatus(): Promise<OrderEntity[]> {
+        const findOrders = await this.orderRepository.find({
+            where:{
+                status: OrderStatus.Completed
+            }
+        })
+        
+        return findOrders;
+    }
+
+
+    
+
+    async getRevenueByMonth(): Promise<RevenueByMonth> {
+        const completedOrders = await this.getOrdersHasCompletedStatus();
+
+        // Tạo mảng các Promise để tính doanh thu cho mỗi đơn hàng
+        const revenuePromises = completedOrders.map(async order => {
+            const orderMonth = order.createdAt.getMonth();
+            const orderTotal = order.total_price;
+            return { orderMonth, orderTotal };
+        });
+
+        const revenueResults = await Promise.all(revenuePromises);
+
+        // Tính tổng giá trị đơn hàng cho từng tháng
+        const aggregatedRevenue: RevenueByMonth = {
+            month: "",
+            total: 0
+        };
+        for (const revenue of revenueResults) {
+            const { orderMonth, orderTotal } = revenue;
+
+            if (aggregatedRevenue[orderMonth]) {
+            aggregatedRevenue[orderMonth] += orderTotal;
+            } else {
+            aggregatedRevenue[orderMonth] = orderTotal;
+            }
+        }
+
+
+        console.log(aggregatedRevenue);
+
+        return aggregatedRevenue;
+    }
+
 
 }

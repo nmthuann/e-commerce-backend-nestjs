@@ -85,16 +85,21 @@ export class OrderDetailService extends BaseService<OrderDetailEntity> implement
 
 
 
-    async calculateTotalProducts(order_id: number): Promise<number> {
-        // try {
-        //     const totalProducts = await orderDetailRepository.count();
+    async countProductSold(order_id: number): Promise<number> {
 
-        //     return totalProducts;
-        // } catch (error) {
-        //     console.error('Error calculating total products:', error.message);
-        //     throw error;
-        // }
-        return
+        try {
+            let count = 0;
+            const findProducts = await this.orderDetailRepository.find({
+                where: {order_id: order_id}
+            })
+            for(const orderDetail of findProducts){
+                count += orderDetail.quantity;
+            }
+            return count
+        } catch (error) {
+            console.log(`${error.message} is problem!`)
+            throw error
+        }
     }
 }
 

@@ -7,14 +7,16 @@ import { UserEntity } from "./user.entity";
 import { Repository } from "typeorm";
 import { IAccountService } from "../account/account.service.interface";
 import { AccountEntity } from "../account/account.entity";
+import { GetCustomerListDto } from "./user-dto/get-customer-list.dto";
+import { IOrderService } from "src/modules/orders/order/order.service.interface";
 
 @Injectable()
 export class UserService extends BaseService<UserEntity> implements IUserService {
   constructor(
     @InjectRepository(UserEntity) 
     private userRepository: Repository<UserEntity>,
-    // @Inject('IAccountService')
-    // private accountService: IAccountService,
+    // @Inject('IOrderService')
+    // private orderService: IOrderService,
   ) {
     super(userRepository);
   }
@@ -55,4 +57,22 @@ export class UserService extends BaseService<UserEntity> implements IUserService
     .getOne()
     return findUser;
   }
+
+  async getAll(): Promise<UserEntity[]> {
+      try {
+        const findUsers = await this.userRepository.find({
+          relations:{
+            account: true,
+            employee: true,
+          }
+        })
+        return findUsers;
+      } catch (error) {
+        console.log( `${error} is Problem`)
+        throw error
+      }
+  }
+
+
+ 
 }

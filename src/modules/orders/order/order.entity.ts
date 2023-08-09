@@ -20,6 +20,9 @@ export class OrderEntity extends BaseEntity{
     @Column({ nullable: false })
     status: string
 
+    @Column()
+    delivery_address: string
+
     // @OneToOne(() => ShippingEntity)
     // @JoinColumn({name: 'shipping_id'})
     // shipping: ShippingEntity

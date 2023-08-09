@@ -16,3 +16,9 @@ export class OrderDto {
   user: UserDto;
   discount: DiscountDto;
 }
+
+
+export interface RevenueByMonth{
+  month: string,
+  total: number
+}

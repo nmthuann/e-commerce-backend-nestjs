@@ -6,5 +6,5 @@ export interface IOrderDetailService extends IBaseService<OrderDetailEntity> {
     createMany(data: OrderDetailEntity[]):Promise<OrderDetailEntity[]>;
     findOrderDetailByOrderId(order_id: number):Promise<OrderDetailEntity []>;
     getTotalPriceByOrderId(order_id: number): Promise<number>;
-    calculateTotalProducts(order_id: number): Promise<number>;
+    countProductSold(order_id: number): Promise<number>;
 }
