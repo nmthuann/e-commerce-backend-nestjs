@@ -11,6 +11,7 @@ import { Tokens } from "src/modules/bases/types/token.type";
 import { Role } from "src/modules/bases/enums/role.enum";
 import { AccountDto } from "src/modules/users/account/account-dto/account.dto";
 import { AuthDto } from "./auth-dto/auth.dto";
+import { IsEmail } from "class-validator";
 
 
 
@@ -88,21 +89,24 @@ export class AuthService {
         console.log(`OTP: ${otp}`);
         // lưu cache
         
-        await this.cacheService.set(email, otp, 300); // 5phut
+        await this.cacheService.set(String(otp), String(email), 300); // 5phut
         return email;
     }
 
 
-    async checkOTP (email: string, otp: string){
+    async checkOTP (otp: string){
         // == in cache
         try {
-            const otpInCache = await this.cacheService.get(email);
-            if (otpInCache == otp){
-                await this.cacheService.del(email);  // xóa cache
-                return {message: "success"}
+            const emailInCache: string = await this.cacheService.get(String(otp));
+            if (emailInCache){ // đúng
+                await this.cacheService.del(String(otp));  // xóa cache
+                return {
+                    message: "success",
+                    email: String(emailInCache)
+                }
             } 
             else{
-                await this.cacheService.del(email);
+                await this.cacheService.del(String(otp));
                 return {message: "failed"}
             }
             

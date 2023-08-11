@@ -22,7 +22,9 @@ export class CategoryEntity extends BaseEntity {
     @Column()
     category_url: string
     
-    @OneToMany(() => ProductEntity, (product) => product.category)
+    @OneToMany(() => ProductEntity, (product) => product.category,
+    // {onDelete: "RESTRICT"}
+    )
     products: ProductEntity[]
 }
     

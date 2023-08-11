@@ -63,7 +63,7 @@ import { StoreModule } from './modules/apis/store/store.module';
     ),
 
   // CategoryModule,
-  // // DiscountModule,
+  DiscountModule,
   ProductModule,
   // ImageModule,
   // StoreModule,

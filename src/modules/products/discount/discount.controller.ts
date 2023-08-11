@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Inject, UseGuards } from '@nestjs/common';
 import { DiscountDto } from './discount-dto/discount.dto';
 import { IDiscountService } from './discount.service.interface';
+import { DiscountEntity } from './discount.entity';
 
 
 // working with DTO
@@ -11,10 +12,10 @@ export class DiscountController {
         private discountService: IDiscountService
     ) {}
 
-    // @Post('create')
-    // async createDiscount(@Body() discount: DiscountDto): Promise<DiscountDto> {
-    //     return await this.discountService.createOne(discount);
-    // }
+    @Post('create')
+    async createDiscount(@Body() discount: DiscountDto): Promise<DiscountEntity> {
+        return await this.discountService.createOne(discount);
+    }
 
 
     // @Put('update/:id')

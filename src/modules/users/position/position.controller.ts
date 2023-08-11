@@ -11,6 +11,7 @@ export class PositionController {
         private positionService: IPositionService
     ) {}
 
+    // @Guard(AdminGuard)
     @Post('create')
     async createPosition(@Body() position: PositionDto): Promise<PositionEntity> {
         return await this.positionService.createOne(position);

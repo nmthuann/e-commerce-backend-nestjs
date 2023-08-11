@@ -2,6 +2,8 @@ import { Body, Controller, Delete, Get, Param, Post, Put, Inject, UseGuards } fr
 import { CategoryDto } from './category-dto/category.dto';
 import { ICategoryService } from './category.service.interface';
 import { CreateCategoryDto } from './category-dto/create-category.dto';
+import { CategoryEntity } from './category.entity';
+import { DeleteResult } from 'typeorm';
 
 // working with DTO
 @Controller('category') 
@@ -25,9 +27,15 @@ export class CategoryController {
     }
 
 
-    @Delete('delete/:id')
-    async deleteCategoryById(@Param('id') id: number): Promise<void> {
-        console.log(await this.categoryService.deleteOneById(id));
+    @Delete('delete/:category_id')
+    async deleteCategoryById(@Param('category_id') id: number): Promise<DeleteResult> {
+        // console.log(await this.categoryService.deleteOneById(id));
+        
+        return await this.categoryService.deleteOneById(id);
+        // } catch (error) {
+        //     console.log(`${error} has a problem`)
+        //     throw error
+        // }
     }
 
     
@@ -35,6 +43,11 @@ export class CategoryController {
     async getCategories(): Promise<CategoryDto[]> {
         return await this.categoryService.getAll();
     }
+
+    // @Get('get-produc-by-id')
+    // async getProdcutByCategoryId(): Promise<CategoryEntity[]> {
+    //     return await this.categoryService.getProdcutByCategoryId(1);
+    // }
 
 
     @Get(':id')

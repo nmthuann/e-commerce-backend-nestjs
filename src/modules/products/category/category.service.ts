@@ -1,10 +1,11 @@
 import { Injectable, Inject } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { DeleteResult, Repository } from 'typeorm';
 import { CategoryEntity } from './category.entity';
 import { BaseService } from 'src/modules/bases/base.abstract';
 import { CategoryDto } from './category-dto/category.dto';
 import { ICategoryService } from './category.service.interface';
 import { InjectRepository } from '@nestjs/typeorm';
+import { error } from 'console';
 
 @Injectable()
 export class CategoryService extends BaseService<CategoryEntity> implements ICategoryService {
@@ -22,4 +23,30 @@ export class CategoryService extends BaseService<CategoryEntity> implements ICat
   //      })
   //   return findCategorys;
   // }
+
+
+  // async getProdcutByCategoryId(id: number): Promise<CategoryEntity[]> {
+  //    const checkForeignKey = await this.categoryRepository.findBy(
+  //     {
+        
+  //       products: true
+  //     });
+  //     return checkForeignKey
+  // }
+
+
+  async deleteOneById(id: number): Promise<DeleteResult> {
+    //try {
+      const checkForeignKey = await this.categoryRepository.findOneBy({category_id:id});
+      if(checkForeignKey.category_url){
+        throw Error('Error ForeignKey, So category have more than one Product')
+      }
+      // else{
+        return await this.categoryRepository.softDelete(id);
+     // }
+      
+
+  }
+    
+    
 }

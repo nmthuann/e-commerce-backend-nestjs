@@ -21,14 +21,18 @@ export class AuthController  {
     }
 
 
-    @Post('verify-email/:email') // check login hoặc chưa
-    async verifyEmail(@Param('email') email: string): Promise<TokensDto | object> {
-        return await this.authService.verifyEmail(email);
+    @Post('verify-email') // check login hoặc chưa
+    async verifyEmail(@Body() data: { email: string }) { //: Promise<TokensDto | object>
+        console.log("verify-email:",data.email);
+        const res = await this.authService.verifyEmail(data.email);
+        return res; // 1: email || 2: message
     }
 
-    @Post('check-otp') // check login hoặc chưa
-    async checkOTP(@Body() checOtp:CheckOTPDto ): Promise<TokensDto | object> {
-        return await this.authService.checkOTP(checOtp.email, checOtp.otp);
+    @Post('verify-otp') // check login hoặc chưa
+    async checkOTP(@Body() data: { otp: string }){//: Promise<TokensDto | object> {
+        console.log("checOtp:::", data.otp)
+        const res = await this.authService.checkOTP(data.otp);
+        return res
     }
   
     //@Public()

@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, Param, Post, Put, Inject, UseGuards } fr
 import { UserDto } from '../user/user-dto/user.dto';
 import { IUserService } from './user.service.interface';
 import { UserEntity } from './user.entity';
+import { CreateUserDto } from './user-dto/create-user.dto';
 
 // working with DTO
 @Controller('user') 
@@ -12,7 +13,7 @@ export class UserController {
     ) {}
 
     @Post('create')
-    async createUser(@Body() user: UserDto): Promise<UserEntity> {
+    async createUser(@Body() user: CreateUserDto): Promise<UserEntity> {
         console.log(user)
         return await this.userService.createOne(user);
     }

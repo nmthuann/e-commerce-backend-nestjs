@@ -20,8 +20,11 @@ export class EmployeeController {
 
 
     @Post('create/:email')
-    async createNewEmployee(@Param('email') email: string, @Body() employee: CreateEmployeeDto): Promise<EmployeeEntity> {
-        
+    async createNewEmployee (
+        @Param('email') email: string, 
+        @Body() employee: CreateEmployeeDto
+    ): Promise<EmployeeEntity> {
+        console.log("employee",employee, "email",email )
         return await this.employeeService.createNewEmployee(email, employee);
     }
 
