@@ -15,9 +15,10 @@ export class ProductController {
     ) {}
 
     @Post('create')
-    async createProduct(@Body() product: ProductDto): Promise<ProductDto> {
+    async createProduct(@Body() product: ProductDto): Promise<ProductEntity> {
+        console.log("Create Product")
         const createProduct = await this.productService.createOne(product);
-        return plainToClass(ProductDto, createProduct)
+        return createProduct // plainToClass(ProductDto, createProduct)
     }
 
 
@@ -103,8 +104,17 @@ export class ProductController {
     }
 
 
-    @Get(':id')
-    async getProduct(@Param('id') id: number): Promise<ProductEntity> {
+    @Get('get-product-by-ids')
+    async getProductsByProductIds(@Body() data: { productIds: number[] }): Promise<ProductEntity[]> {
+        console.log("getProductsByProductIds - Controller:::", data);
+        const productIds = data.productIds;
+        return await this.productService.getProductsByProductIds(productIds);
+    }
+
+
+
+    @Get(':product_id')
+    async getProduct(@Param('product_id') id: number): Promise<ProductEntity> {
         return await this.productService.getOneById(id);
     }
 }

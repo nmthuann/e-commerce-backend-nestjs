@@ -35,6 +35,7 @@ import * as redisStore from 'cache-manager-redis-store';
 import { CacheModule } from '@nestjs/cache-manager';
 import { AuthModule } from './modules/apis/authentication/auth.module';
 import { StoreModule } from './modules/apis/store/store.module';
+import { ConfigModule } from '@nestjs/config';
 // import { CacheModule } from '@nestjs/cache-manager';
 
 
@@ -62,10 +63,10 @@ import { StoreModule } from './modules/apis/store/store.module';
       }
     ),
 
-  // CategoryModule,
+  CategoryModule,
   DiscountModule,
   ProductModule,
-  // ImageModule,
+  ImageModule,
   // StoreModule,
 
   // CartModule,
@@ -87,8 +88,7 @@ import { StoreModule } from './modules/apis/store/store.module';
       // password: 'pqTtSGQM5oHvURGfFWaO7qWcTi3kcWr8',
       // ttl: 60*60*15, // seconds
     }),
-    AuthModule
-  
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -24,6 +24,7 @@ import { GetTaskOrdersDto } from "./order-dto/get-task-orders.dto";
 import { GetCustomerListDto } from "src/modules/users/user/user-dto/get-customer-list.dto";
 import { OrderStatus } from "src/modules/bases/enums/order-status.enum";
 import { Role } from "src/modules/bases/enums/role.enum";
+import { OrderOnlineDto } from "./order-dto/order-online.dto";
 
 @Injectable()
 export class OrderService extends BaseService<OrderEntity> implements IOrderService{
@@ -325,6 +326,23 @@ export class OrderService extends BaseService<OrderEntity> implements IOrderServ
         console.log(aggregatedRevenue);
 
         return aggregatedRevenue;
+    }
+
+    async createOrderOnline(data: OrderOnlineDto, productIds: number[]): Promise<OrderEntity> {
+        const findPayment  = await this.paymnetService.getOneById(2);
+        let findDiscount = null;
+        if(data.discount_id !== null){
+            findDiscount = await this.discountService.getOneById(data.discount_id);
+        }
+        const newOrder = new OrderEntity();
+        newOrder.payment = findPayment
+        newOrder.employee = null;
+        newOrder.status = 'pending';
+        newOrder.discount = findDiscount;
+        newOrder.user = null;
+        const orderCreated = await this.createOne(newOrder);
+        console.log(orderCreated);
+        return orderCreated;
     }
 
 

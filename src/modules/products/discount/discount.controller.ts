@@ -33,8 +33,16 @@ export class DiscountController {
     @Get('get-discounts')
     async getDiscounts(): Promise<DiscountDto[]> {
         return await this.discountService.getAll();
-    }
+    }   
 
+
+    @Post()
+    async CheckShipping(@Body() @Body() requestBody: { discountCode: string }): Promise<DiscountDto> {
+        // console.log('adsdasdasdad')
+        const result = await this.discountService.getOneById(parseInt(requestBody.discountCode));
+        console.log('adsdasdasdad', result)
+        return result
+    }
 
     @Get(':discount_id')
     async getDiscount(@Param('discount_id') id: number): Promise<DiscountDto> {

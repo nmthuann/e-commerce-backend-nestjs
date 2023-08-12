@@ -17,6 +17,8 @@ import { ShippingModule } from "../shipping/shipping.module";
 import { PaymentModule } from "../payment/payment.module";
 import { EmployeeModule } from "src/modules/users/employee/employee.module";
 import { UserModule } from "src/modules/users/user/user.module";
+import { StripeController } from "./stripe/stripe.controller";
+import { StripeService } from "./stripe/stripe.service";
 
 @Module({
     imports:[
@@ -39,12 +41,13 @@ import { UserModule } from "src/modules/users/user/user.module";
         UserModule,
         ProductModule,
     ],
-    controllers: [OrderController],
+    controllers: [OrderController, StripeController],
     providers: [
         {
             provide: 'IOrderService',
             useClass: OrderService,
         },
+        StripeService
     ],
     exports: ['IOrderService',]
 })

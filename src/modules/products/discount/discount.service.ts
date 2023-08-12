@@ -13,4 +13,14 @@ export class DiscountService extends BaseService<DiscountEntity> implements IDis
     private discountRepository: Repository<DiscountEntity>) {
         super(discountRepository);
     }
+
+    async checkDiscountCode(data: number): Promise<DiscountEntity> {
+      const findDisount  = await this.getOneById(data);
+      if (findDisount){
+        return findDisount
+      }
+      else{
+        throw Error('Discount In Valid')
+      }
+    }
 }

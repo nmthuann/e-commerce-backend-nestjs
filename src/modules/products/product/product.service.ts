@@ -217,4 +217,9 @@ export class ProductService extends BaseService<ProductEntity> implements IProdu
   }
 
 
+  async getProductsByProductIds(ids: number[]): Promise<ProductEntity[]> {  
+    const findProducts = await this.productRepository.findByIds(ids);
+    return findProducts;
+  }
+
 }

@@ -23,6 +23,9 @@ export class OrderEntity extends BaseEntity{
     @Column()
     delivery_address: string
 
+    @Column({type: "nvarchar", length: 15})
+    contact: string
+
     // @OneToOne(() => ShippingEntity)
     // @JoinColumn({name: 'shipping_id'})
     // shipping: ShippingEntity

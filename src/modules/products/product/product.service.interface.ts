@@ -16,5 +16,6 @@ export interface IProductService extends IBaseService<ProductEntity>{
     getProductsByIds(data: GetProductForOrderDto[]): Promise<ProductEntity[]>;
     //getProductBrandByCategoryId(category_id: number): Promise<string[]>;
     // updateQuantity()
+    getProductsByProductIds(ids: number[]): Promise<ProductEntity[]>;
 
 }
