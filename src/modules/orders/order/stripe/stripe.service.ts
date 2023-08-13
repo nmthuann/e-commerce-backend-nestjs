@@ -26,14 +26,6 @@ export class StripeService{
 
 
     async CheckOut(productIds: number[], shipping_id: string, discount_id: number, total_price: number){
-
-        const corsHeaders = {
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-            "Access-Control-Allow-Headers": "Content-Type, Authorization",
-        };
-
-
             // // check product  
             // const GET_PRODUCTS_URL = `${process.env.NEXT_PUBLIC_API_URL}/product/get-product-by-ids`
         const products: ProductEntity[]  = 
@@ -59,7 +51,7 @@ export class StripeService{
         
         const data = {shipping_id, discount_id, total_price}
 
-        const order: OrderEntity = await this.orderService.createOrderOnline(data, productIds)
+        const order: OrderEntity = await this.orderService.createNewOrderOnline(data, productIds)
 
         const session = await this.stripe.checkout.sessions.create({
             line_items,
@@ -73,18 +65,15 @@ export class StripeService{
             metadata: {
             orderId: order.order_id
             },
+            // discounts: [
+            //     {
+            //         coupon: String(discount_id), // Thay thế YOUR_COUPON_CODE bằng mã giảm giá thực tế
+            //     },
+            // ],
         });
 
-        // return NextResponse.json({ url: session.url }, {
-        //     headers: corsHeaders
-        // });
-        // Object.keys(corsHeaders).forEach(header => {
-        //     res.setHeader(header, corsHeaders[header]);
-        // });
-
-        return { url: session.url}
-               
-       
+        console.log(session.url)
+        return session.url
     }
 
 

@@ -12,6 +12,7 @@ import { Role } from "src/modules/bases/enums/role.enum";
 import { AccountDto } from "src/modules/users/account/account-dto/account.dto";
 import { AuthDto } from "./auth-dto/auth.dto";
 import { IsEmail } from "class-validator";
+import { AccountEntity } from "src/modules/users/account/account.entity";
 
 
 
@@ -149,40 +150,33 @@ export class AuthService {
       // đăng nhập 
     public async login(input: AuthDto): Promise<Tokens | object | any> {
         // const checkUser = await this.accountUserService.CheckEmailExsit(input.email);
-        const findUser = await this.accountService.getOneById(input.email);
+        const findUser: AccountEntity = await this.accountService.getOneById(input.email);
+        console.log(findUser)
         if (findUser){
         const checkPass = await this.comparePassword(input.password, findUser.password);
             if (!checkPass) {
                 console.log('password wrong!')
                 return {message: 'password wrong!'}
-                    // throw new HttpException(
-                    // { message: 'password wrong!' },
-                    // HttpStatus.BAD_REQUEST,
-                    // );
             }
         } 
         else{
-            //throw new Error('email or Password Invalid!')
-            // throw new HttpException(
-                // { message: 'email or Password Invalid!' },
-                // HttpStatus.BAD_REQUEST,
-                // );
             return {message: 'email or Password Invalid!'}
         }
+        return 0
 
-        // write infor put in Payload
-        const payload: Payload = {
-            email: input.email,
-            role: findUser.role
-        };
+    //     // write infor put in Payload
+    //     const payload: Payload = {
+    //         email: input.email,
+    //         role: findUser.role
+    //     };
 
-        const tokens: Tokens = await this.getTokens(payload);
-        findUser.refresh_token = tokens.refresh_token;
-        await this.accountService.updateOneById(findUser.email, findUser);
-        console.log(`message: ${input.email} đăng nhập thành công!`)
-        return tokens;
+    //     const tokens: Tokens = await this.getTokens(payload);
+    //     findUser.refresh_token = tokens.refresh_token;
+    //     await this.accountService.updateOneById(findUser.email, findUser);
+    //     console.log(`message: ${input.email} đăng nhập thành công!`)
+    //     return tokens;
+    // }
     }
-
 
     // logout -> refresh token = null -> delete cache
     public async logout(email: string): Promise<boolean> {
@@ -226,5 +220,39 @@ export class AuthService {
         return tokens;
     }
 
+
+
+
+
+          // đăng nhập 
+    public async loginAdmin(input: AuthDto): Promise<Tokens | object | any> {
+        const findUser: AccountDto = await this.accountService.getOneById(input.email);
+        if(findUser.role == Role.User){
+            return {message: 'You are not Admin!'}
+        }
+        if (findUser){
+        const checkPass = await this.comparePassword(input.password, findUser.password);
+        console.log("checkPass",checkPass)
+            if (!checkPass) {
+                console.log('password wrong!')
+                return {message: 'password wrong!'}
+            }
+        } 
+        else{
+            return {message: 'email or Password Invalid!'}
+        }
+
+        // write infor put in Payload
+        const payload: Payload = {
+            email: input.email,
+            role: findUser.role
+        };
+
+        const tokens: Tokens = await this.getTokens(payload);
+        findUser.refresh_token = tokens.refresh_token;
+        await this.accountService.updateOneById(findUser.email, findUser);
+        console.log(`message: ${input.email} đăng nhập thành công!`)
+        return tokens;
+    }
 
 }

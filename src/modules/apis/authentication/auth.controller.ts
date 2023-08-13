@@ -21,6 +21,7 @@ export class AuthController  {
     }
 
 
+    @Public()
     @Post('verify-email') // check login hoặc chưa
     async verifyEmail(@Body() data: { email: string }) { //: Promise<TokensDto | object>
         console.log("verify-email:",data.email);
@@ -28,6 +29,7 @@ export class AuthController  {
         return res; // 1: email || 2: message
     }
 
+    @Public()
     @Post('verify-otp') // check login hoặc chưa
     async checkOTP(@Body() data: { otp: string }){//: Promise<TokensDto | object> {
         console.log("checOtp:::", data.otp)
@@ -35,11 +37,19 @@ export class AuthController  {
         return res
     }
   
-    //@Public()
+    @Public()
     @Post('login')
     async login(@Body() login: AuthDto): Promise<TokensDto> {
         console.log(login, "Đã vừa đăng nhập!")
         return await this.authService.login(login);
+    }
+
+
+    @Public()
+    @Post('/admin/login')
+    async loginAdmin(@Body() login: AuthDto): Promise<TokensDto> {
+        console.log(login, "Đã vừa đăng nhập!")
+        return await this.authService.loginAdmin(login);
     }
 
 

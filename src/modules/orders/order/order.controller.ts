@@ -6,6 +6,8 @@ import { CreateOrderDto } from './order-dto/create-order.dto';
 import { GetTaskOrdersDto } from './order-dto/get-task-orders.dto';
 import { GetCustomerListDto } from 'src/modules/users/user/user-dto/get-customer-list.dto';
 import { RevenueByMonth } from './order-dto/order.dto';
+import { AdminRoleGuard } from 'src/common/guards/admin.role.guard';
+import { UserRoleGuard } from 'src/common/guards/user.role.guard';
 // import { GraphData } from './order.service';
 
 
@@ -17,10 +19,18 @@ export class OrderController {
         private orderService: IOrderService
     ) {}
 
-    @Post('create')
+
+    @UseGuards(AdminRoleGuard)
+    @Post('create-offline')
     async createOrder(@Body() order: CreateOrderDto): Promise<OrderEntity> {
-        return await this.orderService.createNewOrder(order);
+        return await this.orderService.createNewOrderOffline(order);
     }
+
+    // @UseGuards(UserRoleGuard)
+    // @Post('create-online')
+    // async createNewOrderOnline(@Body() order: CreateOrderDto): Promise<OrderEntity> {
+    //     return await this.orderService.createNewOrderOnline();
+    // }
 
 
     @Put('update/:id')
@@ -41,6 +51,7 @@ export class OrderController {
     }
 
 
+    @UseGuards(AdminRoleGuard)
     @Get('get-task-orders')
     async getTaskOrders(): Promise<GetTaskOrdersDto[]> {
         return await this.orderService.getTaskOrders();
@@ -63,12 +74,13 @@ export class OrderController {
     }
 
 
+    @UseGuards(AdminRoleGuard)
     @Get('get-total-revenue')
     async getTotalRevenue(): Promise<number> {
         return await this.orderService.getTotalRevenue();
     }
 
-
+    @UseGuards(AdminRoleGuard)
     @Get('count-product-sold')
     async getCountProductSold(): Promise<number> {
         return await this.orderService.getCountProductSold();
@@ -81,6 +93,7 @@ export class OrderController {
     }
 
 
+    @UseGuards(AdminRoleGuard)
     @Get('get-revenue-by-month')
     async getRevenueByMonth(): Promise<RevenueByMonth> {
         return await this.orderService.getRevenueByMonth();

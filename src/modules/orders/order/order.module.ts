@@ -1,4 +1,4 @@
-import { Module } from "@nestjs/common";
+import { MiddlewareConsumer, Module, NestModule, RequestMethod } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { OrderEntity } from "./order.entity";
 import { OrderController } from "./order.controller";
@@ -19,9 +19,17 @@ import { EmployeeModule } from "src/modules/users/employee/employee.module";
 import { UserModule } from "src/modules/users/user/user.module";
 import { StripeController } from "./stripe/stripe.controller";
 import { StripeService } from "./stripe/stripe.service";
+import { AuthenticationMiddleware } from "src/common/middlewares/authentication.middleware";
+import { AdminRoleGuard } from "src/common/guards/admin.role.guard";
+import { UserRoleGuard } from "src/common/guards/user.role.guard";
+import { JwtModule } from "@nestjs/jwt";
 
 @Module({
     imports:[
+         JwtModule.register({
+          secret: 'JWT_SECRET_KEY',
+          signOptions: { expiresIn: 60},
+        }),
        TypeOrmModule.forFeature([
             OrderEntity,
             ProductEntity,
@@ -47,8 +55,20 @@ import { StripeService } from "./stripe/stripe.service";
             provide: 'IOrderService',
             useClass: OrderService,
         },
-        StripeService
+        StripeService,
+        AdminRoleGuard,
+        UserRoleGuard,
     ],
     exports: ['IOrderService',]
 })
-export class OrderModule {}
+export class OrderModule implements NestModule{
+    configure(consumer: MiddlewareConsumer) {
+        consumer.apply(AuthenticationMiddleware)
+        .exclude(
+          { path: 'order/get-orders', method: RequestMethod.GET },
+        //   { path: 'posts/get-posts/:id', method: RequestMethod.GET },
+        //   { path: 'posts/get-post/:id', method: RequestMethod.GET },
+          )
+        .forRoutes(OrderController);
+    }
+}    // {}

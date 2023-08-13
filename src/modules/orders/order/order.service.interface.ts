@@ -9,7 +9,7 @@ import { OrderOnlineDto } from "./order-dto/order-online.dto";
 // import { GraphData } from "./order.service";
 
 export interface IOrderService extends IBaseService<OrderEntity> {
-    createNewOrder(data: CreateOrderDto):Promise<OrderEntity>;
+    createNewOrderOffline(data: CreateOrderDto):Promise<OrderEntity>;
     getTaskOrders():Promise<GetTaskOrdersDto[]>;
     getCountOrdersByUserId(user_id: number): Promise<number>;
     getTotalPriceOfUser(user_id: number): Promise<number>;
@@ -19,5 +19,5 @@ export interface IOrderService extends IBaseService<OrderEntity> {
     getCountProductSold():Promise<number>;
     getOrdersHasCompletedStatus():Promise<OrderEntity[]>;
     getRevenueByMonth(): Promise<RevenueByMonth>;
-    createOrderOnline(data: OrderOnlineDto, productIds: number[]): Promise<OrderEntity>;
+    createNewOrderOnline(data: OrderOnlineDto, productIds: number[]): Promise<OrderEntity>;
 }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   

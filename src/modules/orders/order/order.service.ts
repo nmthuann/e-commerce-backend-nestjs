@@ -53,7 +53,7 @@ export class OrderService extends BaseService<OrderEntity> implements IOrderServ
     }
 
 
-    async createNewOrder(data: CreateOrderDto): Promise<OrderEntity> {
+    async createNewOrderOffline(data: CreateOrderDto): Promise<OrderEntity> {
             //  khởi tạo các giá trị
             let calculattingTotalPrice = 0
             const newOrder = new OrderEntity();
@@ -153,7 +153,7 @@ export class OrderService extends BaseService<OrderEntity> implements IOrderServ
             const orderDetail = await this.orderDetailService.findOrderDetailByOrderId(order.order_id);
             console.log("orderDetail",orderDetail)
 
-            const customer = (await Promise.resolve(order.user)).last_name + ' ' + (await Promise.resolve(order.user)).first_name;
+            const customer =  (await Promise.resolve(order.user)).last_name + ' ' +(await Promise.resolve(order.user)).first_name; //
             console.log(customer)
 
             const taskOrder = new GetTaskOrdersDto();
@@ -328,18 +328,20 @@ export class OrderService extends BaseService<OrderEntity> implements IOrderServ
         return aggregatedRevenue;
     }
 
-    async createOrderOnline(data: OrderOnlineDto, productIds: number[]): Promise<OrderEntity> {
+    async createNewOrderOnline(data: OrderOnlineDto, productIds: number[]): Promise<OrderEntity> {
         const findPayment  = await this.paymnetService.getOneById(2);
+        const findShipping = await this.shippingService.getOneById(data.discount_id);
         let findDiscount = null;
         if(data.discount_id !== null){
             findDiscount = await this.discountService.getOneById(data.discount_id);
         }
         const newOrder = new OrderEntity();
-        newOrder.payment = findPayment
+        newOrder.user = null;
         newOrder.employee = null;
+        newOrder.payment = findPayment
         newOrder.status = 'pending';
         newOrder.discount = findDiscount;
-        newOrder.user = null;
+        newOrder.shipping = findShipping;
         const orderCreated = await this.createOne(newOrder);
         console.log(orderCreated);
         return orderCreated;
