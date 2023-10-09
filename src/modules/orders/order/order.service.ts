@@ -25,6 +25,7 @@ import { GetCustomerListDto } from "src/modules/users/user/user-dto/get-customer
 import { OrderStatus } from "src/modules/bases/enums/order-status.enum";
 import { Role } from "src/modules/bases/enums/role.enum";
 import { OrderOnlineDto } from "./order-dto/order-online.dto";
+import { OrderOfflineDto } from "./order-dto/order-offline.dto";
 
 @Injectable()
 export class OrderService extends BaseService<OrderEntity> implements IOrderService{
@@ -53,28 +54,31 @@ export class OrderService extends BaseService<OrderEntity> implements IOrderServ
     }
 
 
-    async createNewOrderOffline(data: CreateOrderDto): Promise<OrderEntity> {
+    async createNewOrderOffline(data: OrderOfflineDto): Promise<OrderEntity> { //email: string,  //CreateOrderDto
             //  khởi tạo các giá trị
             let calculattingTotalPrice = 0
             const newOrder = new OrderEntity();
             newOrder.status = OrderStatus.Confirmed;
             newOrder.total_price = 0;
+            newOrder.contact = data.contact;
+            newOrder.delivery_address = data.delivery_address
             const orderCreated = await this.createOne(newOrder);
             console.log("orderCreated:::", orderCreated);
             
         try {
             //  get danh sách các prodct bằng list id
-            const getProductsByIds = await this.productService.getProductsByIds(data.products);
+        
+            const getProductsByIds = await this.productService.getProductsByIds(data.order_detail);
            
             const orderDetailCreated = getProductsByIds.map(async (product, index) => {
                 const newOrderDetail = new OrderDetailEntity();
                 newOrderDetail.order_id = orderCreated.order_id;
                 newOrderDetail.product_id = product.product_id;
-                newOrderDetail.quantity = data.products[index].quantity;
+                newOrderDetail.quantity = data.order_detail[index].quantity;
                 newOrderDetail.product = product;
                 newOrderDetail.order = orderCreated;
 
-                product.quantity -= data.products[index].quantity;
+                product.quantity -= data.order_detail[index].quantity;
                 // console.log("test:::", test)
                 // cập nhật số lượng 
                 await this.productService.updateOneById(product.product_id, product);
@@ -106,9 +110,10 @@ export class OrderService extends BaseService<OrderEntity> implements IOrderServ
 
             }
 
-            const findEmployee: EmployeeEntity = await this.employeeService.getOneById(data.employee_id);
-            const findUser: UserEntity = await this.userService.getOneById(data.user_id);
-            const findPayment: PaymentEntity = await this.paymnetService.getOneById(data.payment_id);
+            // await this.userService.getEmployeeByEmail(email)
+            const findEmployee: EmployeeEntity = await this.employeeService.getOneById(data.employee_id); //await this.userService.getEmployeeByEmail(email); // await this.employeeService.getOneById(data.employee_id);
+            const findUser: UserEntity =   null // await this.userService.getOneById(data.user_id);
+            const findPayment: PaymentEntity = await this.paymnetService.getOneById(1); //data.payment_id
           
             //  cập nhật order
             const updateOrder = new OrderEntity();
@@ -150,14 +155,27 @@ export class OrderService extends BaseService<OrderEntity> implements IOrderServ
         const findOrders = await this.getAll();
         console.log(findOrders)
         for(const order of  findOrders){
+               const taskOrder = new GetTaskOrdersDto();
             const orderDetail = await this.orderDetailService.findOrderDetailByOrderId(order.order_id);
             console.log("orderDetail",orderDetail)
 
-            const customer =  (await Promise.resolve(order.user)).last_name + ' ' +(await Promise.resolve(order.user)).first_name; //
-            console.log(customer)
 
-            const taskOrder = new GetTaskOrdersDto();
+            // let customer = '';
+            // console.log(order.user)
+            // if (!order.user){
+            //     customer = 'No User'
+            // }
+            // 
+            const customer =  (await Promise.resolve(order.user)).last_name + ' ' +(await Promise.resolve(order.user)).first_name; //       
+                            // console.log(customer)
+
+         
             taskOrder.id = String(order.order_id);
+           
+
+            // taskOrder.title = customer == 'No User'
+            //     ? `Customer ${customer} bought ${orderDetail.length} product`
+            //     : `Customer ${order.contact} bought ${orderDetail.length} product`;
             taskOrder.title = `Customer ${customer} bought ${orderDetail.length} product`;
             taskOrder.label = (await Promise.resolve(order.payment)).payment_id === 2 ? 'online' : 'offline';
             taskOrder.status = order.status;

@@ -6,10 +6,10 @@ import { Tokens } from "src/modules/bases/types/token.type";
 import { GetTaskOrdersDto } from "./order-dto/get-task-orders.dto";
 import { GetCustomerListDto } from "src/modules/users/user/user-dto/get-customer-list.dto";
 import { OrderOnlineDto } from "./order-dto/order-online.dto";
+import { OrderOfflineDto } from "./order-dto/order-offline.dto";
 // import { GraphData } from "./order.service";
 
 export interface IOrderService extends IBaseService<OrderEntity> {
-    createNewOrderOffline(data: CreateOrderDto):Promise<OrderEntity>;
     getTaskOrders():Promise<GetTaskOrdersDto[]>;
     getCountOrdersByUserId(user_id: number): Promise<number>;
     getTotalPriceOfUser(user_id: number): Promise<number>;
@@ -20,4 +20,5 @@ export interface IOrderService extends IBaseService<OrderEntity> {
     getOrdersHasCompletedStatus():Promise<OrderEntity[]>;
     getRevenueByMonth(): Promise<RevenueByMonth>;
     createNewOrderOnline(data: OrderOnlineDto, productIds: number[]): Promise<OrderEntity>;
+    createNewOrderOffline( data: OrderOfflineDto):Promise<OrderEntity>; //email: string, 
 }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   

@@ -27,6 +27,12 @@ export class AuthController  {
         console.log("verify-email:",data.email);
         const res = await this.authService.verifyEmail(data.email);
         return res; // 1: email || 2: message
+
+        // try {
+                
+        // } catch (error) {
+            
+        // }
     }
 
     @Public()

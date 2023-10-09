@@ -13,6 +13,7 @@ import { AccountDto } from "src/modules/users/account/account-dto/account.dto";
 import { AuthDto } from "./auth-dto/auth.dto";
 import { IsEmail } from "class-validator";
 import { AccountEntity } from "src/modules/users/account/account.entity";
+import { error } from "console";
 
 
 
@@ -75,23 +76,20 @@ export class AuthService {
     }
 
     async verifyEmail (email: string): Promise<string | any>{
-        const checkUser = await this.accountService.getOneById(email);
-        if (checkUser) {
-            // throw new HttpException(
-            // { message: 'User already exists' },
-            //   HttpStatus.BAD_REQUEST,
-            // );
-            return {message: 'User already exists'}
-        }
-
-        // tạo OTP
-        const baseString ="0123456789qwertyuiopasdfghjklzxcvbnm";
-        const otp = this.randomPassword(6, baseString)
-        console.log(`OTP: ${otp}`);
-        // lưu cache
-        
-        await this.cacheService.set(String(otp), String(email), 300); // 5phut
-        return email;
+        try {
+             const checkUser = await this.accountService.getOneById(email);
+            if (checkUser) {
+                return {message: 'User already exists'};
+            }
+            const baseString ="0123456789qwertyuiopasdfghjklzxcvbnm";
+            const otp = this.randomPassword(6, baseString)
+            console.log(`OTP: ${otp}`);
+            // lưu cache
+            await this.cacheService.set(String(otp), String(email), 300); // 5phut
+            return email;
+        } catch (error) {
+            throw error
+        }      
     }
 
 
@@ -101,6 +99,7 @@ export class AuthService {
             const emailInCache: string = await this.cacheService.get(String(otp));
             if (emailInCache){ // đúng
                 await this.cacheService.del(String(otp));  // xóa cache
+            
                 return {
                     message: "success",
                     email: String(emailInCache)
@@ -193,7 +192,7 @@ export class AuthService {
 
 
     // đăng kí tài khoản -> Done!
-    public async registerEmployee(input: RegisterDto): Promise<TokensDto | object> {
+    public async registerEmployee(input: RegisterDto): Promise<AccountEntity> { //TokensDto | object
         
         input.password = await bcrypt.hash(input.password, 12); // hash pass
         // create account
@@ -204,20 +203,19 @@ export class AuthService {
             role: Role.Admin
         });
 
-        const update = new AccountDto(
-            newUser.email,     
-            true,
-            tokens.refresh_token,
-            newUser.password,
-            Role.Admin,
-            null
-        );
+        const updateAccount = new AccountEntity();
+        updateAccount.email = newUser.email;
+        updateAccount.password = newUser.password;
+        updateAccount.refresh_token = tokens.refresh_token;
+        updateAccount.role = Role.Admin;
+        updateAccount.status = true;
+        updateAccount.user = null;
 
-        await this.accountService.updateOneById(newUser.email, update)
+        const createdAccount = await this.accountService.updateOneById(newUser.email, updateAccount)
         console.log(newUser);
 
         //const accessTokenDto = new AccessTokenDto(tokens.access_token);
-        return tokens;
+        return createdAccount;
     }
 
 

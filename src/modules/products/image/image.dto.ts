@@ -8,3 +8,11 @@ export class ImageDto {
   product: ProductDto;
   url: string;
 }
+
+
+
+export class InsertImageDto {
+  image_id: string;
+  product_id: number
+  url: string;
+}

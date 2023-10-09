@@ -18,10 +18,10 @@ export class DiscountController {
     }
 
 
-    // @Put('update/:id')
-    // async updateDiscountById(@Param('id') id: number, @Body() discountDto: DiscountDto): Promise<DiscountDto> {
-    //     return this.discountService.updateOneById(id, discountDto);
-    // }
+    @Put('update/:id')
+    async updateDiscountById(@Param('id') id: number, @Body() discountDto: DiscountDto): Promise<DiscountDto> {
+        return this.discountService.updateOneById(id, discountDto);
+    }
 
 
     // @Delete('delete/:id')

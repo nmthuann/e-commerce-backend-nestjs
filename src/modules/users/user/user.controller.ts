@@ -3,6 +3,7 @@ import { UserDto } from '../user/user-dto/user.dto';
 import { IUserService } from './user.service.interface';
 import { UserEntity } from './user.entity';
 import { CreateUserDto } from './user-dto/create-user.dto';
+import { EmployeeEntity } from '../employee/employee.entity';
 
 // working with DTO
 @Controller('user') 
@@ -43,10 +44,18 @@ export class UserController {
     // }
 
 
-    // @Get(':email')
-    // async getUserByEmail(@Param('email') email: string): Promise<UserEntity> {
-    //     return await this.userService.getUserByEmail(email);
-    // }
+    @Get('employee/:email')
+    async getEmployeeByEmail(@Param('email') email: string): Promise<EmployeeEntity> {
+        return await this.userService.getEmployeeByEmail(email);
+    }
+
+    @Get(':email')
+    async getUserByEmail(@Param('email') email: string): Promise<UserEntity> {
+        return await this.userService.getUserByEmail(email);
+    }
+
+
+
 
 
     @Get(':id')

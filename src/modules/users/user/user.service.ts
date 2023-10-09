@@ -9,18 +9,46 @@ import { IAccountService } from "../account/account.service.interface";
 import { AccountEntity } from "../account/account.entity";
 import { GetCustomerListDto } from "./user-dto/get-customer-list.dto";
 import { IOrderService } from "src/modules/orders/order/order.service.interface";
+import { CreateUserDto } from "./user-dto/create-user.dto";
+import { AuthService } from "src/modules/apis/authentication/auth.service";
+import { EmployeeEntity } from "../employee/employee.entity";
 
 @Injectable()
 export class UserService extends BaseService<UserEntity> implements IUserService {
   constructor(
     @InjectRepository(UserEntity) 
     private userRepository: Repository<UserEntity>,
-    // @Inject('IOrderService')
-    // private orderService: IOrderService,
+    // @Inject('IAccountService')
+    private authService: AuthService,
   ) {
     super(userRepository);
   }
 
+  async createOne(data: CreateUserDto): Promise<UserEntity> {
+    try {
+      const createAccount = await this.authService.registerEmployee({
+        email: data.account,
+        password: '123456'
+      })
+
+      const newUser = new UserEntity()
+      newUser.address = data.address;
+      newUser.avatar_url = data.avatar_url;
+      newUser.birthday = data.birthday;
+      newUser.first_name = data.first_name;
+      newUser.last_name = data.last_name;
+      newUser.gender = data.gender;
+      newUser.phone = data.phone;
+      newUser.account = createAccount;
+
+      const createUser = await this.userRepository.save(newUser);
+      return createUser;
+      
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
 
   async getOneById(id: string | number ): Promise<UserEntity> {
     const findUser = await this.userRepository.findOne({
@@ -54,7 +82,9 @@ export class UserService extends BaseService<UserEntity> implements IUserService
     .createQueryBuilder("users")
     .where("users.email = :email", { email: email})
     .leftJoinAndSelect('users.employee', 'employee')
-    .getOne()
+    .getOne();
+    // console.log((await Promise.resolve(findUser)).employee.employee_id  )
+    // const employee = (await Promise.resolve(findUser)).employee;
     return findUser;
   }
 
@@ -74,5 +104,14 @@ export class UserService extends BaseService<UserEntity> implements IUserService
   }
 
 
- 
+   async getEmployeeByEmail(email: string): Promise<EmployeeEntity> {
+    const findUser = await this.userRepository
+    .createQueryBuilder("users")
+    .where("users.email = :email", { email: email})
+    .leftJoinAndSelect('users.employee', 'employee')
+    .getOne();
+    console.log((await Promise.resolve(findUser)).employee.employee_id  )
+    const employee = (await Promise.resolve(findUser)).employee;
+    return employee;
+  }
 }

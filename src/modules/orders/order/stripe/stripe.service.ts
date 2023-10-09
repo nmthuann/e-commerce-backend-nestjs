@@ -25,7 +25,7 @@ export class StripeService{
     }
 
 
-    async CheckOut(productIds: number[], shipping_id: string, discount_id: number, total_price: number){
+    async CheckOut(productIds: number[], shipping_id: string, discount_id: number){ //, total_price: number
             // // check product  
             // const GET_PRODUCTS_URL = `${process.env.NEXT_PUBLIC_API_URL}/product/get-product-by-ids`
         const products: ProductEntity[]  = 
@@ -49,7 +49,7 @@ export class StripeService{
 
 
         
-        const data = {shipping_id, discount_id, total_price}
+        const data = {shipping_id, discount_id} //, total_price
 
         const order: OrderEntity = await this.orderService.createNewOrderOnline(data, productIds)
 

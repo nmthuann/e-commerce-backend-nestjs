@@ -1,6 +1,7 @@
 import { Body, Controller, Inject, Param, Post, Put, Delete, Get } from "@nestjs/common";
 import { IImageService } from "./image.service.interface";
-import { ImageDto } from "./image.dto";
+import { ImageDto, InsertImageDto } from "./image.dto";
+import { ImageEntity } from "./image.entity";
 
 @Controller('image') 
 export class ImageController {
@@ -10,9 +11,14 @@ export class ImageController {
     ) {}
 
     @Post('create')
-    async createImage(@Body() image: ImageDto): Promise<ImageDto> {
+    async createImage(@Body() image: ImageDto): Promise<ImageEntity> {
         return await this.imageService.createOne(image);
     }
+
+    // @Post('create-images')
+    // async createImages(@Body() images: InsertImageDto[]): Promise<ImageEntity[]> {
+    //     return await this.imageService.InsertImages(images);
+    // }
 
 
     @Put('update/:id')

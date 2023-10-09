@@ -1,6 +1,8 @@
 import { IBaseService } from "../../bases/base.interface";
-import { ImageDto } from "./image.dto";
+import { ImageDto, InsertImageDto } from "./image.dto";
+import { ImageEntity } from "./image.entity";
 
 
-export interface IImageService extends IBaseService<ImageDto>{
+export interface IImageService extends IBaseService<ImageEntity>{
+    // InsertImages(images: InsertImageDto[]): Promise<ImageEntity[]>;
 }

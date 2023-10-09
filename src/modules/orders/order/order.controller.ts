@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Inject, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Inject, UseGuards,Request } from '@nestjs/common';
 
 import { IOrderService } from './order.service.interface';
 import { OrderEntity } from './order.entity';
@@ -8,6 +8,7 @@ import { GetCustomerListDto } from 'src/modules/users/user/user-dto/get-customer
 import { RevenueByMonth } from './order-dto/order.dto';
 import { AdminRoleGuard } from 'src/common/guards/admin.role.guard';
 import { UserRoleGuard } from 'src/common/guards/user.role.guard';
+import { OrderOfflineDto } from './order-dto/order-offline.dto';
 // import { GraphData } from './order.service';
 
 
@@ -20,9 +21,18 @@ export class OrderController {
     ) {}
 
 
-    @UseGuards(AdminRoleGuard)
+    // @UseGuards(AdminRoleGuard)
     @Post('create-offline')
-    async createOrder(@Body() order: CreateOrderDto): Promise<OrderEntity> {
+    async createOrder( @Body() order: OrderOfflineDto){ //: Promise<OrderEntity> { //@Request() req: any,
+        // const email = req['email'];
+        // console.log(email);
+        
+        // order.order_detail = order.order_detail.map(item => ({
+        //     product_id: parseInt(item.product_id),
+        //     quantity: parseInt(item.quantity)
+        // }));
+
+        console.log(order)
         return await this.orderService.createNewOrderOffline(order);
     }
 
@@ -51,7 +61,7 @@ export class OrderController {
     }
 
 
-    @UseGuards(AdminRoleGuard)
+    // @UseGuards(AdminRoleGuard)
     @Get('get-task-orders')
     async getTaskOrders(): Promise<GetTaskOrdersDto[]> {
         return await this.orderService.getTaskOrders();
@@ -74,13 +84,13 @@ export class OrderController {
     }
 
 
-    @UseGuards(AdminRoleGuard)
+    //@UseGuards(AdminRoleGuard)
     @Get('get-total-revenue')
     async getTotalRevenue(): Promise<number> {
         return await this.orderService.getTotalRevenue();
     }
 
-    @UseGuards(AdminRoleGuard)
+    //@UseGuards(AdminRoleGuard)
     @Get('count-product-sold')
     async getCountProductSold(): Promise<number> {
         return await this.orderService.getCountProductSold();
@@ -93,7 +103,7 @@ export class OrderController {
     }
 
 
-    @UseGuards(AdminRoleGuard)
+    // @UseGuards(AdminRoleGuard)
     @Get('get-revenue-by-month')
     async getRevenueByMonth(): Promise<RevenueByMonth> {
         return await this.orderService.getRevenueByMonth();

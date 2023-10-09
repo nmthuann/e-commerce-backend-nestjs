@@ -61,14 +61,16 @@ import { JwtModule } from "@nestjs/jwt";
     ],
     exports: ['IOrderService',]
 })
-export class OrderModule implements NestModule{
-    configure(consumer: MiddlewareConsumer) {
-        consumer.apply(AuthenticationMiddleware)
-        .exclude(
-          { path: 'order/get-orders', method: RequestMethod.GET },
-        //   { path: 'posts/get-posts/:id', method: RequestMethod.GET },
-        //   { path: 'posts/get-post/:id', method: RequestMethod.GET },
-          )
-        .forRoutes(OrderController);
-    }
-}    // {}
+export class OrderModule{}
+// {} implements NestModule{
+//     configure(consumer: MiddlewareConsumer) {
+//         consumer.apply(AuthenticationMiddleware)
+//         .exclude(
+//             { path: 'order/get-orders', method: RequestMethod.GET },
+//             { path: 'order/get-task-orders', method: RequestMethod.GET },
+//             { path: 'order/get-customer-list', method: RequestMethod.GET },
+//             { path: 'order/create-offline', method: RequestMethod.POST },
+//           )
+//         .forRoutes(OrderController);
+//     }
+// }    // {}

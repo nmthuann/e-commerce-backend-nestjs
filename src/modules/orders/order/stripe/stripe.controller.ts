@@ -33,14 +33,14 @@ export class StripeController {
         
         @Request() req: any, @Res() res: Response){
 
-        const { productIds, shipping_id, discount_id, total_price } = req.body;
+        const { productIds, shipping_id, discount_id} = req.body; //, total_price 
                 if (!productIds || productIds.length === 0) {
             throw new HttpException('Product ids are required', HttpStatus.BAD_REQUEST);
         }
-        const result = await this.stripeService.CheckOut(productIds, shipping_id, discount_id, total_price);
+        const result = await this.stripeService.CheckOut(productIds, shipping_id, discount_id); //, total_price
         
         console.log(result)
-        return 0
+        return result
         
     }
 
