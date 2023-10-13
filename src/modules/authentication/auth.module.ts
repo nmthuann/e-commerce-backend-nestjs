@@ -5,6 +5,9 @@ import { JwtModule } from "@nestjs/jwt";
 import { Module } from "@nestjs/common";
 import { AccountEntity } from "src/modules/users/account/account.entity";
 import { AccountModule } from "src/modules/users/account/account.module";
+import { UserEntity } from "../users/user/user.entity";
+import { UserModule } from "../users/user/user.module";
+import { OrderModule } from "../orders/order/order.module";
 
 @Module({
       imports: [
@@ -13,7 +16,8 @@ import { AccountModule } from "src/modules/users/account/account.module";
           signOptions: { expiresIn: 60},
         }),
         TypeOrmModule.forFeature([AccountEntity]),
-        AccountModule
+        AccountModule,
+        //UserModule
       ],
       controllers: [AuthController],
       providers: [

@@ -19,7 +19,6 @@ import { EmployeeModule } from "src/modules/users/employee/employee.module";
 import { UserModule } from "src/modules/users/user/user.module";
 import { StripeController } from "./stripe/stripe.controller";
 import { StripeService } from "./stripe/stripe.service";
-import { AuthenticationMiddleware } from "src/common/middlewares/authentication.middleware";
 import { AdminRoleGuard } from "src/common/guards/admin.role.guard";
 import { UserRoleGuard } from "src/common/guards/user.role.guard";
 import { JwtModule } from "@nestjs/jwt";

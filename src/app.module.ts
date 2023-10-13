@@ -33,9 +33,9 @@ import { PositionModule } from './modules/users/position/position.module';
 import { AccountModule } from './modules/users/account/account.module';
 import * as redisStore from 'cache-manager-redis-store';
 import { CacheModule } from '@nestjs/cache-manager';
-import { AuthModule } from './modules/apis/authentication/auth.module';
 import { StoreModule } from './modules/apis/store/store.module';
 import { ConfigModule } from '@nestjs/config';
+import { AuthModule } from './modules/authentication/auth.module';
 // import { CacheModule } from '@nestjs/cache-manager';
 
 
@@ -63,31 +63,33 @@ import { ConfigModule } from '@nestjs/config';
       }
     ),
 
-  CategoryModule,
-  DiscountModule,
-  ProductModule,
-  ImageModule,
-  // StoreModule,
+  // CategoryModule,
+  // DiscountModule,
+  // ProductModule,
+  // ImageModule,
+  // // StoreModule,
 
-  // CartModule,
-  // CartDetailModule,
-  OrderModule,
+  // // CartModule,
+  // // CartDetailModule,
+  // OrderModule,
   // // OrderDetailModule,
   //ShippingModule,
   // PaymentModule,
 
-  UserModule,
-  EmployeeModule,
-  // //PositionModule,
-  AccountModule,
-    CacheModule.register({
-      isGlobal: true,
-      store: redisStore,
-      host: 'localhost',//localhost
-      port: 6379,//6379
-      // password: 'pqTtSGQM5oHvURGfFWaO7qWcTi3kcWr8',
-      // ttl: 60*60*15, // seconds
-    }),
+  // UserModule,
+  // EmployeeModule,
+  // // //PositionModule,
+  // AccountModule,
+
+    // CacheModule.register({
+    //   isGlobal: true,
+    //   store: redisStore,
+    //   host: 'localhost',//localhost
+    //   port: 6379,//6379
+    //   // password: 'pqTtSGQM5oHvURGfFWaO7qWcTi3kcWr8',
+    //   // ttl: 60*60*15, // seconds
+    // }),
+
     AuthModule,
   ],
   controllers: [AppController],

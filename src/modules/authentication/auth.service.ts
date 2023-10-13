@@ -14,13 +14,15 @@ import { AuthDto } from "./auth-dto/auth.dto";
 import { IsEmail } from "class-validator";
 import { AccountEntity } from "src/modules/users/account/account.entity";
 import { error } from "console";
+import { AuthException } from "src/common/exception-filter/exceptions/auth.exception";
+import { AuthExceptionMessages } from "src/common/errors/auth.error";
 
 
 
 @Injectable()
 export class AuthService {
     constructor(
-        @Inject(CACHE_MANAGER) private cacheService: Cache,
+        // @Inject(CACHE_MANAGER) private cacheService: Cache,
         private jwtService: JwtService, 
         @Inject('IAccountService')
         private accountService: IAccountService,
@@ -75,45 +77,7 @@ export class AuthService {
         return result as string;
     }
 
-    async verifyEmail (email: string): Promise<string | any>{
-        try {
-             const checkUser = await this.accountService.getOneById(email);
-            if (checkUser) {
-                return {message: 'User already exists'};
-            }
-            const baseString ="0123456789qwertyuiopasdfghjklzxcvbnm";
-            const otp = this.randomPassword(6, baseString)
-            console.log(`OTP: ${otp}`);
-            // lưu cache
-            await this.cacheService.set(String(otp), String(email), 300); // 5phut
-            return email;
-        } catch (error) {
-            throw error
-        }      
-    }
-
-
-    async checkOTP (otp: string){
-        // == in cache
-        try {
-            const emailInCache: string = await this.cacheService.get(String(otp));
-            if (emailInCache){ // đúng
-                await this.cacheService.del(String(otp));  // xóa cache
-            
-                return {
-                    message: "success",
-                    email: String(emailInCache)
-                }
-            } 
-            else{
-                await this.cacheService.del(String(otp));
-                return {message: "failed"}
-            }
-            
-        } catch (error) {   
-            throw new Error(`An unexpected error:: ${error}`);
-        }  
-    }
+    
 
     // đăng kí tài khoản -> Done!
     public async register(input: RegisterDto): Promise<TokensDto | object> {
@@ -155,15 +119,27 @@ export class AuthService {
         const checkPass = await this.comparePassword(input.password, findUser.password);
             if (!checkPass) {
                 console.log('password wrong!')
-                return {message: 'password wrong!'}
+                throw new AuthException(AuthExceptionMessages.PASSWORD_WRONG);
             }
         } 
         else{
-            return {message: 'email or Password Invalid!'}
+            throw new AuthException(AuthExceptionMessages.LOGIN_INVAILD);
         }
-        return 0
 
-    //     // write infor put in Payload
+        // write infor put in Payload
+        const payload: Payload = {
+            email: input.email,
+            role: findUser.role
+        };
+        
+        const tokens: Tokens = await this.getTokens(payload);
+        findUser.refresh_token = tokens.refresh_token;
+        await this.accountService.updateOneById(findUser.email, findUser);
+        
+        return tokens;
+    }
+
+        //     // write infor put in Payload
     //     const payload: Payload = {
     //         email: input.email,
     //         role: findUser.role
@@ -175,7 +151,6 @@ export class AuthService {
     //     console.log(`message: ${input.email} đăng nhập thành công!`)
     //     return tokens;
     // }
-    }
 
     // logout -> refresh token = null -> delete cache
     public async logout(email: string): Promise<boolean> {
@@ -254,3 +229,48 @@ export class AuthService {
     }
 
 }
+
+
+
+
+
+
+// async verifyEmail (email: string): Promise<string | any>{
+    //     try {
+    //          const checkUser = await this.accountService.getOneById(email);
+    //         if (checkUser) {
+    //             return {message: 'User already exists'};
+    //         }
+    //         const baseString ="0123456789qwertyuiopasdfghjklzxcvbnm";
+    //         const otp = this.randomPassword(6, baseString)
+    //         console.log(`OTP: ${otp}`);
+    //         // lưu cache
+    //         await this.cacheService.set(String(otp), String(email), 300); // 5phut
+    //         return email;
+    //     } catch (error) {
+    //         throw error
+    //     }      
+    // }
+
+
+    // async checkOTP (otp: string){
+    //     // == in cache
+    //     try {
+    //         const emailInCache: string = await this.cacheService.get(String(otp));
+    //         if (emailInCache){ // đúng
+    //             await this.cacheService.del(String(otp));  // xóa cache
+            
+    //             return {
+    //                 message: "success",
+    //                 email: String(emailInCache)
+    //             }
+    //         } 
+    //         else{
+    //             await this.cacheService.del(String(otp));
+    //             return {message: "failed"}
+    //         }
+            
+    //     } catch (error) {   
+    //         throw new Error(`An unexpected error:: ${error}`);
+    //     }  
+    // }

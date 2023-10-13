@@ -3,7 +3,6 @@ import { IAccountService } from "./account.service.interface";
 import { AccountDto } from "./account-dto/account.dto";
 import { AccountEntity } from "./account.entity";
 import { AccountForEmployeeDto } from "./account-dto/account-employee.dto";
-import { AuthService } from "src/modules/apis/authentication/auth.service";
 
 @Controller('account') 
 export class AccountController {

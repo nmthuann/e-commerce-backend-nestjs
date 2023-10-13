@@ -10,8 +10,8 @@ import { AccountEntity } from "../account/account.entity";
 import { GetCustomerListDto } from "./user-dto/get-customer-list.dto";
 import { IOrderService } from "src/modules/orders/order/order.service.interface";
 import { CreateUserDto } from "./user-dto/create-user.dto";
-import { AuthService } from "src/modules/apis/authentication/auth.service";
 import { EmployeeEntity } from "../employee/employee.entity";
+import { AuthService } from "src/modules/authentication/auth.service";
 
 @Injectable()
 export class UserService extends BaseService<UserEntity> implements IUserService {
