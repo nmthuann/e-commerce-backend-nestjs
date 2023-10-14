@@ -15,13 +15,15 @@ import { AuthService } from "src/modules/authentication/auth.service";
 @Module({
     imports:[
         // forwardRef(() => OrderModule),
-       TypeOrmModule.forFeature([UserEntity, AccountEntity, OrderEntity]),
-               JwtModule.register({
+        // TypeOrmModule.forFeature([UserEntity, AccountEntity, OrderEntity]),
+
+        TypeOrmModule.forFeature([UserEntity,]),
+        JwtModule.register({
           secret: 'JWT_SECRET_KEY',
           signOptions: { expiresIn: 60},
         }),
-       AccountModule,
-       AuthModule
+        AccountModule,
+       // AuthModule
     ],
     controllers: [UserController],
     providers: [
@@ -30,11 +32,11 @@ import { AuthService } from "src/modules/authentication/auth.service";
             useClass: UserService,
         },
        
-        {
-            provide: 'IAccountService',
-            useClass: AccountService,
-        },
-        AuthService,
+        // {
+        //     provide: 'IAccountService',
+        //     useClass: AccountService,
+        // },
+        // AuthService,
     ],
     exports: ['IUserService',]
 })

@@ -1,6 +1,6 @@
 import { CanActivate, ExecutionContext, ForbiddenException, Injectable } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
-import { JwtService } from "@nestjs/jwt";
+import { GuardError } from "../errors/errors";
 
 
 @Injectable()
@@ -24,7 +24,7 @@ export class RoleGuard implements CanActivate {
         console.log(request);
         const payload = request['user'];
         if (!payload){
-          throw new ForbiddenException('Access denied'); 
+          throw new ForbiddenException(GuardError.ACCESS_DENIED); 
         }
         request['email'] = payload['email'];
         return true;

@@ -91,6 +91,7 @@ import { AuthModule } from './modules/authentication/auth.module';
     // }),
 
     AuthModule,
+    EmployeeModule
   ],
   controllers: [AppController],
   providers: [AppService],

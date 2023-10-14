@@ -2,6 +2,7 @@ import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus, Logge
 
 import { HttpArgumentsHost } from '@nestjs/common/interfaces/features/arguments-host.interface'
 import { Response } from 'express'
+import { SystemError } from 'src/common/errors/errors'
 import { QueryFailedError } from 'typeorm'
 
 @Catch()
@@ -10,7 +11,7 @@ export class AllExceptionFilter implements ExceptionFilter {
   }
 
   private static handleResponse(response: Response, exception: HttpException | QueryFailedError | Error): void {
-    let responseBody: any = { message: 'Internal server error' }
+    let responseBody: any = { message: SystemError.INTERNAL_SERVER_ERROR }
     let statusCode = HttpStatus.INTERNAL_SERVER_ERROR
 
     if (exception instanceof HttpException) {

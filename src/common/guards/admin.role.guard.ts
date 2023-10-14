@@ -1,7 +1,7 @@
 import { CanActivate, ExecutionContext, ForbiddenException, Injectable } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
-import { JwtService } from "@nestjs/jwt";
 import { Role } from "src/modules/bases/enums/role.enum";
+import { GuardError } from "../errors/errors";
 
 
 
@@ -24,10 +24,10 @@ export class AdminRoleGuard implements CanActivate {
       if (isPublic) return true;
       else{
         const request = context.switchToHttp().getRequest();
-        console.log(request);
+        // console.log(request);
         const payload = request['user'];
         if (payload['role'] != Role.Admin){
-          throw new ForbiddenException('Access denied - You are not Admin'); 
+          throw new ForbiddenException(GuardError.ACCESS_DENIED); 
         }
         request['email'] = payload['email'];
         return true;

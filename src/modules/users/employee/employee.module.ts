@@ -10,9 +10,9 @@ import { PositionModule } from "../position/position.module";
 
 @Module({
     imports:[
-       TypeOrmModule.forFeature([EmployeeEntity, UserEntity, PositionEntity]),
-       UserModule,
-       PositionModule
+        TypeOrmModule.forFeature([EmployeeEntity]), //EmployeeEntity, , PositionEntity UserEntity
+        UserModule,
+        PositionModule,
     ],
     controllers: [EmployeeController],
     providers: [
@@ -20,6 +20,10 @@ import { PositionModule } from "../position/position.module";
             provide: 'IEmployeeService',
             useClass: EmployeeService,
         },
+        // {
+
+        // },
+
     ],
     exports: ['IEmployeeService',]
 })

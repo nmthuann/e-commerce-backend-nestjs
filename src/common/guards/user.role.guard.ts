@@ -1,6 +1,7 @@
 import { CanActivate, ExecutionContext, ForbiddenException, Injectable } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
 import { Role } from "src/modules/bases/enums/role.enum";
+import { GuardError } from "../errors/errors";
 
 
 
@@ -22,7 +23,7 @@ export class UserRoleGuard implements CanActivate {
         const request = context.switchToHttp().getRequest();
         const payload = request['user'];
         if (payload['role'] == Role.Admin){
-          throw new ForbiddenException('Access denied - You are not User!'); 
+          throw new ForbiddenException(GuardError.NOT_USER); 
         }
         request['email'] = payload['email'];
         return true;

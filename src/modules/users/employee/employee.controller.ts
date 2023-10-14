@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Inject, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Inject, UseGuards, HttpCode } from '@nestjs/common';
 import { EmployeeDto } from '../employee/employee-dto/employee.dto';
 import { IEmployeeService } from './Employee.service.interface';
 import { CreateEmployeeDto } from './employee-dto/create-employee.dto';
@@ -13,13 +13,11 @@ export class EmployeeController {
         private employeeService: IEmployeeService
     ) {}
 
-    // @Post('create')
-    // async createEmployee(@Body() employee: EmployeeDto): Promise<EmployeeEntity> {
-    //     return await this.employeeService.createOne(employee);
-    // }
+    
 
 
     @Post('create/:email')
+    @HttpCode(200)
     async createNewEmployee (
         @Param('email') email: string, 
         @Body() employee: CreateEmployeeDto
@@ -34,12 +32,6 @@ export class EmployeeController {
         return this.employeeService.updateOneById(id, employeeDto);
     }
 
-
-    @Delete('delete/:id')
-    async deleteEmployeeById(@Param('id') id: number): Promise<void> {
-        console.log(await this.employeeService.deleteOneById(id));
-    }
-
     
     @Get('get-employees')
     async getEmployees(): Promise<EmployeeEntity[]> {
@@ -52,8 +44,8 @@ export class EmployeeController {
     }
 
 
-    @Get(':id')
-    async getEmployee(@Param('id') id: number): Promise<EmployeeEntity> {
-        return await this.employeeService.getOneById(id);
-    }
+    // @Get(':id')
+    // async getEmployee(@Param('id') id: number): Promise<EmployeeEntity> {
+    //     return await this.employeeService.getOneById(id);
+    // }
 }

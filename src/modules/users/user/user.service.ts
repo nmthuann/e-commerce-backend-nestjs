@@ -19,36 +19,36 @@ export class UserService extends BaseService<UserEntity> implements IUserService
     @InjectRepository(UserEntity) 
     private userRepository: Repository<UserEntity>,
     // @Inject('IAccountService')
-    private authService: AuthService,
+    // private authService: AuthService,
   ) {
     super(userRepository);
   }
 
-  async createOne(data: CreateUserDto): Promise<UserEntity> {
-    try {
-      const createAccount = await this.authService.registerEmployee({
-        email: data.account,
-        password: '123456'
-      })
+  // async createOne(data: CreateUserDto): Promise<UserEntity> {
+  //   try {
+  //     const createAccount = await this.authService.registerEmployee({
+  //       email: data.account,
+  //       password: '123456'
+  //     })
 
-      const newUser = new UserEntity()
-      newUser.address = data.address;
-      newUser.avatar_url = data.avatar_url;
-      newUser.birthday = data.birthday;
-      newUser.first_name = data.first_name;
-      newUser.last_name = data.last_name;
-      newUser.gender = data.gender;
-      newUser.phone = data.phone;
-      newUser.account = createAccount;
+  //     const newUser = new UserEntity()
+  //     newUser.address = data.address;
+  //     newUser.avatar_url = data.avatar_url;
+  //     newUser.birthday = data.birthday;
+  //     newUser.first_name = data.first_name;
+  //     newUser.last_name = data.last_name;
+  //     newUser.gender = data.gender;
+  //     newUser.phone = data.phone;
+  //     newUser.account = createAccount;
 
-      const createUser = await this.userRepository.save(newUser);
-      return createUser;
+  //     const createUser = await this.userRepository.save(newUser);
+  //     return createUser;
       
-    } catch (error) {
-      console.log(error)
-      throw error
-    }
-  }
+  //   } catch (error) {
+  //     console.log(error)
+  //     throw error
+  //   }
+  // }
 
   async getOneById(id: string | number ): Promise<UserEntity> {
     const findUser = await this.userRepository.findOne({

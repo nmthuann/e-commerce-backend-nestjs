@@ -8,6 +8,7 @@ import { AccountModule } from "src/modules/users/account/account.module";
 import { UserEntity } from "../users/user/user.entity";
 import { UserModule } from "../users/user/user.module";
 import { OrderModule } from "../orders/order/order.module";
+import { EmployeeModule } from "../users/employee/employee.module";
 
 @Module({
       imports: [
@@ -15,13 +16,17 @@ import { OrderModule } from "../orders/order/order.module";
           secret: 'JWT_SECRET_KEY',
           signOptions: { expiresIn: 60},
         }),
-        TypeOrmModule.forFeature([AccountEntity]),
+        // TypeOrmModule.forFeature([AccountEntity]),
         AccountModule,
         //UserModule
+       
       ],
       controllers: [AuthController],
       providers: [
-        AuthService
+       {
+            provide: 'IAuthService',
+            useClass: AuthService,
+        },
       ]
 })
 export class AuthModule  {}

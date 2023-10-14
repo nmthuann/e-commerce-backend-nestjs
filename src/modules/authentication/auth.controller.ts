@@ -1,4 +1,4 @@
-import { Body, Controller, HttpCode, Param, Post } from "@nestjs/common";
+import { Body, Controller, HttpCode, HttpException, HttpStatus, Inject, Param, Post } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { RegisterDto } from "./auth-dto/register.dto";
 import { TokensDto } from "./auth-dto/token.dto";
@@ -8,6 +8,8 @@ import { UserService } from "../users/user/user.service";
 import { AuthException } from "src/common/exception-filter/exceptions/auth.exception";
 import { AuthExceptionMessages } from "src/common/errors/auth.error";
 import { AuthMessage } from "src/common/messages/auth.message";
+import { verify } from "crypto";
+import { IAuthService } from "./auth.service.interface";
 
 
 
@@ -15,7 +17,8 @@ import { AuthMessage } from "src/common/messages/auth.message";
 export class AuthController  {
 
   constructor(
-    private authService: AuthService,
+     @Inject('IAuthService')
+    private authService: IAuthService,
     // private useService: UserService
   ) {}
  
@@ -26,19 +29,34 @@ export class AuthController  {
     }
 
 
-    // @Public()
-    // @Post('verify-email') // check login hoặc chưa
-    // async verifyEmail(@Body() data: { email: string }) { //: Promise<TokensDto | object>
-    //     console.log("verify-email:",data.email);
-    //     const res = await this.authService.verifyEmail(data.email);
-    //     return res; // 1: email || 2: message
+    @Public()
+    @HttpCode(200)
+    @Post('verify-email')
+    async verifyEmail(@Body() data: { email: string }) { //: Promise<TokensDto | object>
+        try {
+            const res = await this.authService.verifyEmail(data.email);
+            return res; // 1: email || 2: message
+        } catch (error) {
+            throw new AuthException(AuthExceptionMessages.VERIFY_MAIL_FAILED);
+        }
+    }
 
-    //     // try {
-                
-    //     // } catch (error) {
+
+    @Public()
+    @HttpCode(200)
+    @Post('send-email')
+    async sendEmail(@Body() data: { email: string }) { //: Promise<TokensDto | object>
+        
+        try {
+            const res = await this.authService.sendMail(data.email, 'SEND MAIL', 'Test Send Mail');
+            return 0;
+        } catch (error) {
             
-    //     // }
-    // }
+            throw new Error(`send mail Thất bại. ${error}`)
+        }
+        // return res; // 1: email || 2: message
+    }
+
 
     // @Public()
     // @Post('verify-otp') // check login hoặc chưa
@@ -52,26 +70,23 @@ export class AuthController  {
     @Post('login')
     @HttpCode(200)
     async login(@Body() login: AuthDto){
-        const verifyLogin = await this.authService.login(login);
-        if (verifyLogin){
-            //throw new AuthException(AuthExceptionMessages.PASSWORD_WRONG);
-           // const userInfo = await this.useService.getUserByEmail(login.email);
-            return  {
-                verifyLogin,
-                // "user": userInfo,
-                "message": AuthMessage.LOGIN_SUCCESS,
-            }
-        }
-        
-    //     return {
-    //   token: accessToken,
-    //   user: {
-    //     id: user.id,
-    //     name: user.name,
-    //     email: user.email,
-    //   },
-    //   message: 'Login successful',
-    // };
+        return await this.authService.login(login);
+        // try {
+        //     const verifyLogin = await this.authService.login(login);
+        //     // const userInfo = await this.useService.getUserByEmail(login.email);
+        //     return  {
+        //         verifyLogin,
+        //         // "user": userInfo,
+        //         "message": AuthMessage.LOGIN_SUCCESS,
+        //     }
+        // } catch (error) {
+        //     throw new HttpException({
+        //     status: HttpStatus.BAD_REQUEST,
+        //     error: AuthExceptionMessages.LOGIN_FAILED,
+        //     }, HttpStatus.BAD_REQUEST, {
+        //         cause: error
+        //     });
+        // }
     }
 
 

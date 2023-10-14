@@ -17,6 +17,20 @@ export class AccountService extends BaseService<AccountEntity> implements IAccou
   }
 
 
+
+  async deleteAccountFail(email: string) {
+    try {
+      const getAccountFailed = await this.getOneById(email);
+      await this.accountRepository.delete(getAccountFailed);
+      return true;
+    } catch (error) {
+      console.log(`Xóa Account Fail thất bại. :::: ${error}`);
+    }
+    
+   
+  }
+
+
   // async createAccountForEmployee(data: AccountForEmployeeDto): Promise<AccountEntity> {
 
   //   const newAccount = new AccountEntity();
@@ -32,4 +46,6 @@ export class AccountService extends BaseService<AccountEntity> implements IAccou
     
   //   return accountInstance.toPlainObject();
   // }
+
+  
 }

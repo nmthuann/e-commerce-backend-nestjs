@@ -16,11 +16,17 @@ import { AccountEntity } from "src/modules/users/account/account.entity";
 import { error } from "console";
 import { AuthException } from "src/common/exception-filter/exceptions/auth.exception";
 import { AuthExceptionMessages } from "src/common/errors/auth.error";
+import { IAuthService } from "./auth.service.interface";
+import * as nodemailer from 'nodemailer';
+import * as dotenv from 'dotenv';
+import { AuthMessage } from "src/common/messages/auth.message";
+import { GuardError } from "src/common/errors/errors";
 
+dotenv.config(); 
 
 
 @Injectable()
-export class AuthService {
+export class AuthService implements IAuthService{
     constructor(
         // @Inject(CACHE_MANAGER) private cacheService: Cache,
         private jwtService: JwtService, 
@@ -28,13 +34,13 @@ export class AuthService {
         private accountService: IAccountService,
     ) {}
 
-    private async hashPassword(password: string): Promise<string> {
+     async hashPassword(password: string): Promise<string> {
         //console.log(await bcrypt.hash(password, 10))
         return await (bcrypt.hash(password, '10'));
     }
 
 
-    private async comparePassword(
+     async comparePassword(
         password: string,
         storePasswordHash: string,
         ): Promise<any> {
@@ -43,7 +49,7 @@ export class AuthService {
 
 
     // gettoken -> [access,refresh] -> create sign
-    private async getTokens(payload: Payload): Promise<Tokens> {
+     async getTokens(payload: Payload): Promise<Tokens> {
         const [jwt, refresh] = await Promise.all([
         this.jwtService.signAsync({payload}, {
             secret: 'JWT_SECRET_KEY',
@@ -63,7 +69,7 @@ export class AuthService {
 
 
   // hàm random password
-    private randomPassword(length: number, base: string): string{
+    randomPassword(length: number, base: string): string{
         //const baseString = "0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
         const getRandomInt = (min: number, max: number) => {
             return Math.floor(Math.random() * (max - min)) + min;
@@ -168,51 +174,64 @@ export class AuthService {
 
     // đăng kí tài khoản -> Done!
     public async registerEmployee(input: RegisterDto): Promise<AccountEntity> { //TokensDto | object
-        
-        input.password = await bcrypt.hash(input.password, 12); // hash pass
-        // create account
-        const newUser = await this.accountService.createOne(input);
+        let newUser: AccountEntity;
+        try {
 
-        const tokens = await this.getTokens({
-            email: newUser.email,
-            role: Role.Admin
-        });
+            // hash pass
+            input.password = await bcrypt.hash(input.password, 12); 
 
-        const updateAccount = new AccountEntity();
-        updateAccount.email = newUser.email;
-        updateAccount.password = newUser.password;
-        updateAccount.refresh_token = tokens.refresh_token;
-        updateAccount.role = Role.Admin;
-        updateAccount.status = true;
-        updateAccount.user = null;
+            // create account
+            newUser = await this.accountService.createOne(input);
 
-        const createdAccount = await this.accountService.updateOneById(newUser.email, updateAccount)
-        console.log(newUser);
+            const tokens = await this.getTokens({
+                email: newUser.email,
+                role: Role.Admin
+            });
 
-        //const accessTokenDto = new AccessTokenDto(tokens.access_token);
-        return createdAccount;
+            const updateAccount = new AccountEntity();
+            updateAccount.email = newUser.email;
+            updateAccount.password = newUser.password;
+            updateAccount.refresh_token = tokens.refresh_token;
+            updateAccount.role = Role.Admin;
+            updateAccount.status = true;
+            updateAccount.user = null;
+
+            const createdAccount: AccountEntity = await this.accountService.updateOneById(newUser.email, updateAccount)
+            console.log(newUser);
+
+            //const accessTokenDto = new AccessTokenDto(tokens.access_token);
+            return createdAccount;
+        } catch (error) {
+            console.log(`Có lỗi Đăng ký nhân viên :::: ${error} `)
+             // Nếu có lỗi, xóa tài khoản đã tạo (nếu đã tạo)
+            if (newUser) {
+                // Thực hiện xóa tài khoản tại đây
+                await this.accountService.deleteAccountFail(newUser.email);
+            }
+            throw new AuthException(AuthExceptionMessages.REGISTER_EMPLOYEE_FAILED);
+        }
     }
 
 
 
 
 
-          // đăng nhập 
+    // đăng nhập  - chưa fix
     public async loginAdmin(input: AuthDto): Promise<Tokens | object | any> {
         const findUser: AccountDto = await this.accountService.getOneById(input.email);
-        if(findUser.role == Role.User){
-            return {message: 'You are not Admin!'}
+        if(findUser.role === Role.User){
+            return {message: GuardError.NOT_ADMIN}
         }
         if (findUser){
         const checkPass = await this.comparePassword(input.password, findUser.password);
         console.log("checkPass",checkPass)
             if (!checkPass) {
                 console.log('password wrong!')
-                return {message: 'password wrong!'}
+                return {message: AuthExceptionMessages.PASSWORD_WRONG}
             }
         } 
         else{
-            return {message: 'email or Password Invalid!'}
+            return {message: AuthExceptionMessages.LOGIN_FAILED}
         }
 
         // write infor put in Payload
@@ -228,29 +247,69 @@ export class AuthService {
         return tokens;
     }
 
+
+
+
+
+    async verifyEmail(email: string): Promise<string | any>{
+        const checkUser = await this.accountService.getOneById(email);
+        if (checkUser) {
+            return {message: AuthExceptionMessages.EMAIL_EXSIT};
+        }
+        else{
+            try {
+                const baseString ="0123456789";
+                const defaulPassword = this.randomPassword(8, baseString)
+                const receiver = email;
+                const subject = AuthMessage.SUBJECT_REGISTER_EMAIL;
+                const content = `${AuthMessage.CONTENT_REGISTER_EMAIL}: ${defaulPassword}`;
+           
+                //  Send Mailer -> Success
+                const resultSendMail = await this.sendMail(receiver, subject, content);
+
+                if(resultSendMail.message === AuthMessage.SEND_MAIL_SUCCESS){
+                    // create account
+                    const data  = new RegisterDto(email, defaulPassword);
+                    return await this.registerEmployee(data) // hash pass
+                }
+
+                // return resultSendMail;
+            } catch (error) {
+                throw new AuthException(AuthExceptionMessages.VERIFY_MAIL_FAILED);
+            }      
+        }
+        
+    }
+
+
+    async sendMail(receiver: string, subject: string, content: string) {
+        try {
+            const transporter = nodemailer.createTransport({
+                service: 'Gmail',
+                auth: {
+                    user: process.env.GMAIL_USER,
+                    pass: process.env.GMAIL_PASSWORD,
+                },
+            });
+
+            const mailOptions = {
+                from: process.env.GMAIL_USER,
+                to: receiver,
+                subject: subject,
+                text: content,
+            };
+            await transporter.sendMail(mailOptions);
+            return {message: AuthMessage.SEND_MAIL_SUCCESS}
+        } catch (error) {
+            // Xử lý lỗi ở đây, ví dụ: ghi log lỗi hoặc thông báo cho người dùng.
+            console.error('Gửi email thất bại:', error);
+            throw new AuthException(AuthExceptionMessages.SEND_MAIL_FAILED);
+        }
+    }
+
 }
 
-
-
-
-
-
-// async verifyEmail (email: string): Promise<string | any>{
-    //     try {
-    //          const checkUser = await this.accountService.getOneById(email);
-    //         if (checkUser) {
-    //             return {message: 'User already exists'};
-    //         }
-    //         const baseString ="0123456789qwertyuiopasdfghjklzxcvbnm";
-    //         const otp = this.randomPassword(6, baseString)
-    //         console.log(`OTP: ${otp}`);
-    //         // lưu cache
-    //         await this.cacheService.set(String(otp), String(email), 300); // 5phut
-    //         return email;
-    //     } catch (error) {
-    //         throw error
-    //     }      
-    // }
+    
 
 
     // async checkOTP (otp: string){
@@ -273,4 +332,23 @@ export class AuthService {
     //     } catch (error) {   
     //         throw new Error(`An unexpected error:: ${error}`);
     //     }  
+    // }
+
+
+
+        // async verifyEmail(email: string): Promise<string | any>{
+    //     try {
+    //          const checkUser = await this.accountService.getOneById(email);
+    //         if (checkUser) {
+    //             return {message: 'User already exists'};
+    //         }
+    //         const baseString ="0123456789qwertyuiopasdfghjklzxcvbnm";
+    //         const otp = this.randomPassword(6, baseString)
+    //         console.log(`OTP: ${otp}`);
+    //         // lưu cache
+    //         await this.cacheService.set(String(otp), String(email), 300); // 5phut
+    //         return email;
+    //     } catch (error) {
+    //         throw error
+    //     }      
     // }

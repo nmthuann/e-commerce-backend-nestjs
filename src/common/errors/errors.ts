@@ -21,3 +21,23 @@ export enum ErrorInput{
     NOT_SELECT_FIELD = "Vui lòng chọn ",
     
 }
+
+
+
+
+export enum SystemError{
+  INTERNAL_SERVER_ERROR = "Internal server error.",
+  CONNECT_ERROR = "Kết nối thất bại."
+}
+
+
+export enum MiddlewareError{
+  TOKEN_MISSING = "Bạn thiếu token.",
+  TOKEN_INVALID = "Token của bạn hết hạn khoặc không hợp lệ.",
+}
+
+export enum GuardError{
+  NOT_ADMIN = "Bạn không phải là Admin.",
+  NOT_USER = "Bạn không phải là User.",
+  ACCESS_DENIED = "Truy cập bị từ chối.",
+}
