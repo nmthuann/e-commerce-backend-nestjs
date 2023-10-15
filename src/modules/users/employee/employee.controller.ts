@@ -1,7 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Inject, UseGuards, HttpCode } from '@nestjs/common';
-import { EmployeeDto } from '../employee/employee-dto/employee.dto';
 import { IEmployeeService } from './Employee.service.interface';
-import { CreateEmployeeDto } from './employee-dto/create-employee.dto';
+import { EmployeeDto } from './employee-dto/employee.dto';
 import { EmployeeEntity } from './employee.entity';
 import { GetEmployeeListDto } from './employee-dto/get-employee-list.dto';
 
@@ -20,7 +19,7 @@ export class EmployeeController {
     @HttpCode(200)
     async createNewEmployee (
         @Param('email') email: string, 
-        @Body() employee: CreateEmployeeDto
+        @Body() employee: EmployeeDto
     ): Promise<EmployeeEntity> {
         console.log("employee",employee, "email",email )
         return await this.employeeService.createNewEmployee(email, employee);

@@ -104,13 +104,13 @@ export class UserService extends BaseService<UserEntity> implements IUserService
   }
 
 
-   async getEmployeeByEmail(email: string): Promise<EmployeeEntity> {
+  async getEmployeeByEmail(email: string): Promise<EmployeeEntity> {
     const findUser = await this.userRepository
     .createQueryBuilder("users")
     .where("users.email = :email", { email: email})
     .leftJoinAndSelect('users.employee', 'employee')
     .getOne();
-    console.log((await Promise.resolve(findUser)).employee.employee_id  )
+    // console.log((await Promise.resolve(findUser)).employee.employee_id  )
     const employee = (await Promise.resolve(findUser)).employee;
     return employee;
   }

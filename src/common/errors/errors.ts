@@ -41,3 +41,8 @@ export enum GuardError{
   NOT_USER = "Bạn không phải là User.",
   ACCESS_DENIED = "Truy cập bị từ chối.",
 }
+
+
+export enum PipeError{
+  VALIDATOR_MISSING = "Dữ liệu thiếu."
+}

@@ -1,4 +1,4 @@
-import { Body, Controller, HttpCode, HttpException, HttpStatus, Inject, Param, Post } from "@nestjs/common";
+import { Body, Controller, HttpCode, HttpException, HttpStatus, Inject, Param, Post, UseGuards } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { RegisterDto } from "./auth-dto/register.dto";
 import { TokensDto } from "./auth-dto/token.dto";
@@ -10,6 +10,7 @@ import { AuthExceptionMessages } from "src/common/errors/auth.error";
 import { AuthMessage } from "src/common/messages/auth.message";
 import { verify } from "crypto";
 import { IAuthService } from "./auth.service.interface";
+import { ManagerRoleGuard } from "src/common/guards/manager.role.guard";
 
 
 
@@ -106,9 +107,10 @@ export class AuthController  {
     // }
 
 
-
+    @UseGuards(ManagerRoleGuard)
     @Post('register-employee') // check login hoặc chưa
-    async registerEmployee(@Body() input: RegisterDto): Promise<TokensDto | object> {
-        return await this.authService.registerEmployee(input);
+    async registerEmployee(): Promise<TokensDto | object> { //@Body() input: RegisterDto
+        return {message: "check manager."};
+        //return await this.authService.registerEmployee(input);
     }
 }

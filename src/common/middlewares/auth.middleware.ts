@@ -36,10 +36,10 @@ export class AuthMiddleware implements NestMiddleware {
             console.log("token: ", JSON.stringify(token));
             try {
                 await this.jwtService.verifyAsync(
-                token,
-                {
-                    secret: process.env.JWT_SECRET_KEY,
-                }
+                    token,
+                    {
+                        secret: process.env.JWT_SECRET_KEY,
+                    }
                 ); 
                 req['user'] = (this.jwtService.decode(token))['payload'];
                 req['token'] = token;

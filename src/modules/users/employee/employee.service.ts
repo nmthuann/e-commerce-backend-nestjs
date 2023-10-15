@@ -8,7 +8,6 @@ import { Repository } from "typeorm";
 import { IPositionService } from "../position/position.service.interface";
 import { IUserService } from "../user/user.service.interface";
 import { UserDto } from "../user/user-dto/user.dto";
-import { CreateEmployeeDto } from "./employee-dto/create-employee.dto";
 import { GetEmployeeListDto } from "./employee-dto/get-employee-list.dto";
 import * as nodemailer from 'nodemailer';
 import * as dotenv from 'dotenv';
@@ -44,7 +43,7 @@ export class EmployeeService extends BaseService<EmployeeEntity> implements IEmp
 
 
 
-  async createNewEmployee(email: string, data: CreateEmployeeDto): Promise<EmployeeEntity> {
+  async createNewEmployee(email: string, data: EmployeeDto): Promise<EmployeeEntity> {
     /**
      * 1. Create new employee Table Employee
      * 2. Update Employee Id in Table User
