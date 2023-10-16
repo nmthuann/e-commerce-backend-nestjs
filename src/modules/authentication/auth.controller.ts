@@ -1,4 +1,4 @@
-import { Body, Controller, HttpCode, HttpException, HttpStatus, Inject, Param, Post, UseGuards } from "@nestjs/common";
+import { Body, Controller, HttpCode, HttpException, HttpStatus, Inject, Param, ParseIntPipe, Post, UseGuards, UsePipes } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { RegisterDto } from "./auth-dto/register.dto";
 import { TokensDto } from "./auth-dto/token.dto";
@@ -11,6 +11,8 @@ import { AuthMessage } from "src/common/messages/auth.message";
 import { verify } from "crypto";
 import { IAuthService } from "./auth.service.interface";
 import { ManagerRoleGuard } from "src/common/guards/manager.role.guard";
+import { CreateEmployeePipeValidator } from "src/common/pipes/create-employee.validator.pipe";
+import { CreateEmployeeDto } from "./auth-dto/create-employee.dto";
 
 
 
@@ -107,10 +109,16 @@ export class AuthController  {
     // }
 
 
-    @UseGuards(ManagerRoleGuard)
-    @Post('register-employee') // check login hoặc chưa
-    async registerEmployee(): Promise<TokensDto | object> { //@Body() input: RegisterDto
-        return {message: "check manager."};
-        //return await this.authService.registerEmployee(input);
+    // @UseGuards(ManagerRoleGuard)
+    @Post('register-employee/:email') // check login hoặc chưa
+    //@UsePipes(new CreateEmployeePipeValidator())
+    async registerEmployee( 
+        @Param('email') email: string,  
+        @Body(new CreateEmployeePipeValidator()) data: CreateEmployeeDto
+    ): Promise<TokensDto | object> { //@Body() input: RegisterDto
+        
+        const position_id = parseInt(data.position_id, 10);
+        const result  = await this.authService.createEmployee(email, position_id, data);
+        return result;
     }
 }

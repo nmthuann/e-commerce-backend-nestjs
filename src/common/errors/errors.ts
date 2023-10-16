@@ -1,7 +1,8 @@
 export enum ErrorType {
-  NOT_FOUND = "Not Found!",
+  NOT_FOUND = 'Not Found!',
   PERMISSOIN_DENIED = "Permission Denied!",
   // Add more error types here
+  NO_SUCCESS = 'Thực hiện tác vụ không thành công.'
 }
 
 

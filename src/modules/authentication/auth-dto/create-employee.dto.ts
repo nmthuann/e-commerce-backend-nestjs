@@ -36,5 +36,5 @@ export class CreateEmployeeDto{
 
     employee_id: string;
 
-    position_id: number;
+    position_id?: string;
 }

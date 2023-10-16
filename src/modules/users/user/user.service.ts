@@ -18,8 +18,8 @@ export class UserService extends BaseService<UserEntity> implements IUserService
   constructor(
     @InjectRepository(UserEntity) 
     private userRepository: Repository<UserEntity>,
-    // @Inject('IAccountService')
-    // private authService: AuthService,
+    @Inject('IAccountService')
+    private accountService: IAccountService,
   ) {
     super(userRepository);
   }
@@ -73,9 +73,12 @@ export class UserService extends BaseService<UserEntity> implements IUserService
     return findEmployees;
   }
 
-  async createEmployee(data: UserDto): Promise<UserDto> {
-    return;    
-  }
+  // async createOne(data: UserDto): Promise<UserEntity> {
+
+
+  //   const findAccount = await this.accountService.getOneById()
+  //   return;    
+  // }
 
   async getUserByEmail(email: string): Promise<UserEntity> {
     const findUser = await this.userRepository

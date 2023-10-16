@@ -20,9 +20,16 @@ import { IAuthService } from "./auth.service.interface";
 import * as nodemailer from 'nodemailer';
 import * as dotenv from 'dotenv';
 import { AuthMessage } from "src/common/messages/auth.message";
-import { GuardError } from "src/common/errors/errors";
+import { ErrorType, GuardError } from "src/common/errors/errors";
+import { IUserService } from "../users/user/user.service.interface";
+import { IEmployeeService } from "../users/employee/Employee.service.interface";
+import { CreateEmployeeDto } from "./auth-dto/create-employee.dto";
+import { Message } from "src/common/messages/message";
 
 dotenv.config(); 
+
+const salary_employee = 280
+
 
 
 @Injectable()
@@ -32,6 +39,10 @@ export class AuthService implements IAuthService{
         private jwtService: JwtService, 
         @Inject('IAccountService')
         private accountService: IAccountService,
+        @Inject('IUserService')
+        private userService: IUserService,
+        @Inject('IEmployeeService')
+        private employeeService: IEmployeeService,
     ) {}
 
      async hashPassword(password: string): Promise<string> {
@@ -304,6 +315,55 @@ export class AuthService implements IAuthService{
             // Xử lý lỗi ở đây, ví dụ: ghi log lỗi hoặc thông báo cho người dùng.
             console.error('Gửi email thất bại:', error);
             throw new AuthException(AuthExceptionMessages.SEND_MAIL_FAILED);
+        }
+    }
+
+    async createEmployee(email: string, position_id: number, data: CreateEmployeeDto) {
+        try {
+            // Kiểm tra xem email đã tồn tại trong hệ thống chưa
+            const accountExists = await this.accountService.getOneById(email);
+
+            if (!accountExists) {
+                throw new Error(ErrorType.NOT_FOUND); // Nếu email không tồn tại, ném ra lỗi NOT_FOUND
+            }
+
+            // Tạo một người dùng mới
+            const newUser = await this.userService.createOne({
+                first_name: data.first_name,
+                last_name: data.last_name,
+                gender: data.gender,
+                birthday: data.birthday,
+                address: data.address,
+                phone: data.phone,
+                avatar_url: data.avatar_url || '',
+                account: email,
+            });
+            if(!newUser){
+               throw new Error(ErrorType.NO_SUCCESS);
+            }
+            else{
+                const createNewEmployee = await this.employeeService.createNewEmployee(email, {
+                    employee_id: data.employee_id,
+                    salary: salary_employee,
+                    work_status: true,
+                    position_id,
+                });
+                console.log("createNewEmployee", createNewEmployee);
+            }
+            
+            // Tạo một nhân viên mới và liên kết với người dùng
+            
+
+            return { message: Message.Success }; // Trả về kết quả thành công
+        } catch (error) {
+
+            // Xử lý lỗi cụ thể nếu có lỗi xảy ra
+            console.log(error)
+            if (error.message === ErrorType.NOT_FOUND) {
+                throw new Error(ErrorType.NOT_FOUND);
+            } else {
+                throw new Error(ErrorType.NO_SUCCESS);
+            }
         }
     }
 

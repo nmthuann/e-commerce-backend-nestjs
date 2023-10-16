@@ -11,6 +11,7 @@ import { UserDto } from "../user/user-dto/user.dto";
 import { GetEmployeeListDto } from "./employee-dto/get-employee-list.dto";
 import * as nodemailer from 'nodemailer';
 import * as dotenv from 'dotenv';
+import { ErrorType } from "src/common/errors/errors";
 
 dotenv.config(); 
 
@@ -52,7 +53,7 @@ export class EmployeeService extends BaseService<EmployeeEntity> implements IEmp
     // await queryRunner.startTransaction();
     try {
       const findPosition = await this.positionService.getOneById(data.position_id);
-      console.log(findPosition);
+
       const newEmployee = new EmployeeEntity();
       newEmployee.employee_id = data.employee_id;
       newEmployee.work_status = true;
@@ -62,27 +63,27 @@ export class EmployeeService extends BaseService<EmployeeEntity> implements IEmp
       // const employeeCreated = await queryRunner.manager.save(newEmployee);
       
       const employeeCreated = await this.employeeRepository.save(newEmployee);
+
       console.log("employeeCreated:::", employeeCreated)
 
       const findUser = await this.userService.getUserByEmail(email);
+
       console.log("findUser:::", findUser)
+
       findUser.employee = employeeCreated;
-      // const updateUser: UserEntity = 
+
+      const updateUser = 
       await this.userService.updateOneById(findUser.user_id, findUser);
-      //console.log("updateUser:::", updateUser)
+      console.log("updateUser:::", updateUser)
       
       //await queryRunner.commitTransaction();
       return employeeCreated;
       
     } catch (error) {
-      console.log(`Create New Employee lỗi ${error}`);
+      console.log(`Create New Employee lỗi::: ${error}`);
       //await queryRunner.rollbackTransaction();
-      throw error;
+      throw new Error(ErrorType.NO_SUCCESS);
     }
-    // finally {
-    //   // you need to release query runner which is manually created:
-    //   await queryRunner.release();
-    // }
   }
 
 

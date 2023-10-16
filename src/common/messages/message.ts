@@ -1,4 +1,4 @@
-enum Message {
+export enum Message {
   Success = "Thành công",
   Warning = "Cảnh báo",
   Error = "Lỗi",

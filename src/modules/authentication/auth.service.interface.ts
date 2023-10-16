@@ -2,6 +2,7 @@ import { Payload } from "../bases/types/payload.type";
 import { Tokens } from "../bases/types/token.type";
 import { AccountEntity } from "../users/account/account.entity";
 import { AuthDto } from "./auth-dto/auth.dto";
+import { CreateEmployeeDto } from "./auth-dto/create-employee.dto";
 import { RegisterDto } from "./auth-dto/register.dto";
 import { TokensDto } from "./auth-dto/token.dto";
 
@@ -19,4 +20,5 @@ export interface IAuthService{
     loginAdmin(input: AuthDto): Promise<Tokens | object | any>;
     verifyEmail(email: string): unknown;
     sendMail(receiver: string, subject: string, content: string);
+    createEmployee(email: string,position_id: number, data: CreateEmployeeDto);
 }
