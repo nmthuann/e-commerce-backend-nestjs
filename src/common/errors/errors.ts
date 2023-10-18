@@ -20,7 +20,8 @@ export enum ErrorInput{
     MAX_ERROR = "Không nhập quá ",
     MIN_ERROR = "Phải nhập đủ ",
     NOT_SELECT_FIELD = "Vui lòng chọn ",
-    
+    PRICE_INVALID = "Unit price must be less than price",
+    EMAIL_EXSIT = "Email đã tồn tại.",
 }
 
 

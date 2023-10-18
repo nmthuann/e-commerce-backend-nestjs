@@ -37,6 +37,7 @@ implements NestModule{
     configure(consumer: MiddlewareConsumer) {
         consumer.apply(AuthMiddleware)
         .exclude(
+          { path: 'auth/admin/login', method: RequestMethod.POST },
           { path: 'auth/login', method: RequestMethod.POST },
           { path: 'auth/register', method: RequestMethod.POST },
           { path: 'auth/show-list', method: RequestMethod.GET },

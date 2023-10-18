@@ -13,6 +13,7 @@ import { IAuthService } from "./auth.service.interface";
 import { ManagerRoleGuard } from "src/common/guards/manager.role.guard";
 import { CreateEmployeePipeValidator } from "src/common/pipes/create-employee.validator.pipe";
 import { CreateEmployeeDto } from "./auth-dto/create-employee.dto";
+import { RegisterCustomerDto } from "./auth-dto/register-customer.dto";
 
 
 
@@ -26,9 +27,19 @@ export class AuthController  {
   ) {}
  
     @Public()
-    @Post('register') // check login hoặc chưa
-    async register(@Body() input: RegisterDto): Promise<TokensDto | object> {
-        return await this.authService.register(input);
+    @Post('register')
+    @HttpCode(200)
+    async register(@Body() input: RegisterCustomerDto): Promise<TokensDto | object> {
+        return await this.authService.registerCustomer(input);
+    }
+
+
+    @Public()
+    @Post('login')
+    @HttpCode(200)
+    async login(@Body() login: AuthDto){
+        console.log( `<USER> ::: ${login.email} Đã vừa đăng nhập!`)
+        return await this.authService.login(login);
     }
 
 
@@ -61,42 +72,16 @@ export class AuthController  {
     }
 
 
-    // @Public()
-    // @Post('verify-otp') // check login hoặc chưa
-    // async checkOTP(@Body() data: { otp: string }){//: Promise<TokensDto | object> {
-    //     console.log("checOtp:::", data.otp)
-    //     const res = await this.authService.checkOTP(data.otp);
-    //     return res
-    // }
+
   
-    @Public()
-    @Post('login')
-    @HttpCode(200)
-    async login(@Body() login: AuthDto){
-        return await this.authService.login(login);
-        // try {
-        //     const verifyLogin = await this.authService.login(login);
-        //     // const userInfo = await this.useService.getUserByEmail(login.email);
-        //     return  {
-        //         verifyLogin,
-        //         // "user": userInfo,
-        //         "message": AuthMessage.LOGIN_SUCCESS,
-        //     }
-        // } catch (error) {
-        //     throw new HttpException({
-        //     status: HttpStatus.BAD_REQUEST,
-        //     error: AuthExceptionMessages.LOGIN_FAILED,
-        //     }, HttpStatus.BAD_REQUEST, {
-        //         cause: error
-        //     });
-        // }
-    }
+
 
 
     @Public()
     @Post('/admin/login')
+    @HttpCode(200)
     async loginAdmin(@Body() login: AuthDto){   
-        console.log(login, "Đã vừa đăng nhập!")
+        console.log( `<ADMIN> ::: ${login.email} Đã vừa đăng nhập!`)
         return await this.authService.loginAdmin(login);
     }
 
@@ -122,3 +107,12 @@ export class AuthController  {
         return result;
     }
 }
+
+
+    // @Public()
+    // @Post('verify-otp') // check login hoặc chưa
+    // async checkOTP(@Body() data: { otp: string }){//: Promise<TokensDto | object> {
+    //     console.log("checOtp:::", data.otp)
+    //     const res = await this.authService.checkOTP(data.otp);
+    //     return res
+    // }

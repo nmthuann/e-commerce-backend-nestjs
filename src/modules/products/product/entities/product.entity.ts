@@ -5,6 +5,7 @@ import { CategoryEntity } from "../../category/category.entity"
 import { ImageEntity } from "../../image/image.entity"
 import { DiscountEntity } from "../../discount/discount.entity"
 import { CartDetailEntity } from "src/modules/orders/cart/cart-detail.entity"
+import { ErrorInput } from "src/common/errors/errors"
 
 
 @Entity({name: 'Products'})
@@ -13,7 +14,7 @@ export class ProductEntity extends BaseEntity{
     product_id: number
 
     @Column({nullable: false})
-    product_name: string
+    model_name: string
 
     @Column({ default: 0 })
     vote: number
@@ -40,9 +41,9 @@ export class ProductEntity extends BaseEntity{
     @Column()
     description: string;
     @Column({type: "nvarchar", length: 100, nullable: false})
-    brand: string;  //  thương hiệu
+    operation_system: string;  //  thương hiệu
     @Column({type: "nvarchar", length: 100, nullable: false})
-    origin: string;  //  xuất xứ
+    hardware: string;  //  xuất xứ
     @Column()
     warranty_time: number  // thới gian bảo hành
 
@@ -51,10 +52,11 @@ export class ProductEntity extends BaseEntity{
     //@JoinColumn({name: 'image_id'})
     images?: ImageEntity[];
 
-    @ManyToOne(() => CategoryEntity, (category) => category.products, { lazy: true }) // 
+    @ManyToOne(() => CategoryEntity, (category) => category.products, { eager: true }) // 
+    @JoinColumn({ name: 'category_id' })
     category: CategoryEntity
 
-    @ManyToOne(() => DiscountEntity, (discount) => discount.products , { lazy: true }) //, { lazy: true }
+    @ManyToOne(() => DiscountEntity, (discount) => discount.products ,  { eager: true }) //, { lazy: true }
     @JoinColumn({ name: 'discount_id' })
     discount: DiscountEntity
 
@@ -64,9 +66,48 @@ export class ProductEntity extends BaseEntity{
     @BeforeUpdate()
     validateUnitPrice() {
         if (this.unit_price > this.price) {
-            throw new Error("Unit price must be less than price");
+            throw new Error(ErrorInput.PRICE_INVALID);
         }
     }
+
+    /**
+     * bổ sung
+     * 1. color: nvachar 50
+     * 2. battery: int
+     * 3. screen: decimal(10, 2)
+     * 4. memory: int
+     * 5. front_camera: int
+     * 6. behind_camera: int
+     * 7. ram: int
+     */
+
+    @Column({type: "nvarchar", length: 50, nullable: false})
+    color: string;
+
+    @Column({type: "int", nullable: false})
+    battery: number;
+
+    @Column({ type: "decimal", precision: 10, scale: 2, nullable: false, })
+    screen: number;
+
+    @Column({type: "int", nullable: false})
+    memory: number
+
+    @Column({type: "int", nullable: false})
+    front_camera: number;
+
+    @Column({type: "int", nullable: false})
+    behind_camera: number;
+
+    @Column({type: "int", nullable: false})
+    ram: number;
+
+
+   
+
+
+
+
 
 
     // @ManyToOne(() => CartDetailEntity, (cart_detail) => cart_detail.products)

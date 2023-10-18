@@ -20,11 +20,13 @@ import { IAuthService } from "./auth.service.interface";
 import * as nodemailer from 'nodemailer';
 import * as dotenv from 'dotenv';
 import { AuthMessage } from "src/common/messages/auth.message";
-import { ErrorType, GuardError } from "src/common/errors/errors";
+import { ErrorInput, ErrorType, GuardError } from "src/common/errors/errors";
 import { IUserService } from "../users/user/user.service.interface";
 import { IEmployeeService } from "../users/employee/Employee.service.interface";
 import { CreateEmployeeDto } from "./auth-dto/create-employee.dto";
 import { Message } from "src/common/messages/message";
+import { RegisterCustomerDto } from "./auth-dto/register-customer.dto";
+import { UserEntity } from "../users/user/user.entity";
 
 dotenv.config(); 
 
@@ -79,7 +81,7 @@ export class AuthService implements IAuthService{
     }
 
 
-  // hàm random password
+    // hàm random password
     randomPassword(length: number, base: string): string{
         //const baseString = "0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
         const getRandomInt = (min: number, max: number) => {
@@ -97,31 +99,63 @@ export class AuthService implements IAuthService{
     
 
     // đăng kí tài khoản -> Done!
-    public async register(input: RegisterDto): Promise<TokensDto | object> {
+    public async registerCustomer(input: RegisterCustomerDto): Promise<TokensDto | object> {
+
+        const accountExists = await this.accountService.getOneById(input.email);
+
+        if (!accountExists) {
+            throw new Error(ErrorInput.EMAIL_EXSIT); // Nếu email không tồn tại, ném ra lỗi NOT_FOUND
+        }
+
+        try {
+            // hash pass
+            input.password = await bcrypt.hash(input.password, 12); 
+
+            // create account
+            const createAccount = await this.accountService.createOne({
+                email: input.email,
+                password: input.password,
+            });
+
+            const tokens = await this.getTokens({
+                email: createAccount.email,
+                role: Role.User
+            });
+
+            const update = new AccountDto(
+                createAccount.email,     
+                true,
+                tokens.refresh_token,
+                createAccount.password,
+                Role.User,
+                null
+            );
+
+            const updateAccount: AccountEntity = 
+            await this.accountService.updateOneById(createAccount.email, update)
+            console.log(createAccount);
+
+            const createUser: UserEntity = await this.userService.createOne({
+                first_name: input.first_name,
+                last_name: input.last_name,
+                avatar_url: "",
+                gender: input.gender,
+                birthday: input.birthday,
+                address: "",
+                phone: input.phone,
+                account: updateAccount
+            })
+
+            return {
+                access_token: tokens.access_token,
+                first_name: createUser.first_name,    
+            };
+        } catch (error) {
+            console.log("ĐĂNG KÝ::::", error);
+            throw new Error(ErrorType.NO_SUCCESS);
+        }
+
         
-        input.password = await bcrypt.hash(input.password, 12); // hash pass
-        // create account
-        const newUser = await this.accountService.createOne(input);
-
-        const tokens = await this.getTokens({
-            email: newUser.email,
-            role: Role.User
-        });
-
-        const update = new AccountDto(
-            newUser.email,     
-            true,
-            tokens.refresh_token,
-            newUser.password,
-            Role.User,
-            null
-        );
-
-        await this.accountService.updateOneById(newUser.email, update)
-        console.log(newUser);
-
-        //const accessTokenDto = new AccessTokenDto(tokens.access_token);
-        return tokens;
     }
 
 
@@ -129,11 +163,10 @@ export class AuthService implements IAuthService{
 
       // đăng nhập 
     public async login(input: AuthDto): Promise<Tokens | object | any> {
-        // const checkUser = await this.accountUserService.CheckEmailExsit(input.email);
-        const findUser: AccountEntity = await this.accountService.getOneById(input.email);
-        console.log(findUser)
-        if (findUser){
-        const checkPass = await this.comparePassword(input.password, findUser.password);
+        const findAccount: AccountEntity = await this.accountService.getOneById(input.email);
+        // console.log(findUser)
+        if (findAccount){
+        const checkPass = await this.comparePassword(input.password, findAccount.password);
             if (!checkPass) {
                 console.log('password wrong!')
                 throw new AuthException(AuthExceptionMessages.PASSWORD_WRONG);
@@ -146,28 +179,22 @@ export class AuthService implements IAuthService{
         // write infor put in Payload
         const payload: Payload = {
             email: input.email,
-            role: findUser.role
+            role: findAccount.role
         };
         
         const tokens: Tokens = await this.getTokens(payload);
-        findUser.refresh_token = tokens.refresh_token;
-        await this.accountService.updateOneById(findUser.email, findUser);
+        findAccount.refresh_token = tokens.refresh_token;
+        await this.accountService.updateOneById(findAccount.email, findAccount);
         
-        return tokens;
+
+        const userInfo = await this.userService.getUserByEmail(input.email);
+
+        return {
+            access_token: tokens.access_token,
+            first_name: userInfo.first_name,
+        };
     }
-
-        //     // write infor put in Payload
-    //     const payload: Payload = {
-    //         email: input.email,
-    //         role: findUser.role
-    //     };
-
-    //     const tokens: Tokens = await this.getTokens(payload);
-    //     findUser.refresh_token = tokens.refresh_token;
-    //     await this.accountService.updateOneById(findUser.email, findUser);
-    //     console.log(`message: ${input.email} đăng nhập thành công!`)
-    //     return tokens;
-    // }
+    
 
     // logout -> refresh token = null -> delete cache
     public async logout(email: string): Promise<boolean> {
@@ -177,10 +204,6 @@ export class AuthService implements IAuthService{
         console.log(`${email} da dang xuat!`);
         return true;
     }
-
-
-
-
 
 
     // đăng kí tài khoản -> Done!
@@ -324,7 +347,7 @@ export class AuthService implements IAuthService{
             const accountExists = await this.accountService.getOneById(email);
 
             if (!accountExists) {
-                throw new Error(ErrorType.NOT_FOUND); // Nếu email không tồn tại, ném ra lỗi NOT_FOUND
+                throw new Error(ErrorInput.EMAIL_EXSIT); // Nếu email không tồn tại, ném ra lỗi NOT_FOUND
             }
 
             // Tạo một người dùng mới
@@ -411,4 +434,17 @@ export class AuthService implements IAuthService{
     //     } catch (error) {
     //         throw error
     //     }      
+    // }
+
+            //     // write infor put in Payload
+    //     const payload: Payload = {
+    //         email: input.email,
+    //         role: findUser.role
+    //     };
+
+    //     const tokens: Tokens = await this.getTokens(payload);
+    //     findUser.refresh_token = tokens.refresh_token;
+    //     await this.accountService.updateOneById(findUser.email, findUser);
+    //     console.log(`message: ${input.email} đăng nhập thành công!`)
+    //     return tokens;
     // }

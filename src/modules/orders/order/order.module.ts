@@ -17,8 +17,8 @@ import { ShippingModule } from "../shipping/shipping.module";
 import { PaymentModule } from "../payment/payment.module";
 import { EmployeeModule } from "src/modules/users/employee/employee.module";
 import { UserModule } from "src/modules/users/user/user.module";
-import { StripeController } from "./stripe/stripe.controller";
-import { StripeService } from "./stripe/stripe.service";
+// import { StripeController } from "./stripe/stripe.controller";
+// import { StripeService } from "./stripe/stripe.service";
 import { AdminRoleGuard } from "src/common/guards/admin.role.guard";
 import { UserRoleGuard } from "src/common/guards/user.role.guard";
 import { JwtModule } from "@nestjs/jwt";
@@ -48,13 +48,13 @@ import { JwtModule } from "@nestjs/jwt";
         UserModule,
         ProductModule,
     ],
-    controllers: [OrderController, StripeController],
+    controllers: [OrderController, ], //StripeController
     providers: [
         {
             provide: 'IOrderService',
             useClass: OrderService,
         },
-        StripeService,
+        // StripeService,
         AdminRoleGuard,
         UserRoleGuard,
     ],

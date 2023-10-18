@@ -115,6 +115,7 @@ export class ProductController {
 
     @Get(':product_id')
     async getProduct(@Param('product_id') id: number): Promise<ProductEntity> {
+        console.log("Check", id);
         return await this.productService.getOneById(id);
     }
 }

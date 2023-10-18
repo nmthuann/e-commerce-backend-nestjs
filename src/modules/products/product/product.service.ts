@@ -32,15 +32,15 @@ export class ProductService extends BaseService<ProductEntity> implements IProdu
   async createOne(data: CreateProductDto): Promise<ProductEntity> {
     try {
       const newProduct = new ProductEntity();
-      newProduct.product_name = data.product_name;
+      newProduct.model_name = data.product_name;
       newProduct.vote = data.vote;
       newProduct.price = data.price;
       newProduct.unit_price = data.unit_price;
       newProduct.quantity = data.quantity;
       newProduct.status = data.status;
       newProduct.description = data.description;
-      newProduct.brand = data.brand;
-      newProduct.origin = data.origin;
+      newProduct.operation_system = data.brand;
+      newProduct.hardware = data.origin;
       newProduct.warranty_time = data.warranty_time;
       newProduct.category = await this.categoryService.getOneById(data.category as unknown as number);
       newProduct.discount = await this.discountService.getOneById(data.discount as unknown as number);
@@ -142,7 +142,7 @@ export class ProductService extends BaseService<ProductEntity> implements IProdu
         category: {
             category_id: category_id
           }, 
-          brand: brand
+          operation_system: brand
       },
       relations: {
           category: true,

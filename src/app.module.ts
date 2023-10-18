@@ -63,10 +63,10 @@ import { AuthModule } from './modules/authentication/auth.module';
       }
     ),
 
-  // CategoryModule,
+  // 
   // DiscountModule,
   // ProductModule,
-  // ImageModule,
+  ImageModule,
   // // StoreModule,
 
   // // CartModule,
@@ -92,6 +92,8 @@ import { AuthModule } from './modules/authentication/auth.module';
 
     AuthModule,
     // EmployeeModule
+    CategoryModule,
+    ProductModule
   ],
   controllers: [AppController],
   providers: [AppService],
