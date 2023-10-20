@@ -66,7 +66,7 @@ import { AuthModule } from './modules/authentication/auth.module';
   // 
   // DiscountModule,
   // ProductModule,
-  ImageModule,
+  // ImageModule,
   // // StoreModule,
 
   // // CartModule,
@@ -81,17 +81,10 @@ import { AuthModule } from './modules/authentication/auth.module';
   // // //PositionModule,
   // AccountModule,
 
-    // CacheModule.register({
-    //   isGlobal: true,
-    //   store: redisStore,
-    //   host: 'localhost',//localhost
-    //   port: 6379,//6379
-    //   // password: 'pqTtSGQM5oHvURGfFWaO7qWcTi3kcWr8',
-    //   // ttl: 60*60*15, // seconds
-    // }),
+
 
     AuthModule,
-    // EmployeeModule
+    EmployeeModule,
     CategoryModule,
     ProductModule
   ],
@@ -100,3 +93,11 @@ import { AuthModule } from './modules/authentication/auth.module';
 })
 export class AppModule {}
   
+    // CacheModule.register({
+    //   isGlobal: true,
+    //   store: redisStore,
+    //   host: 'localhost',//localhost
+    //   port: 6379,//6379
+    //   // password: 'pqTtSGQM5oHvURGfFWaO7qWcTi3kcWr8',
+    //   // ttl: 60*60*15, // seconds
+    // }),

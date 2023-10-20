@@ -6,7 +6,9 @@ export enum ErrorType {
 }
 
 
-export enum ErrorInput{
+
+
+export enum ErrorInput {
     INPUT_INVALID = "Nhập thông tin không hợp lệ.",
     NAME_INVALID = "Tên không được chứa số hoặc khoảng trắng.",
     INPUT_WRONG_FORMAT = "Nhập thông tin sai định dạng.",
@@ -22,6 +24,7 @@ export enum ErrorInput{
     NOT_SELECT_FIELD = "Vui lòng chọn ",
     PRICE_INVALID = "Unit price must be less than price",
     EMAIL_EXSIT = "Email đã tồn tại.",
+    AuthExceptionMessages = "AuthExceptionMessages"
 }
 
 

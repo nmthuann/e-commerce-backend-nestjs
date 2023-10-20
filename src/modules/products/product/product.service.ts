@@ -32,15 +32,15 @@ export class ProductService extends BaseService<ProductEntity> implements IProdu
   async createOne(data: CreateProductDto): Promise<ProductEntity> {
     try {
       const newProduct = new ProductEntity();
-      newProduct.model_name = data.product_name;
+      newProduct.model_name = data.model_name;
       newProduct.vote = data.vote;
       newProduct.price = data.price;
       newProduct.unit_price = data.unit_price;
       newProduct.quantity = data.quantity;
       newProduct.status = data.status;
       newProduct.description = data.description;
-      newProduct.operation_system = data.brand;
-      newProduct.hardware = data.origin;
+      newProduct.operation_system = data.operation_system;
+      newProduct.hardware = data.hardware;
       newProduct.warranty_time = data.warranty_time;
       newProduct.category = await this.categoryService.getOneById(data.category as unknown as number);
       newProduct.discount = await this.discountService.getOneById(data.discount as unknown as number);
@@ -76,7 +76,6 @@ export class ProductService extends BaseService<ProductEntity> implements IProdu
        })
     return findProducts;
   }
-
 
   async getSomeFields(): Promise<Partial<ProductEntity>[]> {
     const findProducts = await this.productRepository
@@ -118,7 +117,6 @@ export class ProductService extends BaseService<ProductEntity> implements IProdu
     return findProducts;
   }
 
-
   async getProductsByPriceRange(category_id:number, maxPrice: number): Promise<ProductEntity[]> {
     return await this.productRepository.find({
       where: {
@@ -135,7 +133,6 @@ export class ProductService extends BaseService<ProductEntity> implements IProdu
     });
   }
 
-
   async getProductsByBrand(category_id:number,brand: string): Promise<ProductEntity[]> {
     return await this.productRepository.find({
       where: {
@@ -151,7 +148,6 @@ export class ProductService extends BaseService<ProductEntity> implements IProdu
         },
     });
   }
-
 
   async getProductsByFilter(category_id: number, filterDto: ProductFilterDto): Promise<ProductEntity[]> {
     const {price, brand } = filterDto;
@@ -179,8 +175,6 @@ export class ProductService extends BaseService<ProductEntity> implements IProdu
     const result = await query.getRawMany();
     return result.map((item) => item.brand);
   }
-
-
 
   async getProductsByIds(data: GetProductForOrderDto[]): Promise<ProductEntity[]>{
     const productIds: number[] = data.map((product) => product.product_id);
@@ -216,10 +210,21 @@ export class ProductService extends BaseService<ProductEntity> implements IProdu
     return products;
   }
 
-
   async getProductsByProductIds(ids: number[]): Promise<ProductEntity[]> {  
     const findProducts = await this.productRepository.findByIds(ids);
     return findProducts;
+  }
+
+  async getNewestProducts(topProduct: number): Promise<ProductEntity[]> {
+     const newestProducts = await this.productRepository
+    .createQueryBuilder('product')
+    .leftJoinAndSelect('product.images', 'image') 
+    .where('product.status = :status', { status: true })
+    .orderBy('product.created_at', 'DESC')
+    .limit(topProduct)
+    .getMany();
+
+    return newestProducts;
   }
 
 }

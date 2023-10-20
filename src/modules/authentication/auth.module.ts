@@ -42,7 +42,8 @@ implements NestModule{
           { path: 'auth/register', method: RequestMethod.POST },
           { path: 'auth/show-list', method: RequestMethod.GET },
           { path: 'auth/logout', method: RequestMethod.POST },
-          { path: 'auth/register-employee/:email', method: RequestMethod.POST },
+          { path: 'auth/register-employee', method: RequestMethod.POST },
+          // { path: 'auth/register-employee/:email', method: RequestMethod.POST },
         )
         .forRoutes(AuthController);
     }

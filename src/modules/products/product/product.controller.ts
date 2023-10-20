@@ -2,8 +2,7 @@ import { Body, Controller, Inject,  Post, Put, Delete, Get, Param, Query } from 
 import { IProductService } from "./product.service.interface";
 import { ProductDto } from "./product-dto/product.dto";
 import { ProductEntity } from "./entities/product.entity";
-import { plainToClass } from "class-transformer";
-import { ProductFilterDto } from "./product-dto/product-filter.dto";
+
 import { GetProductForOrderDto } from "./product-dto/get-product-order.dto";
 
 // working with DTO
@@ -15,10 +14,11 @@ export class ProductController {
     ) {}
 
     @Post('create')
-    async createProduct(@Body() product: ProductDto): Promise<ProductEntity> {
-        console.log("Create Product")
-        const createProduct = await this.productService.createOne(product);
-        return createProduct // plainToClass(ProductDto, createProduct)
+    async createProduct(@Body() product: ProductDto) { //: Promise<ProductEntity>
+        console.log("Create Product", product)
+        // const createProduct = await this.productService.createOne(product);
+        // return createProduct // plainToClass(ProductDto, createProduct)
+        return;
     }
 
 
@@ -33,11 +33,6 @@ export class ProductController {
         console.log(await this.productService.deleteOneById(id));
     }
 
-    
-    // @Get('get-products')
-    // async getProducts(): Promise<Partial<ProductEntity>[]> {
-    //     return await this.productService.getSomeFields();
-    // }
 
     @Get('get-products/category?')
     async getProductsByCategoryId(
@@ -45,6 +40,51 @@ export class ProductController {
     ): Promise<ProductEntity[]> {   
         return await this.productService.getProductsByCategoryId(category_id);
     }
+
+
+    @Get('get-newest-products')
+    async getNewestProducts(): Promise<ProductEntity[]> {
+        const topProduct: number = 15;
+        return await this.productService.getNewestProducts(topProduct);
+       
+    }
+
+    @Get('get-products')
+    async getProducts(): Promise<ProductEntity[]> {
+        return await this.productService.getAll();  
+    }
+
+
+
+    @Get('get-some-field')
+    async getProductsSomeField(): Promise<Partial< ProductEntity>[]> {
+        console.log("getProductsSomeField:::");
+        return await this.productService.getSomeFields()
+;    }
+
+
+    @Get('get-product-ids')
+    async getProductsByIds(@Body() data: GetProductForOrderDto[]): Promise<ProductEntity[]> {
+        console.log("getProductsByIds - Controller:::", data);
+        return await this.productService.getProductsByIds(data);
+    }
+
+
+    @Get('get-product-by-ids')
+    async getProductsByProductIds(@Body() data: { productIds: number[] }): Promise<ProductEntity[]> {
+        console.log("getProductsByProductIds - Controller:::", data);
+        const productIds = data.productIds;
+        return await this.productService.getProductsByProductIds(productIds);
+    }
+
+
+
+    @Get(':product_id')
+    async getProduct(@Param('product_id') id: number): Promise<ProductEntity> {
+        console.log("Check", id);
+        return await this.productService.getOneById(id);
+    }
+}
 
 
     // @Get('get-products/price?')
@@ -77,45 +117,15 @@ export class ProductController {
     // }
 
 
-    @Get('get-products')
-    async getProducts(): Promise<ProductEntity[]> {
-        return await this.productService.getAll();  
-    }
+        // @Get('get-products')
+    // async getProducts(): Promise<Partial<ProductEntity>[]> {
+    //     return await this.productService.getSomeFields();
+    // }
 
-    // @Get('get-products/brand/:category_id')
+
+        // @Get('get-products/brand/:category_id')
     // async getProductBrandsByCategoryId(
     //     @Param('category_id') category_id: number
     // ): Promise<string[]> {
     //     return await this.productService.getProductBrandByCategoryId(category_id);  
     // }
-
-
-    @Get('get-some-field')
-    async getProductsSomeField(): Promise<Partial< ProductEntity>[]> {
-        console.log("getProductsSomeField:::");
-        return await this.productService.getSomeFields()
-;    }
-
-
-    @Get('get-product-ids')
-    async getProductsByIds(@Body() data: GetProductForOrderDto[]): Promise<ProductEntity[]> {
-        console.log("getProductsByIds - Controller:::", data);
-        return await this.productService.getProductsByIds(data);
-    }
-
-
-    @Get('get-product-by-ids')
-    async getProductsByProductIds(@Body() data: { productIds: number[] }): Promise<ProductEntity[]> {
-        console.log("getProductsByProductIds - Controller:::", data);
-        const productIds = data.productIds;
-        return await this.productService.getProductsByProductIds(productIds);
-    }
-
-
-
-    @Get(':product_id')
-    async getProduct(@Param('product_id') id: number): Promise<ProductEntity> {
-        console.log("Check", id);
-        return await this.productService.getOneById(id);
-    }
-}

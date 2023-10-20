@@ -9,21 +9,14 @@ export class AccountDto {
     @IsNotEmpty()
     @IsEmail()
     email: string;
-
     status: boolean;
-
     refresh_token: string;
-
     role: Role;
-
-   
     // @IsNotEmpty()
     // @Exclude({
     //     toPlainOnly: true
     // })
     password!: string;
-
-
     user: UserDto;
 
 

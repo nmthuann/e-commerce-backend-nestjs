@@ -23,4 +23,6 @@ import { DiscountModule } from "../discount/discount.module";
     ],
     exports: ['IProductService',]
 })
-export class ProductModule {}
+export class ProductModule {
+    
+}

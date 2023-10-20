@@ -35,14 +35,15 @@ export class AuthMiddleware implements NestMiddleware {
             // const token: string = req.get('Authorization').replace('Bearer', '').trim();
             console.log("token: ", JSON.stringify(token));
             try {
-                await this.jwtService.verifyAsync(
-                    token,
-                    {
-                        secret: process.env.JWT_SECRET_KEY,
-                    }
-                ); 
+                // await this.jwtService.verifyAsync(
+                //     token,
+                //     {
+                //         secret: process.env.JWT_SECRET_KEY,
+                //     }
+                // ); 
                 req['user'] = (this.jwtService.decode(token))['payload'];
                 req['token'] = token;
+                console.log(req['user'])
                 next(); // -> guard (1) -> qua bước phân quyền
             }
              catch (error) { 

@@ -8,7 +8,7 @@ import { AccountService } from "./account.service";
     imports:[
        TypeOrmModule.forFeature([AccountEntity])
     ],
-    // controllers: [AccountController],
+    // /controllers: [AccountController],
     providers: [
         {
             provide: 'IAccountService',

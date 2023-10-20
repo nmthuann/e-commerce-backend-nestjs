@@ -40,47 +40,48 @@ export class OrderDetailService extends BaseService<OrderDetailEntity> implement
 
 
     async getTotalPriceByOrderId(order_id: number): Promise<number> {
-        try {
-            //const orderDetails = await this.findOrderDetailByOrderId(order_id);
-            const orderDetails = await this.orderDetailRepository.find({
-            where: {
-                order_id: order_id,
-            },
-                relations: ['product'], // To also fetch the product details for each order detail
-            });
-            console.log("orderDetails :::", orderDetails )
-            // Calculate the total price
-            let totalPrice = 0;
+        return 0;
+        // try {
+        //     //const orderDetails = await this.findOrderDetailByOrderId(order_id);
+        //     const orderDetails = await this.orderDetailRepository.find({
+        //     where: {
+        //         order_id: order_id,
+        //     },
+        //         relations: ['product'], // To also fetch the product details for each order detail
+        //     });
+        //     console.log("orderDetails :::", orderDetails )
+        //     // Calculate the total price
+        //     let totalPrice = 0;
             
-            // Get the current date
-            const now = new Date();
+        //     // Get the current date
+        //     const now = new Date();
 
 
-            for (const orderDetail of orderDetails) {
-            const { quantity, product } = orderDetail;
+        //     for (const orderDetail of orderDetails) {
+        //     const { quantity, product } = orderDetail;
 
-                if (product) {
-                    // Fetch the product to get the discount
-                    const findDiscount: ProductDto = await this.productService.getOneById(product.product_id);
-                    console.log("findDiscount:::", findDiscount)
+        //         if (product) {
+        //             // Fetch the product to get the discount
+        //             const findDiscount: ProductDto = await this.productService.getOneById(product.product_id);
+        //             console.log("findDiscount:::", findDiscount)
 
-                    // Check if the product has a discount and the discount is not expired
-                    if (findDiscount.__discount__ && findDiscount.__discount__.expired >= now) {
-                        // Apply the discount to the price
-                        totalPrice += quantity * (product.price - (product.price * (findDiscount.__discount__.percent / 100)));
-                        console.log("totalPrice:::", totalPrice)
-                    } else {
-                        // No discount or discount has expired, calculate the price without discount
-                        totalPrice += quantity * product.price;
-                    }
-                }
-            }
+        //             // Check if the product has a discount and the discount is not expired
+        //             if (findDiscount.__discount__ && findDiscount.__discount__.expired >= now) {
+        //                 // Apply the discount to the price
+        //                 totalPrice += quantity * (product.price - (product.price * (findDiscount.__discount__.percent / 100)));
+        //                 console.log("totalPrice:::", totalPrice)
+        //             } else {
+        //                 // No discount or discount has expired, calculate the price without discount
+        //                 totalPrice += quantity * product.price;
+        //             }
+        //         }
+        //     }
 
-        return totalPrice;
-        } catch (error) {
-            console.error('Error calculating total price:', error.message);
-            throw error;
-        }
+        // return totalPrice;
+        // } catch (error) {
+        //     console.error('Error calculating total price:', error.message);
+        //     throw error;
+        // }
     }
 
 

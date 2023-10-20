@@ -100,10 +100,10 @@ export class AuthService implements IAuthService{
 
     // đăng kí tài khoản -> Done!
     public async registerCustomer(input: RegisterCustomerDto): Promise<TokensDto | object> {
-
+        console.log("registerCustomer", input)
         const accountExists = await this.accountService.getOneById(input.email);
 
-        if (!accountExists) {
+        if (accountExists) {
             throw new Error(ErrorInput.EMAIL_EXSIT); // Nếu email không tồn tại, ném ra lỗi NOT_FOUND
         }
 

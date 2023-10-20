@@ -14,6 +14,8 @@ import { ManagerRoleGuard } from "src/common/guards/manager.role.guard";
 import { CreateEmployeePipeValidator } from "src/common/pipes/create-employee.validator.pipe";
 import { CreateEmployeeDto } from "./auth-dto/create-employee.dto";
 import { RegisterCustomerDto } from "./auth-dto/register-customer.dto";
+import { ErrorInput, ErrorType } from "src/common/errors/errors";
+import { AdminRoleGuard } from "src/common/guards/admin.role.guard";
 
 
 
@@ -39,13 +41,33 @@ export class AuthController  {
     @HttpCode(200)
     async login(@Body() login: AuthDto){
         console.log( `<USER> ::: ${login.email} Đã vừa đăng nhập!`)
-        return await this.authService.login(login);
+        // try {
+        //     const result = await this.authService.login(login);
+        //     return result;
+        // } catch (error) {
+        //     if (error.message === AuthExceptionMessages.PASSWORD_WRONG) {
+        //         return {
+                   
+        //             message: AuthExceptionMessages.PASSWORD_WRONG
+        //         }
+        //     } else if (error.message === AuthExceptionMessages.LOGIN_FAILED){
+        //         return {
+                   
+        //             message: AuthExceptionMessages.LOGIN_FAILED
+        //         }
+        //     }
+        //     else{
+        //         throw new Error(ErrorType.NO_SUCCESS);
+        //     }
+        // }
+       return await this.authService.login(login);
     }
 
 
-    @Public()
-    @HttpCode(200)
+    // @Public()
+    // @UseGuards(ManagerRoleGuard)
     @Post('verify-email')
+    @HttpCode(200)
     async verifyEmail(@Body() data: { email: string }) { //: Promise<TokensDto | object>
         try {
             const res = await this.authService.verifyEmail(data.email);
@@ -94,17 +116,24 @@ export class AuthController  {
     // }
 
 
-    // @UseGuards(ManagerRoleGuard)
+    @UseGuards(ManagerRoleGuard)
     @Post('register-employee/:email') // check login hoặc chưa
     //@UsePipes(new CreateEmployeePipeValidator())
     async registerEmployee( 
-        @Param('email') email: string,  
+        @Param('email') email: string,   
         @Body(new CreateEmployeePipeValidator()) data: CreateEmployeeDto
     ): Promise<TokensDto | object> { //@Body() input: RegisterDto
         
         const position_id = parseInt(data.position_id, 10);
         const result  = await this.authService.createEmployee(email, position_id, data);
         return result;
+    }
+
+    // @Public()
+    @Post('register-employee')
+    @HttpCode(200)
+    async testCreateAccount(@Body() input: RegisterDto): Promise<TokensDto | object> {
+        return await this.authService.registerEmployee(input);
     }
 }
 
