@@ -24,7 +24,8 @@ export enum ErrorInput {
     NOT_SELECT_FIELD = "Vui lòng chọn ",
     PRICE_INVALID = "Unit price must be less than price",
     EMAIL_EXSIT = "Email đã tồn tại.",
-    AuthExceptionMessages = "AuthExceptionMessages"
+    AuthExceptionMessages = "AuthExceptionMessages.",
+    EMAIL_NOT_FOUND = "Không tìm thấy email."
 }
 
 
@@ -50,4 +51,8 @@ export enum GuardError{
 
 export enum PipeError{
   VALIDATOR_MISSING = "Dữ liệu thiếu."
+}
+
+export enum ProductError{
+  CREATE_PRODUCT_ERROR = "Đã xảy ra lỗi khi tạo một sản phẩm."
 }

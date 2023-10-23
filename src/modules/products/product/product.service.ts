@@ -13,6 +13,7 @@ import { DiscountEntity } from "../discount/discount.entity";
 import { CreateProductDto } from "./product-dto/create-product.dto";
 import { ProductFilterDto } from "./product-dto/product-filter.dto";
 import { GetProductForOrderDto } from "./product-dto/get-product-order.dto";
+import { ProductError } from "src/common/errors/errors";
 
 @Injectable()
 export class ProductService extends BaseService<ProductEntity> implements IProductService {
@@ -33,22 +34,31 @@ export class ProductService extends BaseService<ProductEntity> implements IProdu
     try {
       const newProduct = new ProductEntity();
       newProduct.model_name = data.model_name;
-      newProduct.vote = data.vote;
       newProduct.price = data.price;
       newProduct.unit_price = data.unit_price;
       newProduct.quantity = data.quantity;
-      newProduct.status = data.status;
+      newProduct.status = true;
       newProduct.description = data.description;
       newProduct.operation_system = data.operation_system;
       newProduct.hardware = data.hardware;
       newProduct.warranty_time = data.warranty_time;
-      newProduct.category = await this.categoryService.getOneById(data.category as unknown as number);
-      newProduct.discount = await this.discountService.getOneById(data.discount as unknown as number);
+      newProduct.screen = data.screen,
+      newProduct.vote = 0;
+      newProduct.color = data.color;
+      newProduct.battery = data.battery;
+      newProduct.memory = data.memory;
+      newProduct.front_camera = data.front_camera;
+      newProduct.behind_camera = data.behind_camera;
+      newProduct.ram =data.ram;
+      newProduct.category = await this.categoryService.getOneById(data.category_id as unknown as number);
+      newProduct.discount = await this.discountService.getOneById(data.discount_id as unknown as number);
       const createProduct = await this.productRepository.save(newProduct);
       
-      return createProduct ;
+      return createProduct;
     } catch (error) {
-      throw new Error(`An unexpected error occurred while creating the Product ${error}`);
+      // throw new Error(`An unexpected error occurred while creating the Product ${error}`);
+      console.log(`${error}`);
+      throw new Error(ProductError.CREATE_PRODUCT_ERROR);
     }
   }
 

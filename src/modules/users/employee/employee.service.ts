@@ -91,7 +91,7 @@ export class EmployeeService extends BaseService<EmployeeEntity> implements IEmp
     
     const getEmployeeList: GetEmployeeListDto[] = [];
     const findEmployees = await this.getAll();
-    console.log(findEmployees)
+    // console.log(findEmployees)
 
     for(const employee of findEmployees){
       const getEmployee = new GetEmployeeListDto();

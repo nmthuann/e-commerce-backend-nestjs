@@ -86,7 +86,8 @@ import { AuthModule } from './modules/authentication/auth.module';
     AuthModule,
     EmployeeModule,
     CategoryModule,
-    ProductModule
+    ProductModule,
+    ImageModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -24,7 +24,7 @@ import { ErrorInput, ErrorType, GuardError } from "src/common/errors/errors";
 import { IUserService } from "../users/user/user.service.interface";
 import { IEmployeeService } from "../users/employee/Employee.service.interface";
 import { CreateEmployeeDto } from "./auth-dto/create-employee.dto";
-import { Message } from "src/common/messages/message";
+import { AuthMessages, Message } from "src/common/messages/message";
 import { RegisterCustomerDto } from "./auth-dto/register-customer.dto";
 import { UserEntity } from "../users/user/user.entity";
 
@@ -104,7 +104,8 @@ export class AuthService implements IAuthService{
         const accountExists = await this.accountService.getOneById(input.email);
 
         if (accountExists) {
-            throw new Error(ErrorInput.EMAIL_EXSIT); // Nếu email không tồn tại, ném ra lỗi NOT_FOUND
+            // throw new Error
+            return {message: ErrorInput.EMAIL_EXSIT}; // Nếu email không tồn tại, ném ra lỗi NOT_FOUND
         }
 
         try {
@@ -169,11 +170,13 @@ export class AuthService implements IAuthService{
         const checkPass = await this.comparePassword(input.password, findAccount.password);
             if (!checkPass) {
                 console.log('password wrong!')
-                throw new AuthException(AuthExceptionMessages.PASSWORD_WRONG);
+                // throw new AuthException(AuthExceptionMessages.PASSWORD_WRONG);
+                return {message: AuthExceptionMessages.PASSWORD_WRONG};
             }
-        } 
+        }  
         else{
-            throw new AuthException(AuthExceptionMessages.LOGIN_INVAILD);
+            // throw new AuthException(AuthExceptionMessages.LOGIN_INVAILD);
+            return {message: AuthExceptionMessages.LOGIN_INVAILD};
         }
 
         // write infor put in Payload
@@ -231,7 +234,7 @@ export class AuthService implements IAuthService{
             updateAccount.user = null;
 
             const createdAccount: AccountEntity = await this.accountService.updateOneById(newUser.email, updateAccount)
-            console.log(newUser);
+            // console.log(newUser);
 
             //const accessTokenDto = new AccessTokenDto(tokens.access_token);
             return createdAccount;
@@ -288,9 +291,11 @@ export class AuthService implements IAuthService{
     async verifyEmail(email: string): Promise<string | any>{
         const checkUser = await this.accountService.getOneById(email);
         if (checkUser) {
-            return {message: AuthExceptionMessages.EMAIL_EXSIT};
+            return {message: AuthExceptionMessages.EMAIL_EXIST};
         }
         else{
+            // return {message: AuthMessage.SEND_MAIL_SUCCESS};
+
             try {
                 const baseString ="0123456789";
                 const defaulPassword = this.randomPassword(8, baseString)
@@ -347,7 +352,7 @@ export class AuthService implements IAuthService{
             const accountExists = await this.accountService.getOneById(email);
 
             if (!accountExists) {
-                throw new Error(ErrorInput.EMAIL_EXSIT); // Nếu email không tồn tại, ném ra lỗi NOT_FOUND
+                 return {message: ErrorInput.EMAIL_NOT_FOUND}; // Nếu email không tồn tại, ném ra lỗi NOT_FOUND
             }
 
             // Tạo một người dùng mới
@@ -361,8 +366,9 @@ export class AuthService implements IAuthService{
                 avatar_url: data.avatar_url || '',
                 account: email,
             });
+            console.log(newUser);
             if(!newUser){
-               throw new Error(ErrorType.NO_SUCCESS);
+               return {message: ErrorType.NO_SUCCESS};
             }
             else{
                 const createNewEmployee = await this.employeeService.createNewEmployee(email, {
@@ -377,7 +383,7 @@ export class AuthService implements IAuthService{
             // Tạo một nhân viên mới và liên kết với người dùng
             
 
-            return { message: Message.Success }; // Trả về kết quả thành công
+            return { message: AuthMessages.CREATE_EMPLOYEE_SUCCESS }; // Trả về kết quả thành công 
         } catch (error) {
 
             // Xử lý lỗi cụ thể nếu có lỗi xảy ra

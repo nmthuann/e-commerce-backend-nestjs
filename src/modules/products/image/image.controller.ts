@@ -2,6 +2,7 @@ import { Body, Controller, Inject, Param, Post, Put, Delete, Get } from "@nestjs
 import { IImageService } from "./image.service.interface";
 import { ImageDto, InsertImageDto } from "./image.dto";
 import { ImageEntity } from "./image.entity";
+import { InsertImagesDto } from "./create-image.dto";
 
 @Controller('image') 
 export class ImageController {
@@ -13,6 +14,15 @@ export class ImageController {
     @Post('create')
     async createImage(@Body() image: ImageDto): Promise<ImageEntity> {
         return await this.imageService.createOne(image);
+    }
+
+    @Post('insert-images/:product_id')
+    async insertImages(@Param('product_id') product_id: string, @Body() data: any){//: Promise<ImageEntity[]> {
+        const product = parseInt(product_id,10);
+        console.log("get::",data, "product_id", product)
+        const result = await this.imageService.insertImages(product, data);
+        console.log("result",result)
+        return result
     }
 
     // @Post('create-images')

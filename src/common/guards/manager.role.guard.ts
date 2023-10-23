@@ -38,7 +38,7 @@ export class ManagerRoleGuard implements CanActivate {
             request['email'] = payload['email'];
             return true;
           }
-          return false;
+         throw new ForbiddenException(GuardError.ACCESS_DENIED); 
         }
       }
     }  

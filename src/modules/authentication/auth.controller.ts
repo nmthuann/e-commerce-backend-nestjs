@@ -32,7 +32,9 @@ export class AuthController  {
     @Post('register')
     @HttpCode(200)
     async register(@Body() input: RegisterCustomerDto): Promise<TokensDto | object> {
-        return await this.authService.registerCustomer(input);
+        const result = await this.authService.registerCustomer(input);
+        console.log(result);
+        return result;
     }
 
 
@@ -65,16 +67,13 @@ export class AuthController  {
 
 
     // @Public()
-    // @UseGuards(ManagerRoleGuard)
+    @UseGuards(ManagerRoleGuard)
     @Post('verify-email')
     @HttpCode(200)
     async verifyEmail(@Body() data: { email: string }) { //: Promise<TokensDto | object>
-        try {
-            const res = await this.authService.verifyEmail(data.email);
-            return res; // 1: email || 2: message
-        } catch (error) {
-            throw new AuthException(AuthExceptionMessages.VERIFY_MAIL_FAILED);
-        }
+        console.log(data.email)
+        const res = await this.authService.verifyEmail(data.email);
+        return res
     }
 
 

@@ -14,11 +14,11 @@ export class ProductController {
     ) {}
 
     @Post('create')
-    async createProduct(@Body() product: ProductDto) { //: Promise<ProductEntity>
+    async createProduct(@Body() product: ProductDto) : Promise<ProductEntity>{
         console.log("Create Product", product)
         // const createProduct = await this.productService.createOne(product);
         // return createProduct // plainToClass(ProductDto, createProduct)
-        return;
+        return await this.productService.createOne(product);
     }
 
 
