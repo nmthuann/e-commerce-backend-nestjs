@@ -36,9 +36,16 @@ export class OrderDetailController {
     //     return await this.orderDetailService.findOrderDetailByOrderId(5);
     // }
 
+    // @Get('get-total-price/:order_id')
+    // async getTotalPrice(@Param('order_id') order_id: number) {
+    //     return await this.orderDetailService.getTotalPriceByOrderId(order_id);
+    // }
+
 
     @Get(':id')
     async getOrderDetail(@Param('id') id: number): Promise<OrderDetailEntity> {
         return await this.orderDetailService.getOneById(id);
     }
+
+
 }

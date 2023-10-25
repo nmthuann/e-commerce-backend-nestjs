@@ -43,25 +43,6 @@ export class AuthController  {
     @HttpCode(200)
     async login(@Body() login: AuthDto){
         console.log( `<USER> ::: ${login.email} Đã vừa đăng nhập!`)
-        // try {
-        //     const result = await this.authService.login(login);
-        //     return result;
-        // } catch (error) {
-        //     if (error.message === AuthExceptionMessages.PASSWORD_WRONG) {
-        //         return {
-                   
-        //             message: AuthExceptionMessages.PASSWORD_WRONG
-        //         }
-        //     } else if (error.message === AuthExceptionMessages.LOGIN_FAILED){
-        //         return {
-                   
-        //             message: AuthExceptionMessages.LOGIN_FAILED
-        //         }
-        //     }
-        //     else{
-        //         throw new Error(ErrorType.NO_SUCCESS);
-        //     }
-        // }
        return await this.authService.login(login);
     }
 
@@ -77,7 +58,7 @@ export class AuthController  {
     }
 
 
-    @Public()
+    @Public() 
     @HttpCode(200)
     @Post('send-email')
     async sendEmail(@Body() data: { email: string }) { //: Promise<TokensDto | object>

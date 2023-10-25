@@ -26,6 +26,9 @@ import { OrderStatus } from "src/modules/bases/enums/order-status.enum";
 import { Role } from "src/modules/bases/enums/role.enum";
 import { OrderOnlineDto } from "./order-dto/order-online.dto";
 import { OrderOfflineDto } from "./order-dto/order-offline.dto";
+import { OrderError, ProductError } from "src/common/errors/errors";
+
+
 
 @Injectable()
 export class OrderService extends BaseService<OrderEntity> implements IOrderService{
@@ -33,24 +36,33 @@ export class OrderService extends BaseService<OrderEntity> implements IOrderServ
     @InjectRepository(OrderEntity) 
     private orderRepository: Repository<OrderEntity>,
 
+    //  ORDER
     @Inject('IShippingService')
     private shippingService: IShippingService,
     @Inject('IDiscountService')
     private discountService: IDiscountService,
     @Inject('IPaymentService')
     private paymnetService: IPaymentService,
+    @Inject('IOrderDetailService')
+    private orderDetailService: IOrderDetailService,
+
+    //  PRODUCT
     @Inject('IProductService')
     private productService: IProductService,
+
+    // USER
     @Inject('IUserService')
     private userService: IUserService,
     @Inject('IEmployeeService')
     private employeeService: IEmployeeService,
-    @Inject('IOrderDetailService')
-    private orderDetailService: IOrderDetailService,
-
 
     ) {
         super(orderRepository);
+    }
+
+
+    async getTotalPriceByOrderId(order_id: number): Promise<number> {
+        return await this.orderDetailService.getTotalPriceByOrderId(order_id);
     }
 
 
@@ -346,23 +358,80 @@ export class OrderService extends BaseService<OrderEntity> implements IOrderServ
         return aggregatedRevenue;
     }
 
-    async createNewOrderOnline(data: OrderOnlineDto, productIds: number[]): Promise<OrderEntity> {
+    
+    // data: OrderOnlineDto,
+    async createOrderOnline(customer: string, productIds: number[]): Promise<OrderEntity> {
+
+        
+
+        let calculattingTotalPrice = 0
+
         const findPayment  = await this.paymnetService.getOneById(2);
-        const findShipping = await this.shippingService.getOneById(data.discount_id);
-        let findDiscount = null;
-        if(data.discount_id !== null){
-            findDiscount = await this.discountService.getOneById(data.discount_id);
-        }
+        const findUser = await this.userService.getUserByEmail(customer);
+
         const newOrder = new OrderEntity();
-        newOrder.user = null;
+        newOrder.user = findUser;
+        newOrder.payment = findPayment;
+        newOrder.status = OrderStatus.Pending;
+     
+        // giá trị khởi tạo
+        newOrder.total_price = 0;
+        newOrder.contact = null;
+        newOrder.delivery_address = null;
+        newOrder.discount = null;
+        newOrder.shipping = null;
         newOrder.employee = null;
-        newOrder.payment = findPayment
-        newOrder.status = 'pending';
-        newOrder.discount = findDiscount;
-        newOrder.shipping = findShipping;
+
         const orderCreated = await this.createOne(newOrder);
         console.log(orderCreated);
-        return orderCreated;
+
+        //  TÍNH TOÁN GIÁ TRỊ - CREATE ORDER DETAIL
+        try {
+            const getProductsByIds = await this.productService.getProductsByProductIds(productIds);
+            const orderDetailCreated = getProductsByIds.map(async (product) => { //, index
+                const newOrderDetail = new OrderDetailEntity();
+                newOrderDetail.order_id = orderCreated.order_id;
+                newOrderDetail.product_id = product.product_id;
+                newOrderDetail.quantity = 1;
+                newOrderDetail.product = product;
+                newOrderDetail.order = orderCreated;
+                
+                // product.quantity -= data.order_detail[index].quantity;
+                // console.log("test:::", test)
+                // cập nhật số lượng 
+                product.quantity = product.quantity - 1;
+                await this.productService.updateOneById(product.product_id, product);
+                await this.orderDetailService.createOne(newOrderDetail);
+            })
+            console.log("orderDetailCreated::::",await Promise.all(orderDetailCreated));
+
+            // TỔNG TIỀN
+            const getTotalPriceInOrderDetail = 
+                await this.orderDetailService.getTotalPriceByOrderId(orderCreated.order_id);
+
+            // THÀNH TIỀN = TOTAL + SHIP_COST
+            const findShipping: ShippingEntity = await this.shippingService.getOneById(2);
+            calculattingTotalPrice = findShipping.ship_cost + getTotalPriceInOrderDetail;
+          
+            //  UPDATE ORDER
+            const updateOrder = new OrderEntity();
+            updateOrder.order_id = orderCreated.order_id;
+            updateOrder.total_price = calculattingTotalPrice;
+            updateOrder.status = orderCreated.status;
+            updateOrder.payment = findPayment;
+            updateOrder.shipping = findShipping;
+            updateOrder.user = findUser;
+            updateOrder.employee = null;
+            updateOrder.discount = null;
+
+            return await this.orderRepository.save(updateOrder);
+
+        } catch (error) {
+            console.error('Error calculating total price:', error.message);
+            await this.deleteOneById(orderCreated.order_id);
+            throw new Error(OrderError.CREATE_ORDER_ONLINE_ERROR);   
+        }
+        // return orderCreated;
     }
 
 

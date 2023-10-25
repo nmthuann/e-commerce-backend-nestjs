@@ -110,6 +110,14 @@ export class OrderController {
     }
 
 
+    
+    @Get('get-total-price/:order_id')
+    async getTotalPrice(@Param('order_id') order_id: number) {
+        return await this.orderService.getTotalPriceByOrderId(order_id);
+    }
+    
+
+
     @Get(':id')
     async getOrder(@Param('id') id: number): Promise<OrderEntity> {
         return await this.orderService.getOneById(id);

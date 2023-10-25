@@ -19,6 +19,7 @@ export interface IOrderService extends IBaseService<OrderEntity> {
     getCountProductSold():Promise<number>;
     getOrdersHasCompletedStatus():Promise<OrderEntity[]>;
     getRevenueByMonth(): Promise<RevenueByMonth>;
-    createNewOrderOnline(data: OrderOnlineDto, productIds: number[]): Promise<OrderEntity>;
-    createNewOrderOffline( data: OrderOfflineDto):Promise<OrderEntity>; //email: string, 
+    getTotalPriceByOrderId(order_id: number): Promise<number>;
+    createOrderOnline(customer: string, productIds: number[]): Promise<OrderEntity>;
+    createNewOrderOffline(data: OrderOfflineDto):Promise<OrderEntity>; //email: string, 
 }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   

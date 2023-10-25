@@ -36,7 +36,9 @@ import { CacheModule } from '@nestjs/cache-manager';
 import { StoreModule } from './modules/apis/store/store.module';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './modules/authentication/auth.module';
+import { StripeModule } from './modules/orders/stripe/stripe.module';
 // import { CacheModule } from '@nestjs/cache-manager';
+
 
 
 
@@ -86,8 +88,10 @@ import { AuthModule } from './modules/authentication/auth.module';
     AuthModule,
     EmployeeModule,
     CategoryModule,
-    ProductModule,
+    // ProductModule,
     ImageModule,
+    StripeModule,
+    OrderModule
   ],
   controllers: [AppController],
   providers: [AppService],

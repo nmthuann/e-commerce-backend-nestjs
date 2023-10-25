@@ -9,6 +9,7 @@ import { IProductService } from "../product/product.service.interface";
 import { IImageService } from "./image.service.interface";
 import { InsertImagesDto } from "./create-image.dto";
 import { ImageDto } from "./image.dto";
+import { ImageError } from "src/common/errors/errors";
 
 @Injectable()
 export class ImageService extends BaseService<ImageEntity> implements IImageService {
@@ -70,6 +71,7 @@ for (const item of data) {
         console.log(insertedImage);
       } catch (error) {
         console.error('Lỗi trong quá trình lưu hình ảnh:', error);
+        throw Error(ImageError.CREATE_IMAGE_ERROR)
       }
     }
 return insertedImages;

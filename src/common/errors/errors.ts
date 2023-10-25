@@ -54,5 +54,29 @@ export enum PipeError{
 }
 
 export enum ProductError{
-  CREATE_PRODUCT_ERROR = "Đã xảy ra lỗi khi tạo một sản phẩm."
+  CREATE_PRODUCT_ERROR = "Đã xảy ra lỗi khi tạo một sản phẩm.",
+  PRODUCT_INVENTORY_ERROR = "Số lượng sản phẩm không đủ.",
+  PRODUCT_ID_NOT_EXIST = "Mã sản phẩm không tồn tại.",
+  
+}
+
+export enum ImageError{
+  CREATE_IMAGE_ERROR = "Đã xảy ra lỗi khi lưu hình ảnh."
+}
+
+
+export enum OrderError{
+  CREATE_ORDER_ONLINE_ERROR = "Tạo đơn hàng online thất bại.",
+  CREATE_ORDER_OFFLINE_ERROR = "Tạo đơn hàng offline thất bại.",
+
+}
+
+export enum OrderDetailError{
+  TOTAL_PRICE_FAILED = "Tính tiền thất bại."
+}
+
+export enum StripeError{
+  CHECKOUT = "",
+  WEBHOOK = "",
+
 }

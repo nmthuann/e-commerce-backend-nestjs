@@ -20,10 +20,6 @@ import { PositionModule } from "../position/position.module";
             provide: 'IEmployeeService',
             useClass: EmployeeService,
         },
-        // {
-
-        // },
-
     ],
     exports: ['IEmployeeService',]
 })

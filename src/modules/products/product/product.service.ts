@@ -30,6 +30,27 @@ export class ProductService extends BaseService<ProductEntity> implements IProdu
     }
 
 
+  // async findProductsByIds(ids: number[]) {
+  //   return await this.productRepository.findByIds(ids);
+  // }
+
+  async checkInventoryOrderOnline(product_ids: number[]): Promise<boolean> {
+    let check = true; // Biến cờ, mặc định tất cả sản phẩm đều còn hàng tồn
+
+    for (const product_id of product_ids) {
+      const product = await this.productRepository.findOneById(product_id);
+      if (product) {
+        const quantity = product.quantity;
+        if (quantity <= 0) {
+          check = false;
+        }
+      } else {
+        check = false;
+      }
+    }
+    return check;
+  }
+
   async createOne(data: CreateProductDto): Promise<ProductEntity> {
     try {
       const newProduct = new ProductEntity();
@@ -223,6 +244,15 @@ export class ProductService extends BaseService<ProductEntity> implements IProdu
   async getProductsByProductIds(ids: number[]): Promise<ProductEntity[]> {  
     const findProducts = await this.productRepository.findByIds(ids);
     return findProducts;
+    // try {
+    //   const findProducts = await this.productRepository.findByIds(ids);
+    //   if (findProducts.length !== ids.length) {
+    //     throw new NotFoundException("Không tìm thấy một số sản phẩm.");
+    //   }
+    //   return findProducts;
+    // } catch (error) {
+    //   throw new NotFoundException("Không tìm thấy một số sản phẩm.");
+    // }
   }
 
   async getNewestProducts(topProduct: number): Promise<ProductEntity[]> {

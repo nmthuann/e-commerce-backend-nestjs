@@ -14,9 +14,9 @@ export interface IProductService extends IBaseService<ProductEntity>{
     getProductsByFilter(category_id: number, options: ProductFilterDto): Promise<ProductEntity[]>;
     getProductBrandByCategoryId(category_id: number): Promise<string[]>;
     getProductsByIds(data: GetProductForOrderDto[]): Promise<ProductEntity[]>;
-    //getProductBrandByCategoryId(category_id: number): Promise<string[]>;
-    // updateQuantity()
     getProductsByProductIds(ids: number[]): Promise<ProductEntity[]>;
     getNewestProducts(topProduct: number): Promise<ProductEntity[]>;
 
+    checkInventoryOrderOnline(product_ids: number[]): Promise<boolean>; 
+    // findProductsByIds(ids: number[]);
 }
