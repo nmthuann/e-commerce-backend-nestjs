@@ -1,15 +1,12 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { BaseService } from "src/modules/bases/base.abstract";
-import { ProductDto } from "./product-dto/product.dto";
+
 import { IProductService } from "./product.service.interface";
 import { InjectRepository } from "@nestjs/typeorm";
 import { ProductEntity } from "./entities/product.entity";
-import { And, Between, Repository } from "typeorm";
+import { Between, Repository } from "typeorm";
 import { ICategoryService } from "../category/category.service.interface";
 import { IDiscountService } from "../discount/discount.service.interface";
-import { CategoryDto } from "../category/category-dto/category.dto";
-import { CategoryEntity } from "../category/category.entity";
-import { DiscountEntity } from "../discount/discount.entity";
 import { CreateProductDto } from "./product-dto/create-product.dto";
 import { ProductFilterDto } from "./product-dto/product-filter.dto";
 import { GetProductForOrderDto } from "./product-dto/get-product-order.dto";

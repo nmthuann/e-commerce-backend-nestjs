@@ -7,9 +7,7 @@ import { EmployeeEntity } from "./employee.entity";
 import { Repository } from "typeorm";
 import { IPositionService } from "../position/position.service.interface";
 import { IUserService } from "../user/user.service.interface";
-import { UserDto } from "../user/user-dto/user.dto";
 import { GetEmployeeListDto } from "./employee-dto/get-employee-list.dto";
-import * as nodemailer from 'nodemailer';
 import * as dotenv from 'dotenv';
 import { ErrorType } from "src/common/errors/errors";
 

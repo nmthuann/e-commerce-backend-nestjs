@@ -5,7 +5,6 @@ import { IAccountService } from "./account.service.interface";
 import { InjectRepository } from "@nestjs/typeorm";
 import { AccountEntity } from "./account.entity";
 import { ObjectId, Repository } from "typeorm";
-import { AccountForEmployeeDto } from "./account-dto/account-employee.dto";
 // import { async } from "rxjs";
 
 @Injectable()

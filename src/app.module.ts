@@ -1,7 +1,7 @@
 import {   Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { DataSource } from 'typeorm';
+
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CategoryModule } from './modules/products/category/category.module';
 import { CategoryEntity } from './modules/products/category/category.entity';
@@ -18,23 +18,18 @@ import { ImageEntity } from './modules/products/image/image.entity';
 import { ShippingEntity } from './modules/orders/shipping/shipping.entity';
 import { PaymentEntity } from './modules/orders/payment/payment.entity';
 import { OrderDetailEntity } from './modules/orders/order/order-detail.entity';
-import { DiscountModule } from './modules/products/discount/discount.module';
-import { ProductModule } from './modules/products/product/product.module';
+
 import { ImageModule } from './modules/products/image/image.module';
-import { CartModule } from './modules/orders/cart/cart.module';
-import { CartDetailModule } from './modules/orders/cart/cart-detail/cart-detail.module';
+
 import { OrderModule } from './modules/orders/order/order.module';
-import { OrderDetailModule } from './modules/orders/order/order-detail/order-detail.module';
-import { ShippingModule } from './modules/orders/shipping/shipping.module';
-import { PaymentModule } from './modules/orders/payment/payment.module';
-import { UserModule } from './modules/users/user/user.module';
+
 import { EmployeeModule } from './modules/users/employee/employee.module';
-import { PositionModule } from './modules/users/position/position.module';
-import { AccountModule } from './modules/users/account/account.module';
-import * as redisStore from 'cache-manager-redis-store';
-import { CacheModule } from '@nestjs/cache-manager';
-import { StoreModule } from './modules/apis/store/store.module';
-import { ConfigModule } from '@nestjs/config';
+// import { PositionModule } from './modules/users/position/position.module';
+// import { AccountModule } from './modules/users/account/account.module';
+// import * as redisStore from 'cache-manager-redis-store';
+// import { CacheModule } from '@nestjs/cache-manager';
+// import { StoreModule } from './modules/apis/store/store.module';
+// import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './modules/authentication/auth.module';
 import { StripeModule } from './modules/orders/stripe/stripe.module';
 // import { CacheModule } from '@nestjs/cache-manager';

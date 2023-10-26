@@ -14,9 +14,6 @@ import { ManagerRoleGuard } from "src/common/guards/manager.role.guard";
 import { CreateEmployeePipeValidator } from "src/common/pipes/create-employee.validator.pipe";
 import { CreateEmployeeDto } from "./auth-dto/create-employee.dto";
 import { RegisterCustomerDto } from "./auth-dto/register-customer.dto";
-import { ErrorInput, ErrorType } from "src/common/errors/errors";
-import { AdminRoleGuard } from "src/common/guards/admin.role.guard";
-
 
 
 @Controller('auth')
