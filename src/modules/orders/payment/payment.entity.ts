@@ -1,18 +1,17 @@
-import {  Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
-import { OrderEntity } from "../order/order.entity";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { OrderEntity } from '../order/order.entity';
 
 @Entity({ name: 'Payments' })
-export class PaymentEntity{
-    @PrimaryGeneratedColumn()
-    payment_id: number;
+export class PaymentEntity {
+  @PrimaryGeneratedColumn()
+  payment_id: number;
 
-    @Column({type: "nvarchar", length: 100, nullable: false })
-    payment_name: string;
+  @Column({ type: 'nvarchar', length: 100, nullable: false })
+  payment_name: string;
 
-    @Column()
-    description: string;
+  @Column()
+  description: string;
 
-
-    @OneToMany(() => OrderEntity, (order) => order.payment)
-    orders: OrderEntity[]
+  @OneToMany(() => OrderEntity, (order) => order.payment)
+  orders: OrderEntity[];
 }

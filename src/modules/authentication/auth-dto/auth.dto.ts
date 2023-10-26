@@ -1,23 +1,18 @@
-import { IsEmail, IsNotEmpty } from "class-validator";
+import { IsEmail, IsNotEmpty } from 'class-validator';
 
-export class AuthDto { //extends LoginUserDto 
+export class AuthDto {
+  //extends LoginUserDto
 
-    @IsEmail()
-    email: string;
+  @IsEmail()
+  email: string;
 
-    @IsNotEmpty()
-    password: string;
-
+  @IsNotEmpty()
+  password: string;
 }
 
+export class CheckOTPDto {
+  //extends LoginUserDto
 
-
-
-export class CheckOTPDto { //extends LoginUserDto 
-
-    email: string;
-    otp: string;
-
+  email: string;
+  otp: string;
 }
-
-

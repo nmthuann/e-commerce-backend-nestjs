@@ -1,32 +1,30 @@
-import { ProductEntity } from "src/modules/products/product/entities/product.entity";
-import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
-import { CartEntity } from "./cart.entity";
+import { ProductEntity } from 'src/modules/products/product/entities/product.entity';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
+import { CartEntity } from './cart.entity';
 
-@Entity({name: 'CartDetails'})
-export class CartDetailEntity{
-    @PrimaryColumn()
-    cart_id: number
-    @PrimaryColumn()
-    product_id: number
+@Entity({ name: 'CartDetails' })
+export class CartDetailEntity {
+  @PrimaryColumn()
+  cart_id: number;
+  @PrimaryColumn()
+  product_id: number;
 
-    @Column({default: 1, nullable: false})
-    quantity: number
+  @Column({ default: 1, nullable: false })
+  quantity: number;
 
+  @ManyToOne(() => ProductEntity, (product) => product.product_id)
+  @JoinColumn({ name: 'product_id' })
+  product: ProductEntity;
 
-    @ManyToOne(() => ProductEntity, product => product.product_id)
-    @JoinColumn({ name: "product_id" })
-    product: ProductEntity;
+  @ManyToOne(() => CartEntity, (cart) => cart.cart_id)
+  @JoinColumn({ name: 'cart_id' })
+  cart: CartEntity;
 
+  // @OneToMany(() => ProductEntity, product => product.cart_detail, { cascade: true })
+  // // @JoinColumn({name: 'product_id'})
+  // products: ProductEntity[];
 
-    @ManyToOne(() => CartEntity, cart => cart.cart_id)
-    @JoinColumn({ name: "cart_id" })
-    cart: CartEntity;
-
-    // @OneToMany(() => ProductEntity, product => product.cart_detail, { cascade: true })
-    // // @JoinColumn({name: 'product_id'})
-    // products: ProductEntity[];
-
-    // @OneToMany(() => CartEntity, cart => cart.cart_detail, { cascade: true })
-    // //@JoinColumn({name: 'cart_id'})
-    // carts: CartEntity[];
+  // @OneToMany(() => CartEntity, cart => cart.cart_detail, { cascade: true })
+  // //@JoinColumn({name: 'cart_id'})
+  // carts: CartEntity[];
 }

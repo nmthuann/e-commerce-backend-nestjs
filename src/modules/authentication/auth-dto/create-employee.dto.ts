@@ -16,25 +16,21 @@
  * 4. position_id
  */
 
-import { IsEmpty, IsString } from "class-validator";
+export class CreateEmployeeDto {
+  first_name: string;
 
-export class CreateEmployeeDto{
+  last_name: string;
+  avatar_url: string;
 
+  gender: string;
 
-    first_name: string;
+  birthday: Date;
 
-    last_name: string;
-    avatar_url:string;
+  address: string;
 
-    gender: string;
+  phone: string;
 
-    birthday: Date;
-  
-    address: string;
+  employee_id: string;
 
-    phone: string;
-
-    employee_id: string;
-
-    position_id?: string;
+  position_id?: string;
 }

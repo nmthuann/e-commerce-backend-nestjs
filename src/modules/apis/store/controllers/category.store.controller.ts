@@ -4,11 +4,10 @@
 // import { ProductFilterDto } from "src/modules/products/product/product-dto/product-filter.dto";
 // import { IProductService } from "src/modules/products/product/product.service.interface";
 
-
 // // working with DTO
-// @Controller('category') 
+// @Controller('category')
 // export class CategoryStoreController {
-    
+
 //     constructor(
 //         @Inject('IProductService')
 //         private productService: IProductService,
@@ -16,12 +15,11 @@
 //         private categorytService: ICategoryService
 //     ) {}
 
-    
 //     @Get(':category_id/?')  //  http://localhost:3000/category/:category_id/?brand=Hublot
 //     async getProductsByCategoryId(
-//         @Param("category_id") category_id: number,    
+//         @Param("category_id") category_id: number,
 //         @Query('brand') brand: string
-//     ): Promise<ProductEntity[]> {   
+//     ): Promise<ProductEntity[]> {
 //         console.log("Ủa alo")
 //         return await this.productService.getProductsByBrand(category_id, brand);
 //     }

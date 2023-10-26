@@ -1,4 +1,4 @@
 export class ProductFilterDto {
-    brand?: string;
-    price?: number;
+  brand?: string;
+  price?: number;
 }

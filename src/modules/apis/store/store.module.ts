@@ -16,7 +16,7 @@
 //        DiscountModule,
 //        ProductModule
 //     ],
-//     controllers: [ProductStoreController, 
+//     controllers: [ProductStoreController,
 //         CategoryStoreController],
 // })
 // export class StoreModule {}

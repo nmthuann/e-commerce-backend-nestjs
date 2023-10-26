@@ -1,9 +1,9 @@
-import { CategoryDto } from "../../category/category-dto/category.dto";
-import { DiscountDto } from "../../discount/discount-dto/discount.dto";
-import { ImageDto } from "../../image/image.dto";
+import { CategoryDto } from '../../category/category-dto/category.dto';
+import { DiscountDto } from '../../discount/discount-dto/discount.dto';
+import { ImageDto } from '../../image/image.dto';
 
 export class ProductDto {
- product_id: number;
+  product_id: number;
   model_name: string;
   vote: number;
   price: number;
@@ -11,7 +11,7 @@ export class ProductDto {
   quantity: number;
   status: boolean;
   description: string;
-  operation_system: string;  // brand
+  operation_system: string; // brand
   hardware: string; // origin
   warranty_time: number;
 
@@ -19,7 +19,6 @@ export class ProductDto {
   images: ImageDto[];
   category: CategoryDto;
   discount: DiscountDto;
-
 
   // bổ sung
   color: string;
@@ -30,10 +29,8 @@ export class ProductDto {
   behind_camera: number;
   ram: number;
 
-
-
   constructor(
-    model_name  : string,
+    model_name: string,
     vote: number,
     price: number,
     unit_price: number,
@@ -53,7 +50,6 @@ export class ProductDto {
     behind_camera: number,
     ram: number,
   ) {
-
     this.model_name = model_name;
     this.vote = vote;
     this.price = price;

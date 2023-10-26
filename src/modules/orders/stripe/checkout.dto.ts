@@ -1,3 +1,1 @@
-export class CheckOutDto{
-    
-}
+export class CheckOutDto {}

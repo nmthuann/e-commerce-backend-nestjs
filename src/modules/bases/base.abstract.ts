@@ -1,11 +1,11 @@
-import { DeleteResult, ObjectId, Repository } from "typeorm";
-import { IBaseService } from "./base.interface";
-import { InjectRepository } from "@nestjs/typeorm";
+import { DeleteResult, ObjectId, Repository } from 'typeorm';
+import { IBaseService } from './base.interface';
 
-export abstract class BaseService<T> implements IBaseService <T>{
+export abstract class BaseService<T> implements IBaseService<T> {
   constructor(
-     // @InjectRepository(<T>) 
-    private readonly baseRepository: Repository<T>) {}
+    // @InjectRepository(<T>)
+    private readonly baseRepository: Repository<T>,
+  ) {}
 
   async getAll(): Promise<T[]> {
     return await this.baseRepository.find();
@@ -25,6 +25,6 @@ export abstract class BaseService<T> implements IBaseService <T>{
   }
 
   async deleteOneById(id: number): Promise<DeleteResult> {
-    return await this.baseRepository.softDelete(id)
+    return await this.baseRepository.softDelete(id);
   }
 }

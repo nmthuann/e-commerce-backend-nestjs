@@ -6,22 +6,22 @@ import { BaseEntity } from 'src/modules/bases/base.entity';
 import { OrderEntity } from 'src/modules/orders/order/order.entity';
 
 @Entity({ name: 'Discounts' }) // Set the table name explicitly (optional)
-export class DiscountEntity extends BaseEntity{
-    @PrimaryGeneratedColumn()
-    discount_id: number;
+export class DiscountEntity extends BaseEntity {
+  @PrimaryGeneratedColumn()
+  discount_id: number;
 
-    @Column()
-    description: string;
+  @Column()
+  description: string;
 
-    @Column({nullable: false})
-    expired: Date;
+  @Column({ nullable: false })
+  expired: Date;
 
-    @Column({ type: "int"}) // Precision of 5 and scale of 2 for 2 decimal places
-    percent: number;
+  @Column({ type: 'int' }) // Precision of 5 and scale of 2 for 2 decimal places
+  percent: number;
 
-    @OneToMany(() => ProductEntity, (product) => product.discount)
-    products: ProductEntity[]
+  @OneToMany(() => ProductEntity, (product) => product.discount)
+  products: ProductEntity[];
 
-    @OneToMany(() => OrderEntity, (order) => order.discount)
-    orders: OrderEntity[]
+  @OneToMany(() => OrderEntity, (order) => order.discount)
+  orders: OrderEntity[];
 }

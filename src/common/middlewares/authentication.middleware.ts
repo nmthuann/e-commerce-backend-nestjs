@@ -1,10 +1,10 @@
-// import { 
-   
-//   HttpException, 
-//   HttpStatus, 
-//   Inject, 
-//   Injectable, 
-//   NestMiddleware 
+// import {
+
+//   HttpException,
+//   HttpStatus,
+//   Inject,
+//   Injectable,
+//   NestMiddleware
 // } from '@nestjs/common';
 // import { JwtService } from '@nestjs/jwt';
 // import { Request, Response, NextFunction } from 'express';
@@ -14,10 +14,9 @@
 // import { CACHE_MANAGER } from '@nestjs/cache-manager';
 // dotenv.config();
 
-
 // @Injectable()
 // export class AuthenticationMiddleware implements NestMiddleware {
-  
+
 //   constructor(
 //     private readonly jwtService: JwtService,
 //     @Inject(CACHE_MANAGER) private cacheService: Cache,
@@ -30,10 +29,10 @@
 //     console.log("authHeader: ", authHeader);
 //     if (typeof authHeader === 'undefined') {
 //       throw new HttpException(
-//         'Middleware - Unauthorized: 401 - header empty!',  
+//         'Middleware - Unauthorized: 401 - header empty!',
 //         HttpStatus.UNAUTHORIZED
 //       ); //res.sendStatus(401);
-//     } 
+//     }
 //     else{
 
 //       //   cut token
@@ -47,13 +46,13 @@
 //           {
 //             secret: 'JWT_SECRET_KEY',
 //           }
-//         ); 
+//         );
 //         req['user'] = (this.jwtService.decode(token))['payload'];
 //         req['token'] = token;
 //         next(); // -> guard (1)
 
 //       //  1. expired  2. Not invalid
-//       } catch (error) { 
+//       } catch (error) {
 
 //         //  handle Error 1: decode -> expired
 //         const checkExpired = this.jwtService.decode(token);
@@ -62,7 +61,7 @@
 //         //  decode is success -> check cache in redis
 //         if(typeof checkExpired !== 'undefined'){
 
-//           const getValueByKeyInRedis: string = 
+//           const getValueByKeyInRedis: string =
 //           await this.cacheService.get(checkExpired['payload']['email']);
 //           console.log(": checkEmailExist:", getValueByKeyInRedis);
 
@@ -73,10 +72,9 @@
 //             const refresh_token = data['refresh_token'];
 //             const response = await axios.post(url, refresh_token, {
 //               headers: {
-//                 'Authorization': `Bearer ${token}` 
+//                 'Authorization': `Bearer ${token}`
 //               }
 //             });
-
 
 //             //  check response of Refesh token API
 //             if (response == null){
@@ -92,7 +90,6 @@
 //               next();  //  -> guard (2)
 //             }
 
-            
 //           }
 //           else{
 //             res.status(HttpStatus.FORBIDDEN)
@@ -102,8 +99,7 @@
 //           res.status(HttpStatus.FORBIDDEN)
 //           .json({ message: 'Invalid or expired token' });
 //         }
-//       } 
+//       }
 //     }
 //   }
 // }
-

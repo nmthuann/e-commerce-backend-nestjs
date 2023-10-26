@@ -1,4 +1,4 @@
-export class GetProductForOrderDto{
-    product_id: number;
-    quantity: number;
+export class GetProductForOrderDto {
+  product_id: number;
+  quantity: number;
 }

@@ -22,7 +22,6 @@
 //   @JoinColumn({name: 'employee_id'})
 //   employee: EmployeeEntity
 
-
 //   @OneToOne(() => OrderEntity)
 //   @JoinColumn({name: 'order_id'})
 //   order: OrderEntity

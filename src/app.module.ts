@@ -1,4 +1,4 @@
-import {   Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -34,51 +34,54 @@ import { AuthModule } from './modules/authentication/auth.module';
 import { StripeModule } from './modules/orders/stripe/stripe.module';
 // import { CacheModule } from '@nestjs/cache-manager';
 
-
-
-
 @Module({
   imports: [
-    TypeOrmModule.forRoot(
-      {
-        type: 'mssql',
-        host: 'localhost',
-        port: 1433,
-        username: 'sa',
-        password: '123456',
-        database: 'TTTN_DongHoOnline',
-        synchronize: false, // false, 
-        options: {
-          trustServerCertificate: true, // Allow self-signed certificates
-        },
-        entities: [
-          CategoryEntity, DiscountEntity, ProductEntity, ImageEntity,
-          CartEntity, CartDetailEntity,
-          OrderEntity, OrderDetailEntity, ShippingEntity, PaymentEntity,
-          UserEntity, AccountEntity, EmployeeEntity, PositionEntity
-        ]
-      }
-    ),
+    TypeOrmModule.forRoot({
+      type: 'mssql',
+      host: 'localhost',
+      port: 1433,
+      username: 'sa',
+      password: '123456',
+      database: 'TTTN_DongHoOnline',
+      synchronize: false, // false,
+      options: {
+        trustServerCertificate: true, // Allow self-signed certificates
+      },
+      entities: [
+        CategoryEntity,
+        DiscountEntity,
+        ProductEntity,
+        ImageEntity,
+        CartEntity,
+        CartDetailEntity,
+        OrderEntity,
+        OrderDetailEntity,
+        ShippingEntity,
+        PaymentEntity,
+        UserEntity,
+        AccountEntity,
+        EmployeeEntity,
+        PositionEntity,
+      ],
+    }),
 
-  // 
-  // DiscountModule,
-  // ProductModule,
-  // ImageModule,
-  // // StoreModule,
+    //
+    // DiscountModule,
+    // ProductModule,
+    // ImageModule,
+    // // StoreModule,
 
-  // // CartModule,
-  // // CartDetailModule,
-  // OrderModule,
-  // // OrderDetailModule,
-  //ShippingModule,
-  // PaymentModule,
+    // // CartModule,
+    // // CartDetailModule,
+    // OrderModule,
+    // // OrderDetailModule,
+    //ShippingModule,
+    // PaymentModule,
 
-  // UserModule,
-  // EmployeeModule,
-  // // //PositionModule,
-  // AccountModule,
-
-
+    // UserModule,
+    // EmployeeModule,
+    // // //PositionModule,
+    // AccountModule,
 
     AuthModule,
     EmployeeModule,
@@ -86,18 +89,18 @@ import { StripeModule } from './modules/orders/stripe/stripe.module';
     // ProductModule,
     ImageModule,
     StripeModule,
-    OrderModule
+    OrderModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}
-  
-    // CacheModule.register({
-    //   isGlobal: true,
-    //   store: redisStore,
-    //   host: 'localhost',//localhost
-    //   port: 6379,//6379
-    //   // password: 'pqTtSGQM5oHvURGfFWaO7qWcTi3kcWr8',
-    //   // ttl: 60*60*15, // seconds
-    // }),
+
+// CacheModule.register({
+//   isGlobal: true,
+//   store: redisStore,
+//   host: 'localhost',//localhost
+//   port: 6379,//6379
+//   // password: 'pqTtSGQM5oHvURGfFWaO7qWcTi3kcWr8',
+//   // ttl: 60*60*15, // seconds
+// }),

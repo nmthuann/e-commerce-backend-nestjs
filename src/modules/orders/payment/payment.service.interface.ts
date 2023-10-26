@@ -1,5 +1,4 @@
-import { IBaseService } from "src/modules/bases/base.interface";
-import { PaymentDto } from "./payment.dto";
+import { IBaseService } from 'src/modules/bases/base.interface';
+import { PaymentDto } from './payment.dto';
 
-export interface IPaymentService extends IBaseService<PaymentDto> {
-}
+export type IPaymentService = IBaseService<PaymentDto>;

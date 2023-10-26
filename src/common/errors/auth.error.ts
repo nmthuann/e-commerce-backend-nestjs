@@ -5,6 +5,5 @@ export enum AuthExceptionMessages {
   EMAIL_EXIST = 'Email đã tồn tại.',
   VERIFY_MAIL_FAILED = 'Xác thực email thất bại.',
   SEND_MAIL_FAILED = 'Gửi mail thất bại.',
-  REGISTER_EMPLOYEE_FAILED = 'Đăng ký Tài khoản nhân viên thất bại.'
+  REGISTER_EMPLOYEE_FAILED = 'Đăng ký Tài khoản nhân viên thất bại.',
 }
-
