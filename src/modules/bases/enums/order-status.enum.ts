@@ -4,5 +4,5 @@ export enum OrderStatus {
   Canceled = 'canceled', //  đã hủy
   InProgress = 'in progress', //  đã giao
   Completed = 'completed', //  đã hoàn thành
-  // Refunded = 'refunded', //  đã hoàn trả
+  Refunded = 'refunded', //  đã hoàn trả
 }

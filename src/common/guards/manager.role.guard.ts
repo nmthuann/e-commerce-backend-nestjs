@@ -9,6 +9,7 @@ import { Reflector } from '@nestjs/core';
 import { Role } from 'src/modules/bases/enums/role.enum';
 import { GuardError } from '../errors/errors';
 import { IUserService } from 'src/modules/users/user/user.service.interface';
+import { EmployeeEntity } from 'src/modules/users/employee/employee.entity';
 
 @Injectable()
 export class ManagerRoleGuard implements CanActivate {
@@ -35,10 +36,12 @@ export class ManagerRoleGuard implements CanActivate {
       if (payload['role'] != Role.Admin) {
         throw new ForbiddenException(GuardError.ACCESS_DENIED);
       } else {
-        const checkManager = await this.userService.getEmployeeByEmail(
+        const checkManager: EmployeeEntity = await this.userService.getEmployeeByEmail(
           payload['email'],
         );
-        if (checkManager == null) {
+        
+        // 3: Store Manager
+        if ((await Promise.resolve(checkManager.position)).position_id === 3) {
           request['email'] = payload['email'];
           return true;
         }

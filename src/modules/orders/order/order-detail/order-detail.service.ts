@@ -7,6 +7,7 @@ import { Repository } from 'typeorm';
 import { IProductService } from 'src/modules/products/product/product.service.interface';
 import { ProductDto } from 'src/modules/products/product/product-dto/product.dto';
 import { OrderDetailError } from 'src/common/errors/errors';
+import { ProductEntity } from 'src/modules/products/product/entities/product.entity';
 
 @Injectable()
 export class OrderDetailService
@@ -22,6 +23,19 @@ export class OrderDetailService
     super(orderDetailRepository);
   }
 
+
+  async updateQuantityProduct(order_id: any): Promise<void> {
+    const findOrder = await this.findOrderDetailByOrderId(order_id);
+    // findorder -> array
+
+    findOrder.map(async (order_detail) =>{
+      const findProduct: ProductEntity = await this.productService.getOneById(order_detail.product_id);
+      findProduct.quantity = findProduct.quantity + order_detail.quantity;
+      await this.productService.updateOneById(findProduct.product_id, findProduct);
+    })
+    return ;
+  }
+
   async createMany(data: OrderDetailEntity[]): Promise<OrderDetailEntity[]> {
     return this.orderDetailRepository.create(data);
   }
@@ -29,6 +43,8 @@ export class OrderDetailService
   async findOrderDetailByOrderId(
     order_id: number,
   ): Promise<OrderDetailEntity[]> {
+
+    //  try catch -> not found 
     const findOrderDetails = await this.orderDetailRepository.find({
       where: {
         order_id: order_id,

@@ -58,6 +58,13 @@ export enum ImageError {
 export enum OrderError {
   CREATE_ORDER_ONLINE_ERROR = 'Tạo đơn hàng online thất bại.',
   CREATE_ORDER_OFFLINE_ERROR = 'Tạo đơn hàng offline thất bại.',
+  ORDER_NOT_FOUND = 'Không tìm thấy đơn hàng theo yêu cầu.',
+  CANCELED_ORDER_FAILED = 'Đơn hàng không được hủy.',
+  COMPLETED_ORDER_FAILED = 'Đơn hàng đã hoàn thành không được thay đổi trạng thái.',
+  CONFIRMED_ORDER_FAILED = '',
+  NOT_YET_CONFIRM = 'Đơn hàng chưa được duyệt.',
+  CANCELED_ORDER = 'Đơn hàng không được hủy.',
+  UPDATE_STATUS_ORDER_FAILED = 'Cập nhật trạng thái thất bại.',
 }
 
 export enum OrderDetailError {
@@ -68,3 +75,6 @@ export enum StripeError {
   CHECKOUT = '',
   WEBHOOK = '',
 }
+
+
+// export enum 

@@ -250,6 +250,10 @@ export class AuthService implements IAuthService {
     const findUser: AccountDto = await this.accountService.getOneById(
       input.email,
     );
+
+    if(findUser === null){
+       return { message: AuthExceptionMessages.LOGIN_INVAILD};
+    }
     if (findUser.role === Role.User) {
       return { message: GuardError.NOT_ADMIN };
     }
@@ -276,8 +280,24 @@ export class AuthService implements IAuthService {
     const tokens: Tokens = await this.getTokens(payload);
     findUser.refresh_token = tokens.refresh_token;
     await this.accountService.updateOneById(findUser.email, findUser);
-    console.log(`message: ${input.email} đăng nhập thành công!`);
-    return tokens;
+
+    const userInfo = await this.userService.getUserByEmail(input.email);
+    const positionInfo = await this.userService.getEmployeeByEmail(input.email);
+
+    //return tokens;
+
+    console.log({
+      access_token: tokens.access_token,
+      first_name: userInfo.first_name,
+      avatar_url: userInfo.avatar_url,
+      position: (await Promise.resolve(positionInfo.position)).position_id, // mã chức vụ
+    })
+    return {
+      access_token: tokens.access_token,
+      first_name: userInfo.first_name,
+      avatar_url: userInfo.avatar_url,
+      position: (await Promise.resolve(positionInfo.position)).position_id, // mã chức vụ
+    }
   }
 
   async verifyEmail(email: string): Promise<string | any> {

@@ -53,9 +53,158 @@ export class OrderService
     private userService: IUserService,
     @Inject('IEmployeeService')
     private employeeService: IEmployeeService,
+    
   ) {
     super(orderRepository);
   }
+
+
+  /**
+   * idea: >>>>>   get current status order
+   *        if 'pending' then: -> 1. confirmed or 2. canceled
+   *            =>  |decrease quantity (product)| >< restore quantity (product)
+   *        if 'confirmed' then:  -> in progress
+   *            =>  not  [canceled | completed | refunded]
+   *        if 'in progress' then: 1. completed or 2. refunded
+   *            =>   not  [canceled | confirmed ]
+   * 
+   * @param order : đơn hàng hiện tại
+   * @param status : status muốn thay update
+   * @returns order đã update
+   */
+
+
+  //    => PENDING to CANCELED
+  async handleCanceledOrder(order_id: number, employee_email: string) {
+    const findOrder: OrderEntity = await this.getOneById(order_id);
+    const findEmployee = await this.userService.getEmployeeByEmail(employee_email);
+
+    if(!findOrder){
+      return {message: OrderError.ORDER_NOT_FOUND};
+    }
+    const currentStatus = findOrder.status; 
+    if(currentStatus === OrderStatus.Pending) {
+      const newOrder = findOrder;
+      newOrder.status = OrderStatus.Canceled;
+      newOrder.employee = findEmployee;
+      const updateStatus = await this.updateOneById(findOrder.order_id, newOrder);
+      //  update quantity product
+      await this.orderDetailService.updateQuantityProduct(updateStatus.order_id);
+      return updateStatus;
+    }
+    // else if(currentStatus){
+      
+    // }
+    else{
+      return {message: OrderError.CANCELED_ORDER_FAILED};
+      // return {message: OrderError.UPDATE_STATUS_ORDER_FAILED};
+    }
+  }
+
+  //    => PENDING to CONFIRMED
+  async handleConfirmedOrder(order_id: number, employee_email: string) {
+    const findOrder: OrderEntity = await this.getOneById(order_id);
+    const findEmployee = await this.userService.getEmployeeByEmail(employee_email);
+
+    if(!findOrder){
+      return {message: OrderError.ORDER_NOT_FOUND};
+    }
+    const currentStatus = findOrder.status; 
+    if(currentStatus === OrderStatus.Pending) {
+      const newOrder = findOrder;
+      newOrder.status = OrderStatus.Confirmed;
+      newOrder.employee = findEmployee;
+      const updateStatus = await this.updateOneById(findOrder.order_id, newOrder);
+      return updateStatus;
+    }
+    else{
+      return {message: OrderError.UPDATE_STATUS_ORDER_FAILED};
+
+      // return new Error(OrderError.UPDATE_STATUS_ORDER_FAILED);
+    }
+  }
+
+  //    => CONFIRMED to IN PROGRESS
+  async handleInProgressOrder(order_id: number) {
+    const findOrder = await this.getOneById(order_id);
+    if(!findOrder){
+      return {message: OrderError.ORDER_NOT_FOUND};
+    }
+    const currentStatus = findOrder.status; 
+    if(currentStatus === OrderStatus.Confirmed) {
+      const newOrder = findOrder;
+      newOrder.status = OrderStatus.InProgress;
+      const updateStatus = await this.updateOneById(findOrder.order_id, newOrder);
+      return updateStatus;
+    }
+    else if(currentStatus === OrderStatus.Pending) {
+      return {message:OrderError.NOT_YET_CONFIRM};
+    }
+    else{
+       return {message: OrderError.UPDATE_STATUS_ORDER_FAILED};
+    }
+  }
+
+  //    => IN PROGRESS to COMPLETED
+  async handleCompletedOrder(order_id: number) {
+    const findOrder = await this.getOneById(order_id);
+    if(!findOrder){
+      return {message: OrderError.ORDER_NOT_FOUND};
+    }
+    const currentStatus = findOrder.status; 
+    if(currentStatus === OrderStatus.InProgress) {
+      const newOrder = findOrder;
+      newOrder.status = OrderStatus.Completed;
+      const updateStatus = await this.updateOneById(findOrder.order_id, newOrder);
+      return updateStatus;
+    }
+    else{
+       return {message: OrderError.UPDATE_STATUS_ORDER_FAILED};
+    }
+  }
+
+  //    => IN PROGRESS to REFUNDED
+  async handleRefundedOrder(order_id: number) {
+    const findOrder = await this.getOneById(order_id);
+    if(!findOrder){
+      return {message: OrderError.ORDER_NOT_FOUND};
+    }
+    const currentStatus = findOrder.status; 
+    if(currentStatus === OrderStatus.InProgress) {
+      const newOrder = findOrder;
+      newOrder.status = OrderStatus.Refunded;
+      const updateStatus = await this.updateOneById(findOrder.order_id, newOrder);
+      return updateStatus;
+    }
+    else{
+      return {message: OrderError.UPDATE_STATUS_ORDER_FAILED};
+    }
+  }
+
+
+  async updateStatusOrder(order_id: number, status: string): Promise<OrderEntity | object > {
+    const findOrder = await this.getOneById(order_id);
+    if(!findOrder){
+      return {message: OrderError.ORDER_NOT_FOUND};
+    }
+
+    switch (status) {
+      case OrderStatus.Canceled:
+        return 
+      case OrderStatus.Confirmed:
+        break;
+      case OrderStatus.InProgress:
+        break;
+      case OrderStatus.Completed:
+        break;
+      case OrderStatus.Refunded:
+        break;
+    default:
+      break;
+    }
+  }
+
+
 
   async getTotalPriceByOrderId(order_id: number): Promise<number> {
     return await this.orderDetailService.getTotalPriceByOrderId(order_id);
@@ -170,19 +319,13 @@ export class OrderService
     };
 
     const findOrders = await this.getAll();
-    console.log(findOrders);
+    // console.log(findOrders);
     for (const order of findOrders) {
       const taskOrder = new GetTaskOrdersDto();
       const orderDetail =
         await this.orderDetailService.findOrderDetailByOrderId(order.order_id);
-      console.log('orderDetail', orderDetail);
+      // console.log('orderDetail', orderDetail);
 
-      // let customer = '';
-      // console.log(order.user)
-      // if (!order.user){
-      //     customer = 'No User'
-      // }
-      //
       const customer =
         (await Promise.resolve(order.user)).last_name +
         ' ' +
@@ -211,11 +354,11 @@ export class OrderService
         ];
       taskOrder.create = order.createdAt.toLocaleString();
       //  `${order.createdAt.getDate()}-${order.createdAt.getMonth()}-${order.createdAt.getFullYear()}`
-      console.log(taskOrder);
+      //console.log(taskOrder);
       taskOrderList.push(taskOrder);
     }
 
-    console.log(taskOrderList);
+    ///console.log(taskOrderList);
     return taskOrderList;
   }
 

@@ -22,4 +22,10 @@ export interface IOrderService extends IBaseService<OrderEntity> {
     productIds: number[],
   ): Promise<OrderEntity>;
   createNewOrderOffline(data: OrderOfflineDto): Promise<OrderEntity>; //email: string,
+  updateStatusOrder(order_id: number, status: string): Promise<OrderEntity | object >;
+  handleCanceledOrder(order_id: number, employee_email: string); // order: OrderEntity, status: string
+  handleConfirmedOrder(order_id: number, employee_email: string);
+  handleInProgressOrder(order_id: number);
+  handleCompletedOrder(order_id: number);
+  handleRefundedOrder(order_id: number);
 }
