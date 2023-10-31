@@ -1,6 +1,7 @@
 import { IBaseService } from '../../bases/base.interface';
 import { ProductEntity } from './entities/product.entity';
 import { GetProductForOrderDto } from './product-dto/get-product-order.dto';
+import { ProductDuplicateDto } from './product-dto/product-duplicate.dto';
 import { ProductFilterDto } from './product-dto/product-filter.dto';
 
 export interface IProductService extends IBaseService<ProductEntity> {
@@ -26,4 +27,6 @@ export interface IProductService extends IBaseService<ProductEntity> {
 
   checkInventoryOrderOnline(product_ids: number[]): Promise<boolean>;
   // findProductsByIds(ids: number[]);
+
+  checkProductDuplicate(product: ProductDuplicateDto):Promise<ProductEntity>;
 }

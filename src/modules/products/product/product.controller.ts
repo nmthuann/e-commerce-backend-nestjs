@@ -14,6 +14,7 @@ import { ProductDto } from './product-dto/product.dto';
 import { ProductEntity } from './entities/product.entity';
 
 import { GetProductForOrderDto } from './product-dto/get-product-order.dto';
+import { ProductDuplicateDto } from './product-dto/product-duplicate.dto';
 
 // working with DTO
 @Controller('product')
@@ -84,6 +85,20 @@ export class ProductController {
     const productIds = data.productIds;
     return await this.productService.getProductsByProductIds(productIds);
   }
+
+
+  @Get('get-product-duplicate')
+  async getProductDuplicate(
+    @Body() data: ProductDuplicateDto,
+  ) {
+    const getProductDuplicate = await this.productService.checkProductDuplicate(data);
+    if(getProductDuplicate) {
+      return getProductDuplicate;
+    }
+    return {message: 'Product is valid!'};
+  }
+
+
 
   @Get(':product_id')
   async getProduct(@Param('product_id') id: number): Promise<ProductEntity> {

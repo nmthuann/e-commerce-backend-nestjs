@@ -29,27 +29,6 @@ export class OrderController {
     private orderService: IOrderService,
   ) {}
 
-  // @UseGuards(AdminRoleGuard)
-  // @Post('create-offline')
-  // async createOrder(@Body() order: OrderOfflineDto) {
-  //   console.log(order);
-  //   return await this.orderService.createNewOrderOffline(order);
-  // }
-
-
-  // @Put('update/:id')
-  // async updateOrderById(
-  //   @Param('id') id: number,
-  //   @Body() orderEntity: OrderEntity,
-  // ): Promise<OrderEntity> {
-  //   return this.orderService.updateOneById(id, orderEntity);
-  // }
-
-  // @Delete('delete/:id')
-  // async deleteOrderById(@Param('id') id: number): Promise<void> {
-  //   console.log(await this.orderService.deleteOneById(id));
-  // }
-
 
   @UseGuards(AdminRoleGuard)
   @Patch('update-confirmed/:order_id')
@@ -151,3 +130,26 @@ export class OrderController {
     return await this.orderService.getOneById(id);
   }
 }
+
+
+
+  // @UseGuards(AdminRoleGuard)
+  // @Post('create-offline')
+  // async createOrder(@Body() order: OrderOfflineDto) {
+  //   console.log(order);
+  //   return await this.orderService.createNewOrderOffline(order);
+  // }
+
+
+  // @Put('update/:id')
+  // async updateOrderById(
+  //   @Param('id') id: number,
+  //   @Body() orderEntity: OrderEntity,
+  // ): Promise<OrderEntity> {
+  //   return this.orderService.updateOneById(id, orderEntity);
+  // }
+
+  // @Delete('delete/:id')
+  // async deleteOrderById(@Param('id') id: number): Promise<void> {
+  //   console.log(await this.orderService.deleteOneById(id));
+  // }

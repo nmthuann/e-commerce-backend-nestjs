@@ -446,27 +446,31 @@ export class OrderService
   }
 
   async getTotalRevenue(): Promise<number> {
-    const findOrders = await this.getAll();
-    let totalRevenue = 0;
-    for (const order of findOrders) {
-      if (order.status == OrderStatus.Completed) {
-        totalRevenue += order.total_price;
+    const findCompletedOrders = await this.orderRepository.find({
+      where: {
+        status: OrderStatus.Completed
       }
+    })
+    let totalRevenue = 0;
+    for (const order of findCompletedOrders) {
+      totalRevenue += order.total_price;
     }
     return totalRevenue;
   }
 
   async getCountProductSold(): Promise<number> {
-    const findOrders = await this.getAll();
-    let count = 0;
-    for (const order of findOrders) {
-      if (order.status == OrderStatus.Completed) {
-        count =
-          count +
-          (await this.orderDetailService.countProductSold(order.order_id));
+    const findCompletedOrders = await this.orderRepository.find({
+      where: {
+        status: OrderStatus.Completed
       }
+    })
+    let countProduct = 0;
+    for (const order of findCompletedOrders) {
+      countProduct =
+        countProduct +
+        (await this.orderDetailService.countProductSold(order.order_id));
     }
-    return count;
+    return countProduct;
   }
 
   async getOrdersHasCompletedStatus(): Promise<OrderEntity[]> {

@@ -107,14 +107,14 @@ export class OrderDetailService
 
   async countProductSold(order_id: number): Promise<number> {
     try {
-      let count = 0;
+      let countProductSold = 0;
       const findProducts = await this.orderDetailRepository.find({
         where: { order_id: order_id },
       });
       for (const orderDetail of findProducts) {
-        count += orderDetail.quantity;
+        countProductSold += orderDetail.quantity;
       }
-      return count;
+      return countProductSold;
     } catch (error) {
       console.log(`${error.message} is problem!`);
       throw error;

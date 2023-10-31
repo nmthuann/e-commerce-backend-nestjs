@@ -10,6 +10,7 @@ import { CreateProductDto } from './product-dto/create-product.dto';
 import { ProductFilterDto } from './product-dto/product-filter.dto';
 import { GetProductForOrderDto } from './product-dto/get-product-order.dto';
 import { ProductError } from 'src/common/errors/errors';
+import { ProductDuplicateDto } from './product-dto/product-duplicate.dto';
 
 @Injectable()
 export class ProductService
@@ -25,6 +26,23 @@ export class ProductService
     private discountService: IDiscountService,
   ) {
     super(productRepository);
+  }
+  
+  async checkProductDuplicate(product: ProductDuplicateDto): Promise<ProductEntity>{
+    const productDuplicate = await this.productRepository.findOne({
+      where:{
+        model_name: product.model_name,
+        hardware: product.hardware,
+        color: product.color,
+        screen: product.screen,
+        battery: product.battery,
+        memory: product.memory,
+        front_camera: product.front_camera,
+        behind_camera: product.behind_camera,
+        ram: product.ram
+      }
+    })
+    return productDuplicate;
   }
 
   async checkInventoryOrderOnline(product_ids: number[]): Promise<boolean> {
