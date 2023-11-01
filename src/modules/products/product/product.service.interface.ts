@@ -1,5 +1,6 @@
 import { IBaseService } from '../../bases/base.interface';
 import { ProductEntity } from './entities/product.entity';
+import { FilterProductDto } from './product-dto/filter-product.dto';
 import { GetProductForOrderDto } from './product-dto/get-product-order.dto';
 import { ProductDuplicateDto } from './product-dto/product-duplicate.dto';
 import { ProductFilterDto } from './product-dto/product-filter.dto';
@@ -24,9 +25,14 @@ export interface IProductService extends IBaseService<ProductEntity> {
   getProductsByIds(data: GetProductForOrderDto[]): Promise<ProductEntity[]>;
   getProductsByProductIds(ids: number[]): Promise<ProductEntity[]>;
   getNewestProducts(topProduct: number): Promise<ProductEntity[]>;
-
   checkInventoryOrderOnline(product_ids: number[]): Promise<boolean>;
   // findProductsByIds(ids: number[]);
-
   checkProductDuplicate(product: ProductDuplicateDto):Promise<ProductEntity>;
+  //function* createFilterProducts();
+  filterProducts(data: FilterProductDto): Promise<ProductEntity[]>;
+  createFilterProductsByRam(ram: number);
+  createFilterProductsByMemory(memory: number);
+  createFilterProductsByCategory(category: number);
+  createFilterProductsByPrice(minPrice: number, maxPrice: number);
+
 }

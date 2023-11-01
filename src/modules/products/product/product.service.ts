@@ -11,6 +11,7 @@ import { ProductFilterDto } from './product-dto/product-filter.dto';
 import { GetProductForOrderDto } from './product-dto/get-product-order.dto';
 import { ProductError } from 'src/common/errors/errors';
 import { ProductDuplicateDto } from './product-dto/product-duplicate.dto';
+import { FilterProductDto } from './product-dto/filter-product.dto';
 
 @Injectable()
 export class ProductService
@@ -26,6 +27,41 @@ export class ProductService
     private discountService: IDiscountService,
   ) {
     super(productRepository);
+  }
+
+
+  createFilterProductsByRam(ram: number) {
+    throw new Error('Method not implemented.');
+  }
+
+
+  createFilterProductsByMemory(memory: number) {
+    throw new Error('Method not implemented.');
+  }
+
+
+  createFilterProductsByCategory(category: number) {
+    throw new Error('Method not implemented.');
+  }
+
+  
+  createFilterProductsByPrice(minPrice: number, maxPrice: number) {
+    throw new Error('Method not implemented.');
+  }
+
+
+  // //products: Product[], filterFunc: (product: Product) => boolean
+  // *createFilterProducts(): Generator<ProductEntity[]> {
+  //   // for (const product of products) {
+  //   //   if (filterFunc(product)) {
+  //   //     yield product;
+  //   //   }
+  //   // }
+  // }
+
+
+  async filterProducts(data: FilterProductDto): Promise<ProductEntity[]> {
+    throw new Error('Method not implemented.');
   }
   
   async checkProductDuplicate(product: ProductDuplicateDto): Promise<ProductEntity>{
