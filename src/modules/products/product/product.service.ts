@@ -3,7 +3,7 @@ import { BaseService } from 'src/modules/bases/base.abstract';
 import { IProductService } from './product.service.interface';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ProductEntity } from './entities/product.entity';
-import { Between, Repository } from 'typeorm';
+import { Between, Repository, getConnection } from 'typeorm';
 import { ICategoryService } from '../category/category.service.interface';
 import { IDiscountService } from '../discount/discount.service.interface';
 import { CreateProductDto } from './product-dto/create-product.dto';
@@ -12,6 +12,7 @@ import { GetProductForOrderDto } from './product-dto/get-product-order.dto';
 import { ProductError } from 'src/common/errors/errors';
 import { ProductDuplicateDto } from './product-dto/product-duplicate.dto';
 import { FilterProductDto } from './product-dto/filter-product.dto';
+import { ImageEntity } from '../image/image.entity';
 
 @Injectable()
 export class ProductService
@@ -27,6 +28,35 @@ export class ProductService
     private discountService: IDiscountService,
   ) {
     super(productRepository);
+  }
+
+  async getModelName() {
+    //const productList = await this.productRepository.createQueryBuilder('products')
+    // // .select(['product_id', 'model_name',  'image.url'])
+    // // .leftJoin('products.images', 'image') // Thực hiện left join với bảng Image
+    // // .getRawOne()
+      //   .select(['product_id', 'model_name', 'image.url'])
+      //   .innerJoin('products.images', 'image')
+      //  // .groupBy('product_id, image.url')
+      //   .getRawMany();return productList;
+
+
+
+
+   const subQuery = this.productRepository
+    .createQueryBuilder('subQuery')
+    .select('image.url', 'url')
+    .leftJoin(ImageEntity, 'image', 'image.product = subQuery.product_id')
+    .limit(1)
+    .where('subQuery.product_id = product.product_id');
+    const query = this.productRepository
+    .createQueryBuilder('product')
+    .select(['product_id', 'model_name'])
+    .addSelect(`(${subQuery.getQuery()})`, 'image')
+    .getRawMany();
+
+  return await query;
+
   }
 
 

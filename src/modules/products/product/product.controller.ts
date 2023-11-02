@@ -121,7 +121,12 @@ export class ProductController {
 
   
 
+  @Get('get-model-name')
+  async getModelName(){
+    console.log('sssssss')
+    return await this.productService.getModelName();
 
+  }
 
 
   @Get(':product_id')
