@@ -15,6 +15,8 @@ import { ProductEntity } from './entities/product.entity';
 
 import { GetProductForOrderDto } from './product-dto/get-product-order.dto';
 import { ProductDuplicateDto } from './product-dto/product-duplicate.dto';
+import { FilterProductDto } from './product-dto/filter-product.dto';
+import { ProductError } from 'src/common/errors/errors';
 
 // working with DTO
 @Controller('product')
@@ -97,6 +99,28 @@ export class ProductController {
     }
     return {message: 'Product is valid!'};
   }
+
+
+  @Get('filter-by-ram/:ram')
+  async filterProductByRam(@Param('ram') ram: number){
+    //return await this.productService.createFilterProductsByRam(ram);
+    // return await this.productService.createFilterProductsByMemory(ram);
+    // const minPrice = 4900000;
+    // return await this.productService.createFilterProductsByPrice(minPrice, ram);
+    return await this.productService.createFilterProductsByCategory(1);
+  }
+
+  @Get('filter-products')
+  async filterProducts(@Body() data: FilterProductDto){
+    const result = await this.productService.filterProducts(data);
+    if( result.length){
+      return result;
+    }
+    return {message: ProductError.FILTER_PRODUCT_ERROR}
+  }
+
+  
+
 
 
 

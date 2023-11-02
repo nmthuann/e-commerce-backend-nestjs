@@ -34,5 +34,10 @@ export interface IProductService extends IBaseService<ProductEntity> {
   createFilterProductsByMemory(memory: number);
   createFilterProductsByCategory(category: number);
   createFilterProductsByPrice(minPrice: number, maxPrice: number);
+  filterProductsByRam(products: ProductEntity[], ram: number);
+  filterProductsByMemory(products: ProductEntity[], memory: number);
+  filterProductsByCategory(products: ProductEntity[], category: number);
+  filterProductsByPrice(products: ProductEntity[], minPrice: number, maxPrice: number);
+  
 
 }

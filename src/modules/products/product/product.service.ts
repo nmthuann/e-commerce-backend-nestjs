@@ -30,40 +30,166 @@ export class ProductService
   }
 
 
-  createFilterProductsByRam(ram: number) {
-    throw new Error('Method not implemented.');
+  async filterProductsByRam(products: ProductEntity[], ram: number): Promise<ProductEntity[]> {
+    // Thực hiện lọc sản phẩm dựa trên RAM
+    return products.filter(product => product.ram === ram);
+  }
+
+  async filterProductsByMemory(products: ProductEntity[], memory: number): Promise<ProductEntity[]> {
+    // Thực hiện lọc sản phẩm dựa trên bộ nhớ
+    return products.filter(product => product.memory === memory);
+  }
+
+  async filterProductsByCategory(products: ProductEntity[], category: number): Promise<ProductEntity[]> {
+    const productIds = products.map(product => product.product_id);
+    const productList = await this.productRepository.createQueryBuilder('product')
+      .where('product.category.category_id = :category', { category })
+      .andWhere('product.product_id IN (:...productIds)', { productIds })
+      .getMany();
+    return productList;
+  }
+
+  async filterProductsByPrice(products: ProductEntity[], minPrice:number, maxPrice: number): Promise<ProductEntity[]> {
+      const filteredProducts = products.filter(product => {
+      if (minPrice !== undefined && product.price < minPrice) {
+        return false; // Không thỏa mãn điều kiện dưới mức giá tối thiểu
+      }
+
+      if (maxPrice !== undefined && product.price > maxPrice) {
+        return false; // Không thỏa mãn điều kiện trên mức giá tối đa
+      }
+
+      return true; // Thỏa mãn cả hai điều kiện hoặc không có điều kiện nào
+    });
+
+    // console.log(filteredProducts)
+    return filteredProducts;
   }
 
 
-  createFilterProductsByMemory(memory: number) {
-    throw new Error('Method not implemented.');
+  /**
+   * 
+   * @param ram 
+   * @returns [ids] | null
+   */
+  async createFilterProductsByRam(ram: number): Promise<number[] | null> {
+    const productList = await this.productRepository.find({
+      select: ["product_id"], // Chỉ chọn cột id
+      where: {
+        ram: ram
+      }
+    });
+
+    if (productList.length === 0) {
+      return null;
+    }
+
+    return productList.map(product => product.product_id);
   }
 
+  async createFilterProductsByMemory(memory: number): Promise<number[] | null> {
+    const productList = await this.productRepository.find({
+      select: ["product_id"], // Chỉ chọn cột id
+      where: {
+        memory: memory
+      }
+    });
 
-  createFilterProductsByCategory(category: number) {
-    throw new Error('Method not implemented.');
+    if (productList.length === 0) {
+      return null;
+    }
+
+    return productList.map(product => product.product_id);
   }
 
+  async createFilterProductsByCategory(category_id: number): Promise<number[] | null> {
+  // Tìm sản phẩm dựa vào khóa ngoại category_id
+    const productList = await this.productRepository.find({
+      relations: {
+        category: true // Sử dụng tên của trường thể hiện tương ứng trong entity của bạn
+      },
+      where: {
+        category:{
+          category_id: category_id
+        }
+      },
+      select: ['product_id'], // Chọn các trường bạn muốn trả về (product_id)
+    });
+
+    if (productList && productList.length > 0) {
+      // Chuyển danh sách sản phẩm thành mảng các product_id
+      const productIds = productList.map(product => product.product_id);
+      return productIds;
+    } else {
+      return null;
+    }
+  }
   
-  createFilterProductsByPrice(minPrice: number, maxPrice: number) {
-    throw new Error('Method not implemented.');
+  async createFilterProductsByPrice(minPrice: number, maxPrice: number) {
+    const queryBuilder = this.productRepository.createQueryBuilder('products');
+
+    queryBuilder.select('products.product_id', 'id'); // Chỉ lấy cột id
+
+    if (minPrice !== undefined && maxPrice !== undefined) {
+      queryBuilder.andWhere('products.price BETWEEN :minPrice AND :maxPrice', { minPrice, maxPrice });
+    } else if (minPrice !== undefined) {
+      queryBuilder.andWhere('products.price >= :minPrice', { minPrice });
+    } else if (maxPrice !== undefined) {
+      queryBuilder.andWhere('products.price <= :maxPrice', { maxPrice });
+    }
+
+    const result = await queryBuilder.getRawMany();
+    return result.map(item => item.id);
+        // const query = this.productRepository.createQueryBuilder('products');
+
+    //   if (minPrice !== undefined && maxPrice !== undefined) {
+    //     query.where('products.price BETWEEN :minPrice AND :maxPrice', { minPrice, maxPrice });
+    //   } else if (minPrice !== undefined) {
+    //     query.where('products.price >= :minPrice', { minPrice });
+    //   } else if (maxPrice !== undefined) {
+    //     query.where('products.price <= :maxPrice', { maxPrice });
+    //   }
+
+    //   const result = await query.getMany();
+    //   return result;
   }
 
 
   // //products: Product[], filterFunc: (product: Product) => boolean
-  // *createFilterProducts(): Generator<ProductEntity[]> {
-  //   // for (const product of products) {
-  //   //   if (filterFunc(product)) {
-  //   //     yield product;
-  //   //   }
-  //   // }
-  // }
+  async * createFilterProducts(filter: FilterProductDto) { //: Generator<Promise<unknown> | null>
+    if (filter.ram) {
+      const filterRam = await this.createFilterProductsByRam(filter.ram);
+      const result =  filterRam;
+      yield result;
+    } else {
+      yield null;
+    }
+  }
 
 
-  async filterProducts(data: FilterProductDto): Promise<ProductEntity[]> {
-    throw new Error('Method not implemented.');
+  async filterProducts(filter: FilterProductDto): Promise<ProductEntity[]> {
+    // Sử dụng các bộ lọc theo điều kiện từ FilterProductDto
+    let products = await this.getAll();
+    /**
+     * 1. lấy cái to bớt dần
+     * 2. mỗi lần push vào
+     */
+    if (filter.ram) {
+      products = await this.filterProductsByRam(products, filter.ram);
+    }
+    if (filter.memory) {
+      products = await this.filterProductsByMemory(products, filter.memory);
+    }
+    if (filter.category) {
+      products = await this.filterProductsByCategory(products, filter.category);
+    }
+    if (filter.maxPrice || filter.minPrice) {
+      products = await this.filterProductsByPrice(products,filter.minPrice, filter.maxPrice);
+    }
+    return products;
   }
   
+
   async checkProductDuplicate(product: ProductDuplicateDto): Promise<ProductEntity>{
     const productDuplicate = await this.productRepository.findOne({
       where:{
@@ -306,15 +432,6 @@ export class ProductService
   async getProductsByProductIds(ids: number[]): Promise<ProductEntity[]> {
     const findProducts = await this.productRepository.findByIds(ids);
     return findProducts;
-    // try {
-    //   const findProducts = await this.productRepository.findByIds(ids);
-    //   if (findProducts.length !== ids.length) {
-    //     throw new NotFoundException("Không tìm thấy một số sản phẩm.");
-    //   }
-    //   return findProducts;
-    // } catch (error) {
-    //   throw new NotFoundException("Không tìm thấy một số sản phẩm.");
-    // }
   }
 
   async getNewestProducts(topProduct: number): Promise<ProductEntity[]> {

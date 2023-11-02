@@ -2,6 +2,7 @@ export class FilterProductDto{
     // color?: string;
     ram?: number;
     memory?: number;
-    category?: string; // đang phân vân
-    price?: number;
+    category?: number; // đang phân vân
+    minPrice: number;
+    maxPrice?: number;
 }
