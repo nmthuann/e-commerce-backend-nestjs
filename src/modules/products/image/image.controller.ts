@@ -33,7 +33,20 @@ export class ImageController {
     const product = parseInt(product_id, 10);
     console.log('get::', data, 'product_id', product);
     const result = await this.imageService.insertImages(product, data);
-    console.log('result', result);
+    console.log('result insert', result);
+    return result;
+  }
+
+  @Post('update-images/:product_id')
+  async updateImages(
+    @Param('product_id') product_id: string,
+    @Body() data: any,
+  ) {
+    //: Promise<ImageEntity[]> {
+    const product = parseInt(product_id, 10);
+    console.log('get::', data, 'product_id', product);
+    const result = await this.imageService.updateImages(product, data);
+    console.log('result update', result);
     return result;
   }
 

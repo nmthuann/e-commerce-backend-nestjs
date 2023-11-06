@@ -23,43 +23,39 @@ export class ImageService
     super(imageRepository);
   }
 
-  async insertImages(product_id: number, data: any): Promise<ImageEntity[]> {
-    //     const insertedImages: ImageEntity[] = [];
-    //     const findProduct = await this.productService.getOneById(product_id);
-    //     for (const url of data.url) {
-    //       const newImage = new ImageEntity();
-    //       newImage.product = findProduct;
-    //       newImage.url = url;
-    //       const insertedImage = await this.imageRepository.save(newImage);
-    //       insertedImages.push(insertedImage);
-    //       console.log(insertedImage)
-    //     }
+  async updateImages(product_id: number, data: any): Promise<ImageEntity[]> {
+      // Delete existing images for the product_id
+      await this.imageRepository.delete({ product: { product_id: product_id } });
 
-    //     return insertedImages;
-    // }
+      const updatedImages: ImageEntity[] = [];
+      const findProduct = await this.productService.getOneById(product_id);
+
+      for (const item of data) {
+          const url = item.url;
+
+          // Create a new image
+          const newImage = new ImageEntity();
+          newImage.product = findProduct;
+          newImage.url = url;
+
+          try {
+              // Save the new image
+              const updatedImage = await this.imageRepository.save(newImage);
+              updatedImages.push(updatedImage);
+              console.log(updatedImage);
+          } catch (error) {
+              console.error('Error updating image:', error);
+              throw new Error(ImageError.CREATE_IMAGE_ERROR);
+          }
+      }
+
+      return updatedImages;
+  }
+
+  async insertImages(product_id: number, data: any): Promise<ImageEntity[]> {
     const insertedImages: ImageEntity[] = [];
     const findProduct = await this.productService.getOneById(product_id);
 
-    // // if (Array.isArray(data.url)) {
-    //   // Kiểm tra xem data.url là một mảng
-    //   const imagePromises = data.url.map(async (url: string) => {
-    // try {
-    //   const newImage = new ImageEntity();
-    //   newImage.product = findProduct;
-    //   newImage.url = url;
-    //   const insertedImage = await this.imageRepository.save(newImage);
-    //   insertedImages.push(insertedImage);
-    //   console.log(insertedImage);
-    // } catch (error) {
-    //   console.error('Lỗi trong quá trình lưu hình ảnh:', error);
-    // }
-    // });
-
-    //     await Promise.all(imagePromises); // Đợi cho tất cả các promises hoàn thành
-    //   // }
-
-    //   return insertedImages;
-    // }
     for (const item of data) {
       const url = item.url;
 

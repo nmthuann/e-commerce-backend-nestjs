@@ -49,7 +49,9 @@ export enum ProductError {
   CREATE_PRODUCT_ERROR = 'Đã xảy ra lỗi khi tạo một sản phẩm.',
   PRODUCT_INVENTORY_ERROR = 'Số lượng sản phẩm không đủ.',
   PRODUCT_ID_NOT_EXIST = 'Mã sản phẩm không tồn tại.',
-  FILTER_PRODUCT_ERROR = 'không lọc được sản phẩm phù hợp.'
+  FILTER_PRODUCT_ERROR = 'không lọc được sản phẩm phù hợp.',
+    PRODUCT_DUPLICATE = "Model Sản phẩm đã tồn tại.",
+
 }
 
 export enum ImageError {

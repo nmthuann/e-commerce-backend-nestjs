@@ -1,5 +1,5 @@
 export class ProductDuplicateDto {
-    model_name: string;
+    model_name?: string;
     hardware?: string;
     color?: string;
     screen?: number;

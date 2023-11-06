@@ -43,7 +43,7 @@ export class ProductService
 
 
 
-   const subQuery = this.productRepository
+  const subQuery = this.productRepository
     .createQueryBuilder('subQuery')
     .select('image.url', 'url')
     .leftJoin(ImageEntity, 'image', 'image.product = subQuery.product_id')
@@ -255,6 +255,7 @@ export class ProductService
   }
 
   async createOne(data: CreateProductDto): Promise<ProductEntity> {
+    
     try {
       const newProduct = new ProductEntity();
       newProduct.model_name = data.model_name;

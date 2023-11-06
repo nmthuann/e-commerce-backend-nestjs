@@ -17,6 +17,7 @@ import { GetProductForOrderDto } from './product-dto/get-product-order.dto';
 import { ProductDuplicateDto } from './product-dto/product-duplicate.dto';
 import { FilterProductDto } from './product-dto/filter-product.dto';
 import { ProductError } from 'src/common/errors/errors';
+import { CreateProductDto } from './product-dto/create-product.dto';
 
 // working with DTO
 @Controller('product')
@@ -27,11 +28,30 @@ export class ProductController {
   ) {}
 
   @Post('create')
-  async createProduct(@Body() product: ProductDto): Promise<ProductEntity> {
+  async createProduct(@Body() product: CreateProductDto){
     console.log('Create Product', product);
     // const createProduct = await this.productService.createOne(product);
     // return createProduct // plainToClass(ProductDto, createProduct)
-    return await this.productService.createOne(product);
+    let productDuplicate: ProductDuplicateDto = {};
+    console.log( product.model_name)
+    productDuplicate.model_name = product.model_name;
+        productDuplicate.hardware= product.hardware,
+        productDuplicate.color= product.color,
+        productDuplicate.screen= product.screen,
+        productDuplicate.battery= product.battery,
+        productDuplicate.memory= product.memory,
+        productDuplicate.front_camera= product.front_camera,
+        productDuplicate.behind_camera= product.behind_camera,
+        productDuplicate.ram= product.ram
+    console.log("productDuplicate", productDuplicate)
+    if(await this.productService.checkProductDuplicate(productDuplicate)){
+      console.log("ssssss", {message: ProductError.PRODUCT_DUPLICATE})
+      return {message: ProductError.PRODUCT_DUPLICATE}
+    }
+    else{
+      return await this.productService.createOne(product);
+    }
+    
   }
 
   @Put('update/:id')
@@ -89,15 +109,16 @@ export class ProductController {
   }
 
 
-  @Get('get-product-duplicate')
+  @Post('get-product-duplicate')
   async getProductDuplicate(
     @Body() data: ProductDuplicateDto,
   ) {
     const getProductDuplicate = await this.productService.checkProductDuplicate(data);
+    // return getProductDuplicate;
     if(getProductDuplicate) {
       return getProductDuplicate;
     }
-    return {message: 'Product is valid!'};
+    return {message: ProductError.PRODUCT_DUPLICATE};
   }
 
 
