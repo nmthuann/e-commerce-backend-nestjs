@@ -7,4 +7,5 @@ export class GetTaskOrdersDto {
   total_price: string;
   priority: string; // đơn vị giao hàng
   create: string;
+  delivery_address: string;
 }

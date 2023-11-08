@@ -50,7 +50,7 @@ export class OrderDetailController {
   // }
 
   @Get(':id')
-  async getOrderDetail(@Param('id') id: number): Promise<OrderDetailEntity> {
-    return await this.orderDetailService.getOneById(id);
+  async getOrderDetail(@Param('id') id: number): Promise<OrderDetailEntity[]> {
+    return await this.orderDetailService.findOrderDetailByOrderId(id);
   }
 }

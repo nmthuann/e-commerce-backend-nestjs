@@ -17,7 +17,7 @@ export interface IAuthService {
   logout(email: string): Promise<boolean>;
   registerCustomer(input: RegisterCustomerDto): Promise<TokensDto | object>;
   registerEmployee(input: RegisterDto): Promise<AccountEntity>;
-  verifyEmail(email: string): unknown;
+  verifyEmail(email: string): Promise<unknown>;
   sendMail(receiver: string, subject: string, content: string);
   createEmployee(email: string, position_id: number, data: CreateEmployeeDto);
 }

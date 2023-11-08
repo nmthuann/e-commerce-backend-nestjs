@@ -1,7 +1,3 @@
-import { CategoryDto } from '../../category/category-dto/category.dto';
-import { DiscountDto } from '../../discount/discount-dto/discount.dto';
-import { ImageDto } from '../../image/image.dto';
-
 export class CreateProductDto {
   product_id: number;
   model_name: string;

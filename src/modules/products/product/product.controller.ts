@@ -144,8 +144,9 @@ export class ProductController {
 
   @Get('get-model-name')
   async getModelName(){
-    console.log('sssssss')
-    return await this.productService.getModelName();
+    const search  =  await this.productService.getModelName();
+   // console.log('sssssss',search)
+    return search;
 
   }
 

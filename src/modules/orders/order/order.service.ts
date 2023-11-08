@@ -353,6 +353,7 @@ export class OrderService
           `${(await Promise.resolve(order.shipping)).shipping_id}`
         ];
       taskOrder.create = order.createdAt.toLocaleString();
+      taskOrder.delivery_address = order.delivery_address;
       //  `${order.createdAt.getDate()}-${order.createdAt.getMonth()}-${order.createdAt.getFullYear()}`
       //console.log(taskOrder);
       taskOrderList.push(taskOrder);

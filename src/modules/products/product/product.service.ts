@@ -31,32 +31,20 @@ export class ProductService
   }
 
   async getModelName() {
-    //const productList = await this.productRepository.createQueryBuilder('products')
-    // // .select(['product_id', 'model_name',  'image.url'])
-    // // .leftJoin('products.images', 'image') // Thực hiện left join với bảng Image
-    // // .getRawOne()
-      //   .select(['product_id', 'model_name', 'image.url'])
-      //   .innerJoin('products.images', 'image')
-      //  // .groupBy('product_id, image.url')
-      //   .getRawMany();return productList;
+    const subQuery = this.productRepository
+      .createQueryBuilder('subQuery')
+      .select('image.url', 'url')
+      .leftJoin(ImageEntity, 'image', 'image.product = subQuery.product_id')
+      .limit(1)
+      .where('subQuery.product_id = product.product_id ');
+      const query = this.productRepository
+      .createQueryBuilder('product')
+      .select(['product_id', 'model_name'])
+      .addSelect(`(${subQuery.getQuery()})`, 'image')
+       .where('product.status = 1')
+      .getRawMany();
 
-
-
-
-  const subQuery = this.productRepository
-    .createQueryBuilder('subQuery')
-    .select('image.url', 'url')
-    .leftJoin(ImageEntity, 'image', 'image.product = subQuery.product_id')
-    .limit(1)
-    .where('subQuery.product_id = product.product_id');
-    const query = this.productRepository
-    .createQueryBuilder('product')
-    .select(['product_id', 'model_name'])
-    .addSelect(`(${subQuery.getQuery()})`, 'image')
-    .getRawMany();
-
-  return await query;
-
+    return await query;
   }
 
 
