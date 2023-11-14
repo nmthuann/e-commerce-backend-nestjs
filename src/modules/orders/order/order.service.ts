@@ -4,7 +4,7 @@ import { RevenueByMonth } from './order-dto/order.dto';
 import { IOrderService } from './order.service.interface';
 import { InjectRepository } from '@nestjs/typeorm';
 import { OrderEntity } from './order.entity';
-import { Repository } from 'typeorm';
+import { Between, Repository } from 'typeorm';
 import { IShippingService } from '../shipping/Shipping.service.interface';
 import { IPaymentService } from '../payment/payment.service.interface';
 import { IProductService } from 'src/modules/products/product/product.service.interface';
@@ -24,6 +24,14 @@ import { OrderStatus } from 'src/modules/bases/enums/order-status.enum';
 import { Role } from 'src/modules/bases/enums/role.enum';
 import { OrderOfflineDto } from './order-dto/order-offline.dto';
 import { OrderError } from 'src/common/errors/errors';
+import { CategoryEnum } from 'src/modules/bases/enums/order.enum';
+
+enum OrderPaymentMethod{
+  
+  OfflinePayment = 1,
+  OnlinePayment = 2,
+
+}
 
 @Injectable()
 export class OrderService
@@ -48,6 +56,7 @@ export class OrderService
     @Inject('IProductService')
     private productService: IProductService,
 
+
     // USER
     @Inject('IUserService')
     private userService: IUserService,
@@ -56,6 +65,146 @@ export class OrderService
     
   ) {
     super(orderRepository);
+  }
+
+  async findTopUserBuyProduct(top: number): Promise<any[]> {
+    const currentYear = new Date().getFullYear();
+    // const orderCompletedByYear = await this.getOrdersHasCompletedStatusInThisYear(currentYear);
+    
+    const topUsers = await this.orderRepository
+   .createQueryBuilder('order')
+    .select('order.user_id', 'user_id')
+    .addSelect('SUM(order.total_price)', 'total_price')
+    .addSelect('user.email', 'email') // Include email field
+    .addSelect('user.avatar_url', 'avatar_url') // Include avatar_url field
+    .addSelect("CONCAT(user.last_name, ' ', user.first_name)", 'full_name')
+    .innerJoin('order.user', 'user')
+    .where({
+      createdAt: Between(new Date(`${currentYear}-01-01`), new Date(`${currentYear + 1}-01-01`)),
+      status: 'completed'
+    })
+    .groupBy('order.user_id, user.email, user.avatar_url, user.first_name, user.last_name')
+    .orderBy('total_price', 'DESC')
+    .limit(top)
+    .getRawMany();
+
+    return topUsers;
+  }
+
+
+
+  async statisticalCategoryByOrder(): Promise<any> {
+    const currentYear = new Date().getFullYear();
+    const orderCompletedByYear = await this.getOrdersHasCompletedStatusInThisYear(currentYear);
+    const categoryCounts: Record<string, { name: string; count: number }> = {};
+    const categoryArray: string[] = Object.values(CategoryEnum).map(category => CategoryEnum[category]);
+    categoryArray.forEach(categoryName => {
+      categoryCounts[categoryName] = { name: categoryName, count: 0 };
+    });
+
+    console.table(categoryArray);
+
+    for (const order of orderCompletedByYear) {
+      const getOrderDetailByOrderId = await this.orderDetailService.findOrderDetailByOrderId(order.order_id);
+
+      for (const orderDetail of getOrderDetailByOrderId) {
+      //  let count = 0;
+
+        const category = (await Promise.resolve(await Promise.resolve(orderDetail.product))).category;
+        const categoryId = (await Promise.resolve(category)).category_name;
+        switch (categoryId) {
+          case CategoryEnum.Apple:
+            categoryCounts[CategoryEnum.Apple].count += 1;
+            break;
+          case CategoryEnum.Samsung:
+            categoryCounts[CategoryEnum.Samsung].count += 1;
+            break;
+          case CategoryEnum.Xiaomi:
+            categoryCounts[CategoryEnum.Xiaomi].count += 1;
+            break;
+          case CategoryEnum.Oppo:
+            categoryCounts[CategoryEnum.Oppo].count += 1;
+            break;
+          case CategoryEnum.Sony:
+            categoryCounts[CategoryEnum.Sony].count += 1;
+            break;
+          // Add cases for other categories
+          default:
+            // Handle any unexpected category ID
+            break;
+        }
+      }
+    }
+    console.log(categoryCounts)
+    const result: { name: string; count: number }[] = Object.values(categoryCounts);
+    return result;
+  }
+
+  async getOrdersHasCompletedStatusInThisYear(year: number): Promise<OrderEntity[]> {
+    const startDate = new Date(`${year}-01-01T00:00:00Z`);
+    const endDate = new Date(`${year + 1}-01-01T00:00:00Z`);
+    const findOrders = await this.orderRepository.find({
+      where: {
+        status: OrderStatus.Completed,
+        createdAt: Between(startDate, endDate),
+      },
+      // relations:{
+      //   user: true
+      // }
+    });
+
+    return findOrders;
+  }
+  
+
+
+  getMonthName(month: number): string {
+  const months = [
+    'Jan', 'Feb', 'Mar', 'Apr',
+    'May', 'Jun', 'Jul', 'Aug',
+    'Sep', 'Oct', 'Nov', 'Dec',
+  ];
+
+  // Kiểm tra xem month có nằm trong khoảng từ 1 đến 12 không
+  if (month >= 1 && month <= 12) {
+    return months[month - 1]; // Trừ 1 vì mảng bắt đầu từ 0
+  } else {
+    return 'Invalid Month';
+  }
+}
+
+  
+  async statisticalOnOffOrderCount(): Promise<any> {
+    /**
+     * lấy danh sách các đơn hàng thành công trong năm nay.
+     * lấy Create At: map the từng tháng, 
+     * trong tháng 1 có 4 ĐH: 3 đơn hàng on,  1 off
+     */
+    const currentYear = new Date().getFullYear();
+    const orderCompletedByYear = await this.getOrdersHasCompletedStatusInThisYear(currentYear);
+    // console.table(orderByYear);
+
+    const monthlyCounts: Record<string, { name: string; on: number; off: number }> = {};
+
+    for (const order of orderCompletedByYear) {
+      const orderDate = new Date(order.createdAt);
+      const month = orderDate.getMonth() + 1;
+      const payment = (await Promise.resolve(order.payment)).payment_id;
+
+      if (!monthlyCounts[month]) {
+        monthlyCounts[month] = { name: this.getMonthName(month), on: 0, off: 0 };
+      }
+
+      if (payment === OrderPaymentMethod.OfflinePayment) {
+        monthlyCounts[month].off += 1;
+      } else if (payment === OrderPaymentMethod.OnlinePayment) {
+        monthlyCounts[month].on += 1;
+      }
+    }
+
+    const result: any[] = Object.values(monthlyCounts);
+    console.table(result);
+    return result;
   }
 
 
@@ -511,7 +660,7 @@ export class OrderService
       }
     }
 
-    console.log(aggregatedRevenue);
+    console.table(aggregatedRevenue);
 
     return aggregatedRevenue;
   }
@@ -598,4 +747,7 @@ export class OrderService
     }
     // return orderCreated;
   }
+
+
+  
 }

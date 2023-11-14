@@ -125,6 +125,22 @@ export class OrderController {
     return await this.orderService.getTotalPriceByOrderId(order_id);
   }
 
+  @Get('statistical-OnOffOrder-count')
+  async statisticalOnOffOrderCount(): Promise<any> {
+    return await this.orderService.statisticalOnOffOrderCount();
+  }
+
+
+  @Get('statistical-category-by-order')
+  async statisticalCategoryByOrder(): Promise<any> {
+    return await this.orderService.statisticalCategoryByOrder();
+  }
+
+  @Get('find-top-user-buy-product')
+  async findTopUserBuyProduct(): Promise<any> {
+    return await this.orderService.findTopUserBuyProduct(5);
+  }
+
   @Get(':id')
   async getOrder(@Param('id') id: number): Promise<OrderEntity> {
     return await this.orderService.getOneById(id);

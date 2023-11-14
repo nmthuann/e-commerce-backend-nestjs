@@ -38,6 +38,7 @@ dotenv.config();
     UserModule,
 
     ProductModule,
+
   ],
   controllers: [OrderController],
   providers: [
@@ -69,6 +70,9 @@ export class OrderModule implements NestModule {
         { path: 'order/get-total-price/:order_id', method: RequestMethod.GET },
         { path: 'order/:id', method: RequestMethod.GET },
         { path: 'order/count-product-sold', method: RequestMethod.GET },
+        { path: 'order/statistical-OnOffOrder-count', method: RequestMethod.GET },
+        { path: 'order/statistical-category-by-order', method: RequestMethod.GET },
+        { path: 'order/find-top-user-buy-product', method: RequestMethod.GET },
       )
       .forRoutes(OrderController);
   }

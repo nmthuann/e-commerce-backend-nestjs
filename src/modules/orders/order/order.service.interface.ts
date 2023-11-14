@@ -15,6 +15,7 @@ export interface IOrderService extends IBaseService<OrderEntity> {
   getTotalRevenue(): Promise<number>;
   getCountProductSold(): Promise<number>;
   getOrdersHasCompletedStatus(): Promise<OrderEntity[]>;
+  getOrdersHasCompletedStatusInThisYear(year: number): Promise<OrderEntity[]>;
   getRevenueByMonth(): Promise<RevenueByMonth>;
   getTotalPriceByOrderId(order_id: number): Promise<number>;
   createOrderOnline(
@@ -28,4 +29,8 @@ export interface IOrderService extends IBaseService<OrderEntity> {
   handleInProgressOrder(order_id: number);
   handleCompletedOrder(order_id: number);
   handleRefundedOrder(order_id: number);
+  statisticalOnOffOrderCount(): Promise<any>;
+  getMonthName(month: number): string ;
+  statisticalCategoryByOrder(): Promise<any>;
+  findTopUserBuyProduct(top: number): Promise<any>;
 }
