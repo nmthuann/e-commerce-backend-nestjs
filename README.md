@@ -123,13 +123,14 @@ $ yarn run test:e2e
 # test coverage
 $ yarn run test:cov
 
+```
 
 ## 5. References <a name="references"></a>
 
-- **NestJS**: [NestJS Documentation](https://docs.nestjs.com)
-- **Stripe**: [Stripe API Documentation](https://stripe.com/docs/api)
-- **TypeORM**: [TypeORM Documentation](https://typeorm.io/)
-- **SQL Server**: [SQL Server Documentation](https://docs.microsoft.com/en-us/sql/sql-server/)
+-   **NestJS**: [NestJS Documentation](https://docs.nestjs.com)
+-   **Stripe**: [Stripe API Documentation](https://stripe.com/docs/api)
+-   **TypeORM**: [TypeORM Documentation](https://typeorm.io/)
+-   **SQL Server**: [SQL Server Documentation](https://docs.microsoft.com/en-us/sql/sql-server/)
 
 ---
 
@@ -141,13 +142,12 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 
 ## 7. Stay in touch <a name="stay-in-touch"></a>
 
-- **Author**: [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- **Website**: [https://nestjs.com](https://nestjs.com)
-- **Twitter**: [@nestframework](https://twitter.com/nestframework)
+-   **Author**: [Kamil Myśliwiec](https://kamilmysliwiec.com)
+-   **Website**: [https://nestjs.com](https://nestjs.com)
+-   **Twitter**: [@nestframework](https://twitter.com/nestframework)
 
 ---
 
 ## 8. License <a name="license"></a>
 
 Nest is [MIT licensed](https://opensource.org/licenses/MIT).
-```
