@@ -47,8 +47,7 @@ export class EmployeeService
      * 1. Create new employee Table Employee
      * 2. Update Employee Id in Table User
      */
-    // const queryRunner = this.employeeRepository.manager.connection.createQueryRunner();
-    // await queryRunner.startTransaction();
+
     try {
       const findPosition = await this.positionService.getOneById(
         data.position_id,
@@ -60,7 +59,6 @@ export class EmployeeService
       newEmployee.position = findPosition;
       newEmployee.salary = data.salary;
 
-      // const employeeCreated = await queryRunner.manager.save(newEmployee);
 
       const employeeCreated = await this.employeeRepository.save(newEmployee);
 
@@ -78,11 +76,9 @@ export class EmployeeService
       );
       console.log('updateUser:::', updateUser);
 
-      //await queryRunner.commitTransaction();
       return employeeCreated;
     } catch (error) {
       console.log(`Create New Employee lỗi::: ${error}`);
-      //await queryRunner.rollbackTransaction();
       throw new Error(ErrorType.NO_SUCCESS);
     }
   }
@@ -90,7 +86,6 @@ export class EmployeeService
   async getEmployeeList(): Promise<GetEmployeeListDto[]> {
     const getEmployeeList: GetEmployeeListDto[] = [];
     const findEmployees = await this.getAll();
-    // console.log(findEmployees)
 
     for (const employee of findEmployees) {
       const getEmployee = new GetEmployeeListDto();

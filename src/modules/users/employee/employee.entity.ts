@@ -23,15 +23,8 @@ export class EmployeeEntity extends BaseEntity {
   @Column({ default: true })
   work_status: boolean;
 
-  // @OneToOne(() => PositionEntity)
-  // @JoinColumn({name: 'position_id'})
-  // position: PositionEntity
-
-  @OneToOne(() => UserEntity, (user) => user.employee) // specify inverse side as a second parameter
+  @OneToOne(() => UserEntity, (user) => user.employee) 
   user: UserEntity;
-
-  // @OneToOne(() => OrderEntity, (order) => order.employee) // specify inverse side as a second parameter
-  // order: OrderEntity
 
   @OneToMany(() => OrderEntity, (order) => order.employee)
   orders: OrderEntity[];

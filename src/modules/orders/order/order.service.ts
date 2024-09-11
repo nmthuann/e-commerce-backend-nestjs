@@ -41,8 +41,6 @@ export class OrderService
   constructor(
     @InjectRepository(OrderEntity)
     private orderRepository: Repository<OrderEntity>,
-
-    //  ORDER
     @Inject('IShippingService')
     private shippingService: IShippingService,
     @Inject('IDiscountService')
@@ -51,13 +49,8 @@ export class OrderService
     private paymnetService: IPaymentService,
     @Inject('IOrderDetailService')
     private orderDetailService: IOrderDetailService,
-
-    //  PRODUCT
     @Inject('IProductService')
     private productService: IProductService,
-
-
-    // USER
     @Inject('IUserService')
     private userService: IUserService,
     @Inject('IEmployeeService')
@@ -68,9 +61,7 @@ export class OrderService
   }
 
   async findTopUserBuyProduct(top: number): Promise<any[]> {
-    const currentYear = new Date().getFullYear();
-    // const orderCompletedByYear = await this.getOrdersHasCompletedStatusInThisYear(currentYear);
-    
+    const currentYear = new Date().getFullYear();    
     const topUsers = await this.orderRepository
    .createQueryBuilder('order')
     .select('order.user_id', 'user_id')
@@ -108,8 +99,6 @@ export class OrderService
       const getOrderDetailByOrderId = await this.orderDetailService.findOrderDetailByOrderId(order.order_id);
 
       for (const orderDetail of getOrderDetailByOrderId) {
-      //  let count = 0;
-
         const category = (await Promise.resolve(await Promise.resolve(orderDetail.product))).category;
         const categoryId = (await Promise.resolve(category)).category_name;
         switch (categoryId) {
@@ -182,10 +171,7 @@ export class OrderService
      */
     const currentYear = new Date().getFullYear();
     const orderCompletedByYear = await this.getOrdersHasCompletedStatusInThisYear(currentYear);
-    // console.table(orderByYear);
-
     const monthlyCounts: Record<string, { name: string; on: number; off: number }> = {};
-
     for (const order of orderCompletedByYear) {
       const orderDate = new Date(order.createdAt);
       const month = orderDate.getMonth() + 1;
@@ -246,7 +232,6 @@ export class OrderService
     // }
     else{
       return {message: OrderError.CANCELED_ORDER_FAILED};
-      // return {message: OrderError.UPDATE_STATUS_ORDER_FAILED};
     }
   }
 
@@ -268,8 +253,6 @@ export class OrderService
     }
     else{
       return {message: OrderError.UPDATE_STATUS_ORDER_FAILED};
-
-      // return new Error(OrderError.UPDATE_STATUS_ORDER_FAILED);
     }
   }
 
@@ -426,13 +409,12 @@ export class OrderService
         console.log(' calculattingTotalPrice:::', calculattingTotalPrice);
       }
 
-      // await this.userService.getEmployeeByEmail(email)
       const findEmployee: EmployeeEntity =
-        await this.employeeService.getOneById(data.employee_id); //await this.userService.getEmployeeByEmail(email); // await this.employeeService.getOneById(data.employee_id);
-      const findUser: UserEntity = null; // await this.userService.getOneById(data.user_id);
+        await this.employeeService.getOneById(data.employee_id); 
+      const findUser: UserEntity = null;
       const findPayment: PaymentEntity = await this.paymnetService.getOneById(
         1,
-      ); //data.payment_id
+      );
 
       //  cập nhật order
       const updateOrder = new OrderEntity();
@@ -468,24 +450,16 @@ export class OrderService
     };
 
     const findOrders = await this.getAll();
-    // console.log(findOrders);
     for (const order of findOrders) {
       const taskOrder = new GetTaskOrdersDto();
       const orderDetail =
         await this.orderDetailService.findOrderDetailByOrderId(order.order_id);
-      // console.log('orderDetail', orderDetail);
-
       const customer =
         (await Promise.resolve(order.user)).last_name +
         ' ' +
         (await Promise.resolve(order.user)).first_name; //
-      // console.log(customer)
 
       taskOrder.id = String(order.order_id);
-
-      // taskOrder.title = customer == 'No User'
-      //     ? `Customer ${customer} bought ${orderDetail.length} product`
-      //     : `Customer ${order.contact} bought ${orderDetail.length} product`;
       taskOrder.title = `Customer ${customer} bought ${orderDetail.length} product`;
       taskOrder.label =
         (await Promise.resolve(order.payment)).payment_id === 2
@@ -503,20 +477,15 @@ export class OrderService
         ];
       taskOrder.create = order.createdAt.toLocaleString();
       taskOrder.delivery_address = order.delivery_address;
-      //  `${order.createdAt.getDate()}-${order.createdAt.getMonth()}-${order.createdAt.getFullYear()}`
-      //console.log(taskOrder);
+     
       taskOrderList.push(taskOrder);
     }
 
-    ///console.log(taskOrderList);
+ 
     return taskOrderList;
   }
 
   async getCountOrdersByUserId(user_id: number): Promise<number> {
-    // const findOrdersByUserId = await this.orderRepository.
-
-    // return ;
-
     try {
       const count = await this.orderRepository.count({
         where: {
@@ -549,8 +518,8 @@ export class OrderService
     try {
       const count = await this.orderRepository.count({
         where: {
-          user: { user_id }, // Assuming there's a relationship between OrderEntity and UserEntity
-          status: OrderStatus.Canceled, //'canceled', // Assuming the status indicating canceled orders is 'canceled'
+          user: { user_id },
+          status: OrderStatus.Canceled,
         },
       });
 
@@ -704,9 +673,7 @@ export class OrderService
         newOrderDetail.product = product;
         newOrderDetail.order = orderCreated;
 
-        // product.quantity -= data.order_detail[index].quantity;
-        // console.log("test:::", test)
-        // cập nhật số lượng
+
         product.quantity = product.quantity - 1;
         await this.productService.updateOneById(product.product_id, product);
         await this.orderDetailService.createOne(newOrderDetail);
@@ -745,9 +712,5 @@ export class OrderService
       await this.deleteOneById(orderCreated.order_id);
       throw new Error(OrderError.CREATE_ORDER_ONLINE_ERROR);
     }
-    // return orderCreated;
   }
-
-
-  
 }

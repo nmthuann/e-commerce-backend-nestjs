@@ -11,10 +11,8 @@ import {
   BeforeInsert,
 } from 'typeorm';
 import { CategoryEntity } from '../../category/category.entity';
-// import { ProductDetailEntity } from "./product-detail.entity"
 import { ImageEntity } from '../../image/image.entity';
 import { DiscountEntity } from '../../discount/discount.entity';
-
 import { ErrorInput } from 'src/common/errors/errors';
 
 @Entity({ name: 'Products' })
@@ -108,7 +106,4 @@ export class ProductEntity extends BaseEntity {
 
   @Column({ type: 'int', nullable: false })
   ram: number;
-
-  // @ManyToOne(() => CartDetailEntity, (cart_detail) => cart_detail.products)
-  // cart_detail: CartDetailEntity
 }

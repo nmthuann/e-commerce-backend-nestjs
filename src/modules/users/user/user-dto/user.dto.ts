@@ -12,5 +12,4 @@ export class UserDto {
   phone: string;
   __account__: AccountDto;
   __employee__: EmployeeDto;
-  // order: OrderDto;
 }

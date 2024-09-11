@@ -12,14 +12,11 @@ import {
 import { IProductService } from './product.service.interface';
 import { ProductDto } from './product-dto/product.dto';
 import { ProductEntity } from './entities/product.entity';
-
 import { GetProductForOrderDto } from './product-dto/get-product-order.dto';
 import { ProductDuplicateDto } from './product-dto/product-duplicate.dto';
 import { FilterProductDto } from './product-dto/filter-product.dto';
 import { ProductError } from 'src/common/errors/errors';
 import { CreateProductDto } from './product-dto/create-product.dto';
-
-// working with DTO
 @Controller('product')
 export class ProductController {
   constructor(
@@ -30,8 +27,6 @@ export class ProductController {
   @Post('create')
   async createProduct(@Body() product: CreateProductDto){
     console.log('Create Product', product);
-    // const createProduct = await this.productService.createOne(product);
-    // return createProduct // plainToClass(ProductDto, createProduct)
     let productDuplicate: ProductDuplicateDto = {};
     console.log( product.model_name)
     productDuplicate.model_name = product.model_name;
@@ -51,7 +46,6 @@ export class ProductController {
     else{
       return await this.productService.createOne(product);
     }
-    
   }
 
   @Put('update/:id')
@@ -108,7 +102,6 @@ export class ProductController {
     return await this.productService.getProductsByProductIds(productIds);
   }
 
-
   @Post('get-product-duplicate')
   async getProductDuplicate(
     @Body() data: ProductDuplicateDto,
@@ -121,13 +114,8 @@ export class ProductController {
     return {message: ProductError.PRODUCT_DUPLICATE};
   }
 
-
   @Get('filter-by-ram/:ram')
   async filterProductByRam(@Param('ram') ram: number){
-    //return await this.productService.createFilterProductsByRam(ram);
-    // return await this.productService.createFilterProductsByMemory(ram);
-    // const minPrice = 4900000;
-    // return await this.productService.createFilterProductsByPrice(minPrice, ram);
     return await this.productService.createFilterProductsByCategory(1);
   }
 
@@ -140,16 +128,11 @@ export class ProductController {
     return {message: ProductError.FILTER_PRODUCT_ERROR}
   }
 
-  
-
   @Get('get-model-name')
   async getModelName(){
     const search  =  await this.productService.getModelName();
-   // console.log('sssssss',search)
     return search;
-
   }
-
 
   @Get(':product_id')
   async getProduct(@Param('product_id') id: number): Promise<ProductEntity> {
@@ -157,42 +140,3 @@ export class ProductController {
     return await this.productService.getOneById(id);
   }
 }
-
-// @Get('get-products/price?')
-// async getProductsByPriceRange(
-//     @Query('category_id') category_id: number,
-//     @Query('price') price: number
-// ): Promise<ProductEntity[]> {
-//     console.log(category_id, price)
-//     return await this.productService.getProductsByPriceRange(category_id, price);
-// }
-
-// @Get('get-products/brand?')
-// async getProductsByBrand(
-//     @Query('category_id') category_id: number,
-//     @Query('brand') brand: string
-// ): Promise<ProductEntity[]> {
-//     console.log(category_id, brand)
-//     return await this.productService.getProductsByBrand(category_id, brand);
-// }
-
-// @Get('get-products/:category_id/?')
-// async getProductsByFilter(
-//     @Query() filter: ProductFilterDto,
-//     @Param("category_id") category_id: number
-// ): Promise<ProductEntity[]> {
-//     console.log("hahahaha")
-//     return this.productService.getProductsByFilter(category_id, filter);
-// }
-
-// @Get('get-products')
-// async getProducts(): Promise<Partial<ProductEntity>[]> {
-//     return await this.productService.getSomeFields();
-// }
-
-// @Get('get-products/brand/:category_id')
-// async getProductBrandsByCategoryId(
-//     @Param('category_id') category_id: number
-// ): Promise<string[]> {
-//     return await this.productService.getProductBrandByCategoryId(category_id);
-// }

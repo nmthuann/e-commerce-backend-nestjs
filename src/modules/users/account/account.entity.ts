@@ -16,11 +16,10 @@ export class AccountEntity {
   @Column({ default: null })
   refresh_token: string;
 
-  //@Column({type: 'enum', enum: Role}) // , default: Role.User
   @Column({ type: 'nvarchar', length: 10, default: Role.User })
   role: string;
 
-  @OneToOne(() => UserEntity, (user) => user.account) // { cascade: true }
+  @OneToOne(() => UserEntity, (user) => user.account)
   user: UserEntity;
 
   @BeforeInsert()

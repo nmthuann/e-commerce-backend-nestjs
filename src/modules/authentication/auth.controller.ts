@@ -60,10 +60,10 @@ export class AuthController {
   @HttpCode(200)
   @Post('send-email')
   async sendEmail(@Body() data: { email: string }) {
-    //: Promise<TokensDto | object>
 
     try {
-      const res = await this.authService.sendMail(
+      // const res = 
+      await this.authService.sendMail(
         data.email,
         'SEND MAIL',
         'Test Send Mail',

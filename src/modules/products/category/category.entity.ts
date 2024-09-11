@@ -19,7 +19,7 @@ export class CategoryEntity extends BaseEntity {
   @OneToMany(
     () => ProductEntity,
     (product) => product.category,
-    // {onDelete: "RESTRICT"}
+
   )
   products: ProductEntity[];
 }

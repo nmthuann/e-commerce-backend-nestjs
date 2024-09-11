@@ -30,26 +30,6 @@ export class OrderEntity extends BaseEntity {
   @Column({ type: 'nvarchar', length: 15 })
   contact: string;
 
-  // @OneToOne(() => ShippingEntity)
-  // @JoinColumn({name: 'shipping_id'})
-  // shipping: ShippingEntity
-
-  // @OneToOne(() => PaymentEntity)
-  // @JoinColumn({name: 'payment_id'})
-  // payment: PaymentEntity
-
-  // @OneToOne(() => EmployeeEntity, (employee) => employee.order)
-  // @JoinColumn({name: 'employee_id'})
-  // employee: EmployeeEntity
-
-  // @OneToOne(() => UserEntity, (user) => user.order)
-  // @JoinColumn({name: 'user_id'})
-  // user: UserEntity
-
-  // @OneToOne(() => DiscountEntity)
-  // @JoinColumn({name: 'discount_id'})
-  // discount: DiscountEntity
-
   @ManyToOne(() => DiscountEntity, (discount) => discount.orders, {
     lazy: true,
   })

@@ -17,20 +17,6 @@ export class AccountDto {
   password!: string;
   user: UserDto;
 
-  // constructor(
-  //     email: string,
-  //     status: string,
-  //     refresh_token: string,
-  //     password: string,
-  //     user: UserDto
-  // ){
-  //     this.email = email;
-  //     this.password = password;
-  //     this.status = status;
-  //     this.refresh_token = refresh_token;
-  //     this.user = user;
-  // }
-
   constructor(
     email: string,
     status: boolean,

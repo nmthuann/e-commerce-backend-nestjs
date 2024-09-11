@@ -20,11 +20,4 @@ export class CartDetailEntity {
   @JoinColumn({ name: 'cart_id' })
   cart: CartEntity;
 
-  // @OneToMany(() => ProductEntity, product => product.cart_detail, { cascade: true })
-  // // @JoinColumn({name: 'product_id'})
-  // products: ProductEntity[];
-
-  // @OneToMany(() => CartEntity, cart => cart.cart_detail, { cascade: true })
-  // //@JoinColumn({name: 'cart_id'})
-  // carts: CartEntity[];
 }

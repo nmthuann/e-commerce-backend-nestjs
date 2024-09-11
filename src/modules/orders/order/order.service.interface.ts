@@ -4,7 +4,6 @@ import { OrderEntity } from './order.entity';
 import { GetTaskOrdersDto } from './order-dto/get-task-orders.dto';
 import { GetCustomerListDto } from 'src/modules/users/user/user-dto/get-customer-list.dto';
 import { OrderOfflineDto } from './order-dto/order-offline.dto';
-// import { GraphData } from "./order.service";
 
 export interface IOrderService extends IBaseService<OrderEntity> {
   getTaskOrders(): Promise<GetTaskOrdersDto[]>;

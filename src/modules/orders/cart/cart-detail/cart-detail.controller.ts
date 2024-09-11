@@ -11,7 +11,7 @@ import {
 import { CartDetailDto } from '../cart-dto/cart-detail.dto';
 import { ICartDetailService } from '../cart-detail/cart-detail.service.interface';
 
-// working with DTO
+
 @Controller('CartDetail')
 export class CartDetailController {
   constructor(

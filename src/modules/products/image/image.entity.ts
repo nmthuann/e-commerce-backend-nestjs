@@ -1,10 +1,8 @@
-// image.entity.ts
-
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { ProductEntity } from '../product/entities/product.entity';
 import { BaseEntity } from 'src/modules/bases/base.entity';
 
-@Entity({ name: 'Images' }) // Set the table name explicitly (optional)
+@Entity({ name: 'Images' }) 
 export class ImageEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   image_id: string;

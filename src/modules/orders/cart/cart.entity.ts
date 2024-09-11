@@ -13,13 +13,12 @@ export class CartEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   cart_id: number;
 
-  @OneToOne(() => UserEntity) // specify inverse side as a second parameter
+  @OneToOne(() => UserEntity) 
   @JoinColumn({ name: 'user_id' })
   user: UserEntity;
 
   @Column()
   status: boolean;
 
-  // @ManyToOne(() => CartDetailEntity, (cart_detail) => cart_detail.carts)
-  // cart_detail: CartDetailEntity
+
 }

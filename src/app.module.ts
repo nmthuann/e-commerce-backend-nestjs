@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CategoryModule } from './modules/products/category/category.module';
 import { CategoryEntity } from './modules/products/category/category.entity';
@@ -18,21 +17,12 @@ import { ImageEntity } from './modules/products/image/image.entity';
 import { ShippingEntity } from './modules/orders/shipping/shipping.entity';
 import { PaymentEntity } from './modules/orders/payment/payment.entity';
 import { OrderDetailEntity } from './modules/orders/order/order-detail.entity';
-
 import { ImageModule } from './modules/products/image/image.module';
-
 import { OrderModule } from './modules/orders/order/order.module';
-
 import { EmployeeModule } from './modules/users/employee/employee.module';
-// import { PositionModule } from './modules/users/position/position.module';
-// import { AccountModule } from './modules/users/account/account.module';
-// import * as redisStore from 'cache-manager-redis-store';
-// import { CacheModule } from '@nestjs/cache-manager';
-// import { StoreModule } from './modules/apis/store/store.module';
-// import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './modules/authentication/auth.module';
 import { StripeModule } from './modules/orders/stripe/stripe.module';
-// import { CacheModule } from '@nestjs/cache-manager';
+import { InventoriesController } from './modules/inventories/inventories.controller';
 
 @Module({
   imports: [
@@ -65,24 +55,6 @@ import { StripeModule } from './modules/orders/stripe/stripe.module';
       ],
     }),
 
-    //
-    // DiscountModule,
-    // ProductModule,
-    // ImageModule,
-    // // StoreModule,
-
-    // // CartModule,
-    // // CartDetailModule,
-    // OrderModule,
-    // // OrderDetailModule,
-    //ShippingModule,
-    // PaymentModule,
-
-    // UserModule,
-    // EmployeeModule,
-    // // //PositionModule,
-    // AccountModule,
-
     AuthModule,
     EmployeeModule,
     CategoryModule,
@@ -90,17 +62,9 @@ import { StripeModule } from './modules/orders/stripe/stripe.module';
     ImageModule,
     StripeModule,
     OrderModule,
+    InventoriesController
   ],
   controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}
-
-// CacheModule.register({
-//   isGlobal: true,
-//   store: redisStore,
-//   host: 'localhost',//localhost
-//   port: 6379,//6379
-//   // password: 'pqTtSGQM5oHvURGfFWaO7qWcTi3kcWr8',
-//   // ttl: 60*60*15, // seconds
-// }),

@@ -7,12 +7,6 @@ import {
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-// const corsHeaders = {
-//   'Access-Control-Allow-Origin': '*',
-//   'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-//   'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-// };
-
 @Injectable()
 export class CorsInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
@@ -31,12 +25,10 @@ export class CorsInterceptor implements NestInterceptor {
 
     return next.handle().pipe(
       map((data) => {
-        // Xử lý dữ liệu trước khi trả về
         if (data) {
           const processedData = {
             url: data,
             headers: {
-              // Thêm các header khác tùy theo yêu cầu của bạn
               // corsHeaders
               'Access-Control-Allow-Origin': '*',
             },

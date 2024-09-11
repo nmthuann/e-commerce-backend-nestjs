@@ -1,11 +1,7 @@
 import {
-  Body,
   Controller,
-  Delete,
   Get,
   Param,
-  Post,
-  Put,
   Inject,
   Patch,
   UseGuards,
@@ -17,11 +13,8 @@ import { OrderEntity } from './order.entity';
 import { GetTaskOrdersDto } from './order-dto/get-task-orders.dto';
 import { GetCustomerListDto } from 'src/modules/users/user/user-dto/get-customer-list.dto';
 import { RevenueByMonth } from './order-dto/order.dto';
-import { OrderOfflineDto } from './order-dto/order-offline.dto';
 import { AdminRoleGuard } from 'src/common/guards/admin.role.guard';
-// import { GraphData } from './order.service';
 
-// working with DTO
 @Controller('order')
 export class OrderController {
   constructor(
@@ -32,7 +25,6 @@ export class OrderController {
 
   @UseGuards(AdminRoleGuard)
   @Patch('update-confirmed/:order_id')
-  // http://localhost:3333/order/update-confirmed/2041
   async updateConfirmedOrder(
     @Request() req: any,
     @Param('order_id') order_id: number,
@@ -127,12 +119,16 @@ export class OrderController {
 
   @Get('statistical-OnOffOrder-count')
   async statisticalOnOffOrderCount(): Promise<any> {
-    return await this.orderService.statisticalOnOffOrderCount();
+    
+    const test = await this.orderService.statisticalOnOffOrderCount();
+    console.log('statistical-OnOffOrder-count:::', test)
+    return test;
   }
 
 
   @Get('statistical-category-by-order')
   async statisticalCategoryByOrder(): Promise<any> {
+    
     return await this.orderService.statisticalCategoryByOrder();
   }
 
@@ -146,26 +142,3 @@ export class OrderController {
     return await this.orderService.getOneById(id);
   }
 }
-
-
-
-  // @UseGuards(AdminRoleGuard)
-  // @Post('create-offline')
-  // async createOrder(@Body() order: OrderOfflineDto) {
-  //   console.log(order);
-  //   return await this.orderService.createNewOrderOffline(order);
-  // }
-
-
-  // @Put('update/:id')
-  // async updateOrderById(
-  //   @Param('id') id: number,
-  //   @Body() orderEntity: OrderEntity,
-  // ): Promise<OrderEntity> {
-  //   return this.orderService.updateOneById(id, orderEntity);
-  // }
-
-  // @Delete('delete/:id')
-  // async deleteOrderById(@Param('id') id: number): Promise<void> {
-  //   console.log(await this.orderService.deleteOneById(id));
-  // }

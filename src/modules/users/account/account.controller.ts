@@ -24,11 +24,6 @@ export class AccountController {
     return await this.accountService.createOne(account);
   }
 
-  // @Post('create')
-  // async createAccountForEmployee(@Body() account: AccountForEmployeeDto): Promise<AccountEntity> {
-  //     return await
-  // }
-
   @Put('update/:id')
   async updateAccountById(
     @Param('id') id: number,

@@ -3,7 +3,6 @@ export enum Message {
   Warning = 'Cảnh báo',
   Error = 'Lỗi',
   Info = 'Thông tin',
-  // Thêm các loại thông điệp khác ở đây
 }
 
 export enum AuthMessages {

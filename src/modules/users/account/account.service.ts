@@ -4,7 +4,6 @@ import { IAccountService } from './account.service.interface';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AccountEntity } from './account.entity';
 import { Repository } from 'typeorm';
-// import { async } from "rxjs";
 
 @Injectable()
 export class AccountService
@@ -28,17 +27,4 @@ export class AccountService
     }
   }
 
-  // async createAccountForEmployee(data: AccountForEmployeeDto): Promise<AccountEntity> {
-
-  //   const newAccount = new AccountEntity();
-  //   newAccount.email = data.email;
-
-  //     return
-  // }
-
-  // async getOneById(email: string): Promise<AccountEntity> {
-  //   const accountInstance: AccountDto =  await this.accountRepository.findOneById(email);
-
-  //   return accountInstance.toPlainObject();
-  // }
 }

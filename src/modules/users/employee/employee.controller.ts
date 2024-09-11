@@ -1,13 +1,11 @@
 import {
   Body,
   Controller,
-
   Get,
   Param,
   Post,
   Put,
   Inject,
-
   HttpCode,
 } from '@nestjs/common';
 import { IEmployeeService } from './Employee.service.interface';
@@ -15,7 +13,6 @@ import { EmployeeDto } from './employee-dto/employee.dto';
 import { EmployeeEntity } from './employee.entity';
 import { GetEmployeeListDto } from './employee-dto/get-employee-list.dto';
 
-// working with DTO
 @Controller('employee')
 export class EmployeeController {
   constructor(
@@ -50,9 +47,4 @@ export class EmployeeController {
   async getInformationEmployees(): Promise<GetEmployeeListDto[]> {
     return await this.employeeService.getEmployeeList();
   }
-
-  // @Get(':id')
-  // async getEmployee(@Param('id') id: number): Promise<EmployeeEntity> {
-  //     return await this.employeeService.getOneById(id);
-  // }
 }

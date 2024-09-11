@@ -26,14 +26,11 @@ export class OrderDetailService
 
   async updateQuantityProduct(order_id: any): Promise<void> {
     const findOrder = await this.findOrderDetailByOrderId(order_id);
-    // findorder -> array
-
     findOrder.map(async (order_detail) =>{
       const findProduct: ProductEntity = await this.productService.getOneById(order_detail.product_id);
       findProduct.quantity = findProduct.quantity + order_detail.quantity;
       await this.productService.updateOneById(findProduct.product_id, findProduct);
     })
-    return ;
   }
 
   async createMany(data: OrderDetailEntity[]): Promise<OrderDetailEntity[]> {
@@ -57,35 +54,25 @@ export class OrderDetailService
   }
 
   async getTotalPriceByOrderId(order_id: number): Promise<number> {
-    // return 0;
+
     try {
-      //const orderDetails = await this.findOrderDetailByOrderId(order_id);
       const orderDetails = await this.orderDetailRepository.find({
         where: {
           order_id: order_id,
         },
-        relations: ['product'], // To also fetch the product details for each order detail
+        relations: ['product'], 
       });
       console.log('orderDetails :::', orderDetails);
-      // Calculate the total price
       let totalPrice = 0;
-
-      // Get the current date
-      // const now = new Date();
-
       for (const orderDetail of orderDetails) {
         const { quantity, product } = orderDetail;
 
         if (product) {
-          // Fetch the product to get the discount
+   
           const findDiscount: ProductDto = await this.productService.getOneById(
             product.product_id,
           );
-
-          // Check if the product has a discount and the discount is not expired
           if (findDiscount.discount) {
-            //&& findDiscount.__discount__.expired >= now
-            // Apply the discount to the price
             totalPrice +=
               quantity *
               (product.price -

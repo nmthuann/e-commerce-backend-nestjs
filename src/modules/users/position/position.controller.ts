@@ -12,7 +12,7 @@ import { PositionDto } from '../position/position.dto';
 import { IPositionService } from './position.service.interface';
 import { PositionEntity } from './position.entity';
 
-// working with DTO
+
 @Controller('position')
 export class PositionController {
   constructor(

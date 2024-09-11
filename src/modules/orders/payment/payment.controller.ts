@@ -11,7 +11,6 @@ import {
 import { PaymentDto } from '../payment/payment.dto';
 import { IPaymentService } from './payment.service.interface';
 
-// working with DTO
 @Controller('payment')
 export class PaymentController {
   constructor(

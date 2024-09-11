@@ -40,24 +40,13 @@ export class CategoryController {
   async deleteCategoryById(
     @Param('category_id') id: number,
   ): Promise<DeleteResult> {
-    // console.log(await this.categoryService.deleteOneById(id));
-
     return await this.categoryService.deleteOneById(id);
-    // } catch (error) {
-    //     console.log(`${error} has a problem`)
-    //     throw error
-    // }
   }
 
   @Get('get-categories')
   async getCategories(): Promise<CategoryDto[]> {
     return await this.categoryService.getAll();
   }
-
-  // @Get('get-produc-by-id')
-  // async getProdcutByCategoryId(): Promise<CategoryEntity[]> {
-  //     return await this.categoryService.getProdcutByCategoryId(1);
-  // }
 
   @Get(':id')
   async getCategory(@Param('id') id: number): Promise<CategoryDto> {

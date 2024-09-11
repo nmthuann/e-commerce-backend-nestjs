@@ -14,7 +14,6 @@ import { UserEntity } from './user.entity';
 import { CreateUserDto } from './user-dto/create-user.dto';
 import { EmployeeEntity } from '../employee/employee.entity';
 
-// working with DTO
 @Controller('user')
 export class UserController {
   constructor(
@@ -45,11 +44,6 @@ export class UserController {
   async getUsers(): Promise<UserEntity[]> {
     return await this.userService.getAll();
   }
-
-  // @Get('get-users-employee')
-  // async getUsersIsEmployee(): Promise<UserEntity[]> {
-  //     return await this.userService.getUsersIsEmployee();
-  // }
 
   @Get('employee/:email')
   async getEmployeeByEmail(

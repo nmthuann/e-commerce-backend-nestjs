@@ -2,14 +2,10 @@ import { GetProductForOrderDto } from 'src/modules/products/product/product-dto/
 
 export class OrderOfflineDto {
   contact: string; // user_id
-  delivery_address: string; //
+  delivery_address: string; 
   discount_id: number;
-  order_detail: GetProductForOrderDto[]; //OrderDetailDto
+  order_detail: GetProductForOrderDto[];
   employee_id: string;
   shipping_id: string;
 }
 
-// class OrderDetailDto {
-//     product_id: string;
-//     quantiy: string;
-// }

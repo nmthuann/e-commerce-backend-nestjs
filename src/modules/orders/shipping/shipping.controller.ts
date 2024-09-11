@@ -11,7 +11,6 @@ import {
 import { ShippingDto } from '../shipping/shipping.dto';
 import { IShippingService } from './Shipping.service.interface';
 
-// working with DTO
 @Controller('shipping')
 export class ShippingController {
   constructor(

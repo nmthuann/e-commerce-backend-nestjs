@@ -11,7 +11,6 @@ import {
 import { IOrderDetailService } from './order-detail.service.interface';
 import { OrderDetailEntity } from '../order-detail.entity';
 
-// working with DTO
 @Controller('order-detail')
 export class OrderDetailController {
   constructor(
@@ -38,16 +37,6 @@ export class OrderDetailController {
   async deleteOrderDetailById(@Param('id') id: number): Promise<void> {
     console.log(await this.orderDetailService.deleteOneById(id));
   }
-
-  // @Get('get-order-details')
-  // async getOrderDetails(): Promise<OrderDetailEntity[]> {
-  //     return await this.orderDetailService.findOrderDetailByOrderId(5);
-  // }
-
-  // @Get('get-total-price/:order_id')
-  // async getTotalPrice(@Param('order_id') order_id: number) {
-  //     return await this.orderDetailService.getTotalPriceByOrderId(order_id);
-  // }
 
   @Get(':id')
   async getOrderDetail(@Param('id') id: number): Promise<OrderDetailEntity[]> {

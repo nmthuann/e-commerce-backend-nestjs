@@ -9,9 +9,7 @@ import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
-    // forwardRef(() => OrderModule),
-    // TypeOrmModule.forFeature([UserEntity, AccountEntity, OrderEntity]),
-
+   
     TypeOrmModule.forFeature([UserEntity]),
     JwtModule.register({
       secret: 'JWT_SECRET_KEY',
@@ -27,11 +25,7 @@ import { JwtModule } from '@nestjs/jwt';
       useClass: UserService,
     },
 
-    // {
-    //     provide: 'IAccountService',
-    //     useClass: AccountService,
-    // },
-    // AuthService,
+
   ],
   exports: ['IUserService'],
 })

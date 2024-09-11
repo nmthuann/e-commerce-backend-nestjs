@@ -3,7 +3,7 @@ import { BaseService } from 'src/modules/bases/base.abstract';
 import { IProductService } from './product.service.interface';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ProductEntity } from './entities/product.entity';
-import { Between, Repository, getConnection } from 'typeorm';
+import { Between, Repository } from 'typeorm';
 import { ICategoryService } from '../category/category.service.interface';
 import { IDiscountService } from '../discount/discount.service.interface';
 import { CreateProductDto } from './product-dto/create-product.dto';
@@ -158,23 +158,10 @@ export class ProductService
 
     const result = await queryBuilder.getRawMany();
     return result.map(item => item.id);
-        // const query = this.productRepository.createQueryBuilder('products');
-
-    //   if (minPrice !== undefined && maxPrice !== undefined) {
-    //     query.where('products.price BETWEEN :minPrice AND :maxPrice', { minPrice, maxPrice });
-    //   } else if (minPrice !== undefined) {
-    //     query.where('products.price >= :minPrice', { minPrice });
-    //   } else if (maxPrice !== undefined) {
-    //     query.where('products.price <= :maxPrice', { maxPrice });
-    //   }
-
-    //   const result = await query.getMany();
-    //   return result;
   }
 
 
-  // //products: Product[], filterFunc: (product: Product) => boolean
-  async * createFilterProducts(filter: FilterProductDto) { //: Generator<Promise<unknown> | null>
+  async * createFilterProducts(filter: FilterProductDto) { 
     if (filter.ram) {
       const filterRam = await this.createFilterProductsByRam(filter.ram);
       const result =  filterRam;
@@ -255,7 +242,8 @@ export class ProductService
       newProduct.operation_system = data.operation_system;
       newProduct.hardware = data.hardware;
       newProduct.warranty_time = data.warranty_time;
-      (newProduct.screen = data.screen), (newProduct.vote = 0);
+      newProduct.screen = data.screen;
+      newProduct.vote = 0;
       newProduct.color = data.color;
       newProduct.battery = data.battery;
       newProduct.memory = data.memory;
@@ -269,10 +257,8 @@ export class ProductService
         data.discount_id as unknown as number,
       );
       const createProduct = await this.productRepository.save(newProduct);
-
       return createProduct;
     } catch (error) {
-      // throw new Error(`An unexpected error occurred while creating the Product ${error}`);
       console.log(`${error}`);
       throw new Error(ProductError.CREATE_PRODUCT_ERROR);
     }
@@ -319,10 +305,6 @@ export class ProductService
     return findProducts;
   }
 
-  async getProductsByOptions(data: any): Promise<Partial<ProductEntity>[]> {
-    const findProducts = await this.productRepository.find({});
-    return;
-  }
 
   async getProductsByCategoryId(category_id: number): Promise<ProductEntity[]> {
     const findProducts = await this.productRepository.find({
@@ -415,9 +397,6 @@ export class ProductService
   ): Promise<ProductEntity[]> {
     const productIds: number[] = data.map((product) => product.product_id);
     console.log('productsIds:::: ', productIds);
-
-    // const products: ProductEntity[] = [];
-
     /// Use 'map' instead of 'forEach'
     const getProduct = productIds.map(async (product_id) => {
       try {
@@ -440,11 +419,7 @@ export class ProductService
         );
       }
     });
-
-    // Use 'Promise.all' to wait for all the async operations to complete
     const products = await Promise.all(getProduct);
-
-    // Filter out any potential 'undefined' values (e.g., if findOne() throws an error)filter((product) => !!product) as ProductEntity[];
     return products;
   }
 

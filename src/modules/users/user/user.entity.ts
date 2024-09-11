@@ -50,9 +50,6 @@ export class UserEntity extends BaseEntity {
   @JoinColumn({ name: 'employee_id' })
   employee: EmployeeEntity;
 
-  // @OneToOne(() => OrderEntity, (order) => order.user) // specify inverse side as a second parameter
-  // order: OrderEntity
-
   @OneToMany(() => OrderEntity, (order) => order.user)
   orders: OrderEntity[];
 }

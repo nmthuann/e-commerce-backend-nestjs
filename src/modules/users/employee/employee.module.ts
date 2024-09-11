@@ -8,7 +8,7 @@ import { PositionModule } from '../position/position.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([EmployeeEntity]), //EmployeeEntity, , PositionEntity UserEntity
+    TypeOrmModule.forFeature([EmployeeEntity]),
     UserModule,
     PositionModule,
   ],

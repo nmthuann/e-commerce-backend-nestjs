@@ -32,10 +32,6 @@ export class DiscountController {
     return this.discountService.updateOneById(id, discountDto);
   }
 
-  // @Delete('delete/:id')
-  // async deleteDiscountById(@Param('id') id: number): Promise<void> {
-  //     console.log(await this.discountService.deleteOneById(id));
-  // }
 
   @Get('get-discounts')
   async getDiscounts(): Promise<DiscountDto[]> {
@@ -46,7 +42,7 @@ export class DiscountController {
   async CheckShipping(
     @Body() @Body() requestBody: { discountCode: string },
   ): Promise<DiscountDto> {
-    // console.log('adsdasdasdad')
+
     const result = await this.discountService.getOneById(
       parseInt(requestBody.discountCode),
     );

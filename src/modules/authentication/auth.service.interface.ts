@@ -12,8 +12,8 @@ export interface IAuthService {
   comparePassword(password: string, storePasswordHash: string): Promise<any>;
   getTokens(payload: Payload): Promise<Tokens>;
   randomPassword(length: number, base: string): string;
-  login(input: AuthDto): Promise<Tokens | object | any>;
-  loginAdmin(input: AuthDto): Promise<Tokens | object | any>;
+  login(input: AuthDto): Promise<Tokens | object>;
+  loginAdmin(input: AuthDto): Promise<Tokens | object>;
   logout(email: string): Promise<boolean>;
   registerCustomer(input: RegisterCustomerDto): Promise<TokensDto | object>;
   registerEmployee(input: RegisterDto): Promise<AccountEntity>;
