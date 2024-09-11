@@ -74,6 +74,233 @@ The platform is fully developed in **TypeScript**, a superset of JavaScript that
 
 The project is organized in a modular folder structure as follows:
 
+```
+📦 e-commerce-backend-nestjs
+├─ .eslintrc.js
+├─ .gitignore
+├─ .prettierrc
+├─ .vscode
+│  └─ launch.json
+├─ README.md
+├─ nest-cli.json
+├─ package-lock.json
+├─ package.json
+├─ src
+│  ├─ app.controller.spec.ts
+│  ├─ app.controller.ts
+│  ├─ app.module.ts
+│  ├─ app.service.ts
+│  ├─ common
+│  │  ├─ decorators
+│  │  │  └─ public.decorator.ts
+│  │  ├─ errors
+│  │  │  ├─ auth.error.ts
+│  │  │  └─ errors.ts
+│  │  ├─ exception-filter
+│  │  │  ├─ exceptions
+│  │  │  │  ├─ auth.exception.ts
+│  │  │  │  └─ fobiden.exception.ts
+│  │  │  └─ filters
+│  │  │     ├─ exception.filter.ts
+│  │  │     └─ http-exception.filter.ts
+│  │  ├─ guards
+│  │  │  ├─ admin.role.guard.ts
+│  │  │  ├─ manager.role.guard.ts
+│  │  │  ├─ role.guard.ts
+│  │  │  └─ user.role.guard.ts
+│  │  ├─ interceptors
+│  │  │  ├─ checkout.interceptor.ts
+│  │  │  ├─ interfaces
+│  │  │  │  └─ IResponse.ts
+│  │  │  └─ transform.interceptor.ts
+│  │  ├─ messages
+│  │  │  ├─ auth.message.ts
+│  │  │  └─ message.ts
+│  │  ├─ middlewares
+│  │  │  └─ auth.middleware.ts
+│  │  └─ pipes
+│  │     └─ create-employee.validator.pipe.ts
+│  ├─ configs
+│  │  └─ mail.config.ts
+│  ├─ main.ts
+│  └─ modules
+│     ├─ authentication
+│     │  ├─ auth-dto
+│     │  │  ├─ auth.dto.ts
+│     │  │  ├─ create-employee.dto.ts
+│     │  │  ├─ register-customer.dto.ts
+│     │  │  ├─ register.dto.ts
+│     │  │  └─ token.dto.ts
+│     │  ├─ auth.controller.ts
+│     │  ├─ auth.module.ts
+│     │  ├─ auth.service.interface.ts
+│     │  └─ auth.service.ts
+│     ├─ bases
+│     │  ├─ base.abstract.ts
+│     │  ├─ base.entity.ts
+│     │  ├─ base.interface.ts
+│     │  ├─ enums
+│     │  │  ├─ order-status.enum.ts
+│     │  │  ├─ order.enum.ts
+│     │  │  └─ role.enum.ts
+│     │  └─ types
+│     │     ├─ payload.type.ts
+│     │     └─ token.type.ts
+│     ├─ databases
+│     │  ├─ database.module.ts
+│     │  └─ database.providers.ts
+│     ├─ inventories
+│     │  ├─ inventories.controller.ts
+│     │  ├─ inventories.module.ts
+│     │  └─ inventories.service.ts
+│     ├─ orders
+│     │  ├─ cart
+│     │  │  ├─ cart-detail.entity.ts
+│     │  │  ├─ cart-detail
+│     │  │  │  ├─ cart-detail.controller.ts
+│     │  │  │  ├─ cart-detail.module.ts
+│     │  │  │  ├─ cart-detail.service.interface.ts
+│     │  │  │  └─ cart-detail.service.ts
+│     │  │  ├─ cart-dto
+│     │  │  │  ├─ cart-detail.dto.ts
+│     │  │  │  └─ cart.dto.ts
+│     │  │  ├─ cart.controller.ts
+│     │  │  ├─ cart.entity.ts
+│     │  │  ├─ cart.module.ts
+│     │  │  ├─ cart.service.interface.ts
+│     │  │  └─ cart.service.ts
+│     │  ├─ order
+│     │  │  ├─ order-detail.entity.ts
+│     │  │  ├─ order-detail
+│     │  │  │  ├─ order-detail.controller.ts
+│     │  │  │  ├─ order-detail.module.ts
+│     │  │  │  ├─ order-detail.service.interface.ts
+│     │  │  │  └─ order-detail.service.ts
+│     │  │  ├─ order-dto
+│     │  │  │  ├─ create-order.dto.ts
+│     │  │  │  ├─ get-task-orders.dto.ts
+│     │  │  │  ├─ order-detail.dto.ts
+│     │  │  │  ├─ order-offline.dto.ts
+│     │  │  │  ├─ order-online.dto.ts
+│     │  │  │  └─ order.dto.ts
+│     │  │  ├─ order.controller.ts
+│     │  │  ├─ order.entity.ts
+│     │  │  ├─ order.module.ts
+│     │  │  ├─ order.service.interface.ts
+│     │  │  └─ order.service.ts
+│     │  ├─ payment
+│     │  │  ├─ payment.controller.ts
+│     │  │  ├─ payment.dto.ts
+│     │  │  ├─ payment.entity.ts
+│     │  │  ├─ payment.module.ts
+│     │  │  ├─ payment.service.interface.ts
+│     │  │  └─ payment.service.ts
+│     │  ├─ shipping
+│     │  │  ├─ shipping.controller.ts
+│     │  │  ├─ shipping.dto.ts
+│     │  │  ├─ shipping.entity.ts
+│     │  │  ├─ shipping.module.ts
+│     │  │  ├─ shipping.service.interface.ts
+│     │  │  └─ shipping.service.ts
+│     │  └─ stripe
+│     │     ├─ stripe.controller.ts
+│     │     ├─ stripe.module.ts
+│     │     └─ stripe.service.ts
+│     ├─ products
+│     │  ├─ category
+│     │  │  ├─ category-dto
+│     │  │  │  ├─ category.dto.ts
+│     │  │  │  └─ create-category.dto.ts
+│     │  │  ├─ category.controller.ts
+│     │  │  ├─ category.entity.ts
+│     │  │  ├─ category.module.ts
+│     │  │  ├─ category.service.interface.ts
+│     │  │  └─ category.service.ts
+│     │  ├─ discount
+│     │  │  ├─ discount-dto
+│     │  │  │  └─ discount.dto.ts
+│     │  │  ├─ discount.controller.ts
+│     │  │  ├─ discount.entity.ts
+│     │  │  ├─ discount.module.ts
+│     │  │  ├─ discount.service.interface.ts
+│     │  │  └─ discount.service.ts
+│     │  ├─ image
+│     │  │  ├─ create-image.dto.ts
+│     │  │  ├─ image.controller.ts
+│     │  │  ├─ image.dto.ts
+│     │  │  ├─ image.entity.ts
+│     │  │  ├─ image.module.ts
+│     │  │  ├─ image.service.interface.ts
+│     │  │  └─ image.service.ts
+│     │  └─ product
+│     │     ├─ entities
+│     │     │  └─ product.entity.ts
+│     │     ├─ product-dto
+│     │     │  ├─ create-product.dto.ts
+│     │     │  ├─ filter-product.dto.ts
+│     │     │  ├─ get-product-detail.ts
+│     │     │  ├─ get-product-order.dto.ts
+│     │     │  ├─ get-product.dto.ts
+│     │     │  ├─ get-products-some-field.dto.ts
+│     │     │  ├─ product-duplicate.dto.ts
+│     │     │  ├─ product-filter.dto.ts
+│     │     │  └─ product.dto.ts
+│     │     ├─ product.controller.ts
+│     │     ├─ product.module.ts
+│     │     ├─ product.service.interface.ts
+│     │     └─ product.service.ts
+│     └─ users
+│        ├─ account
+│        │  ├─ account-dto
+│        │  │  ├─ account-employee.dto.ts
+│        │  │  └─ account.dto.ts
+│        │  ├─ account.controller.ts
+│        │  ├─ account.entity.ts
+│        │  ├─ account.module.ts
+│        │  ├─ account.service.interface.ts
+│        │  └─ account.service.ts
+│        ├─ employee
+│        │  ├─ employee-dto
+│        │  │  ├─ employee.dto.ts
+│        │  │  └─ get-employee-list.dto.ts
+│        │  ├─ employee.controller.ts
+│        │  ├─ employee.entity.ts
+│        │  ├─ employee.module.ts
+│        │  ├─ employee.service.interface.ts
+│        │  └─ employee.service.ts
+│        ├─ mail.service.ts
+│        ├─ position
+│        │  ├─ position.controller.ts
+│        │  ├─ position.dto.ts
+│        │  ├─ position.entity.ts
+│        │  ├─ position.module.ts
+│        │  ├─ position.service.interface.ts
+│        │  └─ position.service.ts
+│        ├─ user
+│        │  ├─ user-dto
+│        │  │  ├─ create-user.dto.ts
+│        │  │  ├─ get-customer-list.dto.ts
+│        │  │  └─ user.dto.ts
+│        │  ├─ user.controller.ts
+│        │  ├─ user.entity.ts
+│        │  ├─ user.module.ts
+│        │  ├─ user.service.interface.ts
+│        │  └─ user.service.ts
+│        ├─ users.controller.spec.ts
+│        ├─ users.controller.ts
+│        ├─ users.module.ts
+│        ├─ users.service.spec.ts
+│        └─ users.service.ts
+├─ test
+│  ├─ app.e2e-spec.ts
+│  └─ jest-e2e.json
+├─ tsconfig.build.json
+├─ tsconfig.json
+└─ yarn.lock
+```
+
+©generated by [Project Tree Generator](https://woochanleee.github.io/project-tree-generator)
+
 ### Modules <a name="modules"></a>
 
 -   **Users Module**: Handles user registration, login, and profile management.
