@@ -22,7 +22,6 @@ import { OrderModule } from './modules/orders/order/order.module';
 import { EmployeeModule } from './modules/users/employee/employee.module';
 import { AuthModule } from './modules/authentication/auth.module';
 import { StripeModule } from './modules/orders/stripe/stripe.module';
-import { InventoriesController } from './modules/inventories/inventories.controller';
 
 @Module({
   imports: [
@@ -62,7 +61,7 @@ import { InventoriesController } from './modules/inventories/inventories.control
     ImageModule,
     StripeModule,
     OrderModule,
-    InventoriesController
+    // InventoriesController
   ],
   controllers: [AppController],
   providers: [AppService],
