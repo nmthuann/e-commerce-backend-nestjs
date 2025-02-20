@@ -13,7 +13,7 @@ export class PaymentService
 {
   constructor(
     @InjectRepository(PaymentEntity)
-    private paymentRepository: Repository<PaymentDto>,
+    private readonly paymentRepository: Repository<PaymentDto>,
   ) {
     super(paymentRepository);
   }

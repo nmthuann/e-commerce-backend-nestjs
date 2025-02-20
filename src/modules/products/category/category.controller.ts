@@ -18,7 +18,7 @@ import { DeleteResult } from 'typeorm';
 export class CategoryController {
   constructor(
     @Inject('ICategoryService')
-    private categoryService: ICategoryService,
+    private readonly categoryService: ICategoryService,
   ) {}
 
   @Post('create')

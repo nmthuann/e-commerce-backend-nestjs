@@ -1,5 +1,5 @@
 import { IsEmail, IsNotEmpty } from 'class-validator';
-import { Role } from 'src/modules/bases/enums/role.enum';
+import { Role } from 'src/constants/role.enum';
 
 export class AccountForEmployeeDto {
   @IsNotEmpty()

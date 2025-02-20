@@ -16,7 +16,7 @@ import { DiscountEntity } from './discount.entity';
 export class DiscountController {
   constructor(
     @Inject('IDiscountService')
-    private discountService: IDiscountService,
+    private readonly discountService: IDiscountService,
   ) {}
 
   @Post('create')

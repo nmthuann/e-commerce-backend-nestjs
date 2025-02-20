@@ -21,11 +21,11 @@ export class ProductService
 {
   constructor(
     @InjectRepository(ProductEntity)
-    private productRepository: Repository<ProductEntity>,
+    private readonly productRepository: Repository<ProductEntity>,
     @Inject('ICategoryService')
-    private categoryService: ICategoryService,
+    private readonly categoryService: ICategoryService,
     @Inject('IDiscountService')
-    private discountService: IDiscountService,
+    private readonly discountService: IDiscountService,
   ) {
     super(productRepository);
   }

@@ -1,5 +1,5 @@
-import { Payload } from '../bases/types/payload.type';
-import { Tokens } from '../bases/types/token.type';
+import { Payload } from '../../common/types/payload.type';
+import { Tokens } from '../../common/types/token.type';
 import { AccountEntity } from '../users/account/account.entity';
 import { AuthDto } from './auth-dto/auth.dto';
 import { CreateEmployeeDto } from './auth-dto/create-employee.dto';

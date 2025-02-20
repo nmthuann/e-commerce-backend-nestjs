@@ -13,13 +13,13 @@ import { OrderEntity } from './order.entity';
 import { GetTaskOrdersDto } from './order-dto/get-task-orders.dto';
 import { GetCustomerListDto } from 'src/modules/users/user/user-dto/get-customer-list.dto';
 import { RevenueByMonth } from './order-dto/order.dto';
-import { AdminRoleGuard } from 'src/common/guards/admin.role.guard';
+import { AdminRoleGuard } from 'src/guards/admin.role.guard';
 
 @Controller('order')
 export class OrderController {
   constructor(
     @Inject('IOrderService')
-    private orderService: IOrderService,
+    private readonly orderService: IOrderService,
   ) {}
 
 

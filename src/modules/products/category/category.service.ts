@@ -12,7 +12,7 @@ export class CategoryService
 {
   constructor(
     @InjectRepository(CategoryEntity)
-    private categoryRepository: Repository<CategoryEntity>,
+    private readonly categoryRepository: Repository<CategoryEntity>,
   ) {
     super(categoryRepository);
   }

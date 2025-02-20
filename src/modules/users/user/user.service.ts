@@ -16,9 +16,9 @@ export class UserService
 {
   constructor(
     @InjectRepository(UserEntity)
-    private userRepository: Repository<UserEntity>,
+    private readonly userRepository: Repository<UserEntity>,
     @Inject('IAccountService')
-    private accountService: IAccountService,
+    private readonly accountService: IAccountService,
   ) {
     super(userRepository);
   }

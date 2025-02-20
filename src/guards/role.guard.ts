@@ -5,12 +5,12 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { GuardError } from '../../constants/errors.enum';
+import { GuardError } from 'src/constants/errors.enum';
 
 @Injectable()
 export class RoleGuard implements CanActivate {
-  constructor(private reflector: Reflector) {}
-
+  constructor(private readonly reflector: Reflector) {}
+ 
   canActivate(context: ExecutionContext): boolean {
     //  get context in reflector
     const isPublic = this.reflector.getAllAndOverride('isPublic', [

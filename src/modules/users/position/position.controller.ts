@@ -17,7 +17,7 @@ import { PositionEntity } from './position.entity';
 export class PositionController {
   constructor(
     @Inject('IPositionService')
-    private positionService: IPositionService,
+    private readonly positionService: IPositionService,
   ) {}
 
   // @Guard(AdminGuard)

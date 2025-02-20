@@ -17,7 +17,7 @@ import { GetEmployeeListDto } from './employee-dto/get-employee-list.dto';
 export class EmployeeController {
   constructor(
     @Inject('IEmployeeService')
-    private employeeService: IEmployeeService,
+    private readonly employeeService: IEmployeeService,
   ) {}
 
   @Post('create/:email')

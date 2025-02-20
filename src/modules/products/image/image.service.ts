@@ -16,9 +16,9 @@ export class ImageService
 {
   constructor(
     @InjectRepository(ImageEntity)
-    private imageRepository: Repository<ImageEntity>,
+    private readonly imageRepository: Repository<ImageEntity>,
     @Inject('IProductService')
-    private productService: IProductService,
+    private readonly productService: IProductService,
   ) {
     super(imageRepository);
   }

@@ -1,4 +1,4 @@
-import { Role } from 'src/modules/bases/enums/role.enum';
+import { Role } from 'src/constants/role.enum';
 import { Entity, Column, PrimaryColumn, BeforeInsert, OneToOne } from 'typeorm';
 import { UserEntity } from '../user/user.entity';
 

@@ -20,11 +20,11 @@ import { UserEntity } from 'src/modules/users/user/user.entity';
 import { PaymentEntity } from '../payment/payment.entity';
 import { GetTaskOrdersDto } from './order-dto/get-task-orders.dto';
 import { GetCustomerListDto } from 'src/modules/users/user/user-dto/get-customer-list.dto';
-import { OrderStatus } from 'src/modules/bases/enums/order-status.enum';
-import { Role } from 'src/modules/bases/enums/role.enum';
+import { OrderStatus } from 'src/constants/order-status.enum';
+import { Role } from 'src/constants/role.enum';
 import { OrderOfflineDto } from './order-dto/order-offline.dto';
 import { OrderError } from 'src/constants/errors.enum';
-import { CategoryEnum } from 'src/modules/bases/enums/order.enum';
+import { CategoryEnum } from 'src/constants/order.enum';
 
 enum OrderPaymentMethod{
   
@@ -40,21 +40,21 @@ export class OrderService
 {
   constructor(
     @InjectRepository(OrderEntity)
-    private orderRepository: Repository<OrderEntity>,
+    private readonly orderRepository: Repository<OrderEntity>,
     @Inject('IShippingService')
-    private shippingService: IShippingService,
+    private readonly shippingService: IShippingService,
     @Inject('IDiscountService')
-    private discountService: IDiscountService,
+    private readonly discountService: IDiscountService,
     @Inject('IPaymentService')
-    private paymnetService: IPaymentService,
+    private readonly paymnetService: IPaymentService,
     @Inject('IOrderDetailService')
-    private orderDetailService: IOrderDetailService,
+    private readonly orderDetailService: IOrderDetailService,
     @Inject('IProductService')
-    private productService: IProductService,
+    private readonly productService: IProductService,
     @Inject('IUserService')
-    private userService: IUserService,
+    private readonly userService: IUserService,
     @Inject('IEmployeeService')
-    private employeeService: IEmployeeService,
+    private readonly employeeService: IEmployeeService,
     
   ) {
     super(orderRepository);

@@ -14,7 +14,7 @@ import { QueryFailedError } from 'typeorm';
 
 @Catch()
 export class AllExceptionFilter implements ExceptionFilter {
-  constructor(private logger: LoggerService) {}
+  constructor(private readonly logger: LoggerService) {}
 
   private static handleResponse(
     response: Response,

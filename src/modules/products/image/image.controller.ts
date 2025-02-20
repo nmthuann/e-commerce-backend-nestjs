@@ -16,7 +16,7 @@ import { ImageEntity } from './image.entity';
 export class ImageController {
   constructor(
     @Inject('IImageService')
-    private imageService: IImageService,
+    private readonly imageService: IImageService,
   ) {}
 
   @Post('create')

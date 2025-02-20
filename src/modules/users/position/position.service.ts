@@ -12,7 +12,7 @@ export class PositionService
 {
   constructor(
     @InjectRepository(PositionEntity)
-    private positionRepository: Repository<PositionEntity>,
+    private readonly positionRepository: Repository<PositionEntity>,
   ) {
     super(positionRepository);
   }

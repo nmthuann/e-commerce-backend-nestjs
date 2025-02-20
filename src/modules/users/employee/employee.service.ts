@@ -20,11 +20,11 @@ export class EmployeeService
 {
   constructor(
     @InjectRepository(EmployeeEntity)
-    private employeeRepository: Repository<EmployeeEntity>,
+    private readonly employeeRepository: Repository<EmployeeEntity>,
     @Inject('IPositionService')
-    private positionService: IPositionService,
+    private readonly positionService: IPositionService,
     @Inject('IUserService')
-    private userService: IUserService,
+    private readonly userService: IUserService,
   ) {
     super(employeeRepository);
   }

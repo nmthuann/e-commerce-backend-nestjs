@@ -13,7 +13,7 @@ export class ShippingService
 {
   constructor(
     @InjectRepository(ShippingEntity)
-    private shippingRepository: Repository<ShippingDto>,
+    private readonly shippingRepository: Repository<ShippingDto>,
   ) {
     super(shippingRepository);
   }

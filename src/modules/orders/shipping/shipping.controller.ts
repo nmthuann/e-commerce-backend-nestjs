@@ -15,7 +15,7 @@ import { IShippingService } from './Shipping.service.interface';
 export class ShippingController {
   constructor(
     @Inject('IShippingService')
-    private shippingService: IShippingService,
+    private readonly shippingService: IShippingService,
   ) {}
 
   @Post('create')

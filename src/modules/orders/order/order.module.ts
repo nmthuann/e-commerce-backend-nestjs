@@ -1,8 +1,6 @@
 import {
-
   MiddlewareConsumer,
   Module, NestModule, RequestMethod,
-
 } from '@nestjs/common';
 import { OrderController } from './order.controller';
 import { OrderService } from './order.service';

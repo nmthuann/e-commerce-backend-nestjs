@@ -5,12 +5,12 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { Role } from 'src/modules/bases/enums/role.enum';
-import { GuardError } from '../../constants/errors.enum';
+import { GuardError } from 'src/constants/errors.enum';
+import { Role } from 'src/constants/role.enum';
 
 @Injectable()
 export class UserRoleGuard implements CanActivate {
-  constructor(private reflector: Reflector) {}
+  constructor(private readonly reflector: Reflector) {}
 
   canActivate(context: ExecutionContext): boolean {
     //  get context in reflector

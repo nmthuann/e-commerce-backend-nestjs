@@ -16,7 +16,7 @@ import { ICartDetailService } from '../cart-detail/cart-detail.service.interface
 export class CartDetailController {
   constructor(
     @Inject('ICartDetailService')
-    private cartDetailService: ICartDetailService,
+    private readonly cartDetailService: ICartDetailService,
   ) {}
 
   @Post('create')

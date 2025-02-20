@@ -11,12 +11,12 @@ dotenv.config();
 
 @Injectable()
 export class StripeService {
-  private stripe: Stripe;
+  private readonly stripe: Stripe;
   constructor(
     @Inject('IOrderService')
-    private orderService: IOrderService,
+    private readonly orderService: IOrderService,
     @Inject('IProductService')
-    private productService: IProductService,
+    private readonly productService: IProductService,
   ) {
     this.stripe = new Stripe(process.env.STRIPE_API_KEY, {
       apiVersion: '2022-11-15',

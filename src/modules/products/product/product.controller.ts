@@ -21,7 +21,7 @@ import { CreateProductDto } from './product-dto/create-product.dto';
 export class ProductController {
   constructor(
     @Inject('IProductService')
-    private productService: IProductService,
+    private readonly productService: IProductService,
   ) {}
 
   @Post('create')

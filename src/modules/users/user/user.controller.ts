@@ -18,7 +18,7 @@ import { EmployeeEntity } from '../employee/employee.entity';
 export class UserController {
   constructor(
     @Inject('IUserService')
-    private userService: IUserService,
+    private readonly userService: IUserService,
   ) {}
 
   @Post('create')

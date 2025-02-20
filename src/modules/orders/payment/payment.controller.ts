@@ -15,7 +15,7 @@ import { IPaymentService } from './payment.service.interface';
 export class PaymentController {
   constructor(
     @Inject('IPaymentService')
-    private paymentService: IPaymentService,
+    private readonly paymentService: IPaymentService,
   ) {}
 
   @Post('create')

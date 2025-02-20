@@ -12,7 +12,7 @@ export class DiscountService
 {
   constructor(
     @InjectRepository(DiscountEntity)
-    private discountRepository: Repository<DiscountEntity>,
+    private readonly discountRepository: Repository<DiscountEntity>,
   ) {
     super(discountRepository);
   }

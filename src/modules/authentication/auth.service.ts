@@ -1,14 +1,12 @@
-// import { CACHE_MANAGER } from '@nestjs/cache-manager';
-import { Inject, Injectable } from '@nestjs/common'; //CACHE_MANAGER,
-// import { Cache } from 'cache-manager';
+import { Inject, Injectable } from '@nestjs/common'; 
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { IAccountService } from 'src/modules/users/account/account.service.interface';
 import { RegisterDto } from './auth-dto/register.dto';
 import { TokensDto } from './auth-dto/token.dto';
-import { Payload } from 'src/modules/bases/types/payload.type';
-import { Tokens } from 'src/modules/bases/types/token.type';
-import { Role } from 'src/modules/bases/enums/role.enum';
+import { Payload } from 'src/common/types/payload.type';
+import { Tokens } from 'src/common/types/token.type';
+import { Role } from 'src/constants/role.enum';
 import { AccountDto } from 'src/modules/users/account/account-dto/account.dto';
 import { AuthDto } from './auth-dto/auth.dto';
 import { AccountEntity } from 'src/modules/users/account/account.entity';
@@ -34,13 +32,13 @@ const salary_employee = 280;
 export class AuthService implements IAuthService {
   constructor(
     // @Inject(CACHE_MANAGER) private cacheService: Cache,
-    private jwtService: JwtService,
+    private readonly jwtService: JwtService,
     @Inject('IAccountService')
-    private accountService: IAccountService,
+    private readonly accountService: IAccountService,
     @Inject('IUserService')
-    private userService: IUserService,
+    private readonly userService: IUserService,
     @Inject('IEmployeeService')
-    private employeeService: IEmployeeService,
+    private readonly employeeService: IEmployeeService,
   ) {}
 
   async hashPassword(password: string): Promise<string> {

@@ -16,9 +16,9 @@ export class OrderDetailService
 {
   constructor(
     @InjectRepository(OrderDetailEntity)
-    private orderDetailRepository: Repository<OrderDetailEntity>,
+    private readonly orderDetailRepository: Repository<OrderDetailEntity>,
     @Inject('IProductService')
-    private productService: IProductService,
+    private readonly productService: IProductService,
   ) {
     super(orderDetailRepository);
   }
