@@ -15,7 +15,7 @@ import { EmployeeModule } from 'src/modules/users/employee/employee.module';
 import { UserModule } from 'src/modules/users/user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { OrderEntity } from './order.entity';
-import { AuthMiddleware } from 'src/common/middlewares/auth.middleware';
+import { AuthMiddleware } from 'src/middlewares/auth.middleware';
 import { JwtModule } from '@nestjs/jwt';
 import * as dotenv from 'dotenv';
 dotenv.config();

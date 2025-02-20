@@ -6,7 +6,7 @@ import { OrderEntity } from '../order/order.entity';
 import Stripe from 'stripe';
 
 import * as dotenv from 'dotenv';
-import { ProductError } from 'src/common/errors/errors';
+import { ProductError } from 'src/constants/errors.enum';
 dotenv.config();
 
 @Injectable()

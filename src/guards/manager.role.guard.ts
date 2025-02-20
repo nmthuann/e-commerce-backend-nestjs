@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Role } from 'src/modules/bases/enums/role.enum';
-import { GuardError } from '../errors/errors';
+import { GuardError } from '../../constants/errors.enum';
 import { IUserService } from 'src/modules/users/user/user.service.interface';
 import { EmployeeEntity } from 'src/modules/users/employee/employee.entity';
 

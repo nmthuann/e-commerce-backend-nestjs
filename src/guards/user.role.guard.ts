@@ -6,13 +6,11 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Role } from 'src/modules/bases/enums/role.enum';
-import { GuardError } from '../errors/errors';
+import { GuardError } from '../../constants/errors.enum';
 
 @Injectable()
-export class AdminRoleGuard implements CanActivate {
-  constructor(
-    private reflector: Reflector, // private jwtService: JwtService,
-  ) {}
+export class UserRoleGuard implements CanActivate {
+  constructor(private reflector: Reflector) {}
 
   canActivate(context: ExecutionContext): boolean {
     //  get context in reflector
@@ -20,15 +18,12 @@ export class AdminRoleGuard implements CanActivate {
       context.getHandler(),
       context.getClass(),
     ]);
-
-    //  check the request is public
     if (isPublic) return true;
     else {
       const request = context.switchToHttp().getRequest();
-      // console.log(request);
       const payload = request['user'];
-      if (payload['role'] != Role.Admin) {
-        throw new ForbiddenException(GuardError.ACCESS_DENIED);
+      if (payload['role'] == Role.Admin) {
+        throw new ForbiddenException(GuardError.NOT_USER);
       }
       request['email'] = payload['email'];
       return true;

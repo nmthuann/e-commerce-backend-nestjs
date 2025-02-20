@@ -6,7 +6,7 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { Request, NextFunction, Response } from 'express';
 import * as dotenv from 'dotenv';
-import { MiddlewareError } from '../errors/errors';
+import { MiddlewareError } from '../constants/errors.enum';
 dotenv.config();
 
 @Injectable()

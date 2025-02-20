@@ -13,7 +13,7 @@ import {
 import { CategoryEntity } from '../../category/category.entity';
 import { ImageEntity } from '../../image/image.entity';
 import { DiscountEntity } from '../../discount/discount.entity';
-import { ErrorInput } from 'src/common/errors/errors';
+import { ErrorInput } from 'src/constants/errors.enum';
 
 @Entity({ name: 'Products' })
 export class ProductEntity extends BaseEntity {

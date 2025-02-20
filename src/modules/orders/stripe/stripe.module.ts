@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { StripeController } from './stripe.controller';
 import { StripeService } from './stripe.service';
-import { AuthMiddleware } from 'src/common/middlewares/auth.middleware';
+import { AuthMiddleware } from 'src/middlewares/auth.middleware';
 import { OrderModule } from '../order/order.module';
 import { ProductModule } from 'src/modules/products/product/product.module';
 import { JwtModule } from '@nestjs/jwt';

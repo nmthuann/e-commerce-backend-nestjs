@@ -10,7 +10,7 @@ import {
 import { AccountModule } from 'src/modules/users/account/account.module';
 import { UserModule } from '../users/user/user.module';
 import { EmployeeModule } from '../users/employee/employee.module';
-import { AuthMiddleware } from 'src/common/middlewares/auth.middleware';
+import { AuthMiddleware } from 'src/middlewares/auth.middleware';
 
 @Module({
   imports: [

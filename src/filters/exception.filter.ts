@@ -9,7 +9,7 @@ import {
 
 import { HttpArgumentsHost } from '@nestjs/common/interfaces/features/arguments-host.interface';
 import { Response } from 'express';
-import { SystemError } from 'src/common/errors/errors';
+import { SystemError } from 'src/constants/errors.enum';
 import { QueryFailedError } from 'typeorm';
 
 @Catch()

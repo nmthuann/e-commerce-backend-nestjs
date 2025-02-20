@@ -6,7 +6,7 @@ import { OrderDetailEntity } from '../order-detail.entity';
 import { Repository } from 'typeorm';
 import { IProductService } from 'src/modules/products/product/product.service.interface';
 import { ProductDto } from 'src/modules/products/product/product-dto/product.dto';
-import { OrderDetailError } from 'src/common/errors/errors';
+import { OrderDetailError } from 'src/constants/errors.enum';
 import { ProductEntity } from 'src/modules/products/product/entities/product.entity';
 
 @Injectable()

@@ -9,7 +9,7 @@ import { IDiscountService } from '../discount/discount.service.interface';
 import { CreateProductDto } from './product-dto/create-product.dto';
 import { ProductFilterDto } from './product-dto/product-filter.dto';
 import { GetProductForOrderDto } from './product-dto/get-product-order.dto';
-import { ProductError } from 'src/common/errors/errors';
+import { ProductError } from 'src/constants/errors.enum';
 import { ProductDuplicateDto } from './product-dto/product-duplicate.dto';
 import { FilterProductDto } from './product-dto/filter-product.dto';
 import { ImageEntity } from '../image/image.entity';

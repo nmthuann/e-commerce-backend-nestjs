@@ -10,20 +10,20 @@ import {
 
 import { RegisterDto } from './auth-dto/register.dto';
 import { TokensDto } from './auth-dto/token.dto';
-import { Public } from 'src/common/decorators/public.decorator';
+import { Public } from 'src/decorators/public.decorator';
 import { AuthDto } from './auth-dto/auth.dto';
 
 import { IAuthService } from './auth.service.interface';
-import { ManagerRoleGuard } from 'src/common/guards/manager.role.guard';
-import { CreateEmployeePipeValidator } from 'src/common/pipes/create-employee.validator.pipe';
+import { CreateEmployeePipeValidator } from 'src/pipes/create-employee.validator.pipe';
 import { CreateEmployeeDto } from './auth-dto/create-employee.dto';
 import { RegisterCustomerDto } from './auth-dto/register-customer.dto';
+import { ManagerRoleGuard } from 'src/guards/manager.role.guard';
 
 @Controller('auth')
 export class AuthController {
   constructor(
     @Inject('IAuthService')
-    private authService: IAuthService, // private useService: UserService
+    private readonly authService: IAuthService, // private useService: UserService
   ) {}
 
   @Public()

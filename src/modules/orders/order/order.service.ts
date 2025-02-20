@@ -23,7 +23,7 @@ import { GetCustomerListDto } from 'src/modules/users/user/user-dto/get-customer
 import { OrderStatus } from 'src/modules/bases/enums/order-status.enum';
 import { Role } from 'src/modules/bases/enums/role.enum';
 import { OrderOfflineDto } from './order-dto/order-offline.dto';
-import { OrderError } from 'src/common/errors/errors';
+import { OrderError } from 'src/constants/errors.enum';
 import { CategoryEnum } from 'src/modules/bases/enums/order.enum';
 
 enum OrderPaymentMethod{
