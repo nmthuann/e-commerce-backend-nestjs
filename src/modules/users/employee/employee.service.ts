@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { BaseService } from 'src/modules/bases/base.abstract';
+import { BaseService } from 'src/common/bases/base.abstract';
 import { EmployeeDto } from './employee-dto/employee.dto';
 import { IEmployeeService } from './employee.service.interface';
 import { EmployeeEntity } from './employee.entity';

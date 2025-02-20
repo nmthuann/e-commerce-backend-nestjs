@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { BaseService } from 'src/modules/bases/base.abstract';
+import { BaseService } from 'src/common/bases/base.abstract';
 import { IAccountService } from './account.service.interface';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AccountEntity } from './account.entity';

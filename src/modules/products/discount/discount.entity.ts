@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { ProductEntity } from '../product/entities/product.entity';
-import { BaseEntity } from 'src/modules/bases/base.entity';
+import { BaseEntity } from 'src/common/bases/base.entity';
 import { OrderEntity } from 'src/modules/orders/order/order.entity';
 
 @Entity({ name: 'Discounts' }) 

@@ -11,7 +11,7 @@ import { PaymentEntity } from '../payment/payment.entity';
 import { EmployeeEntity } from 'src/modules/users/employee/employee.entity';
 import { UserEntity } from 'src/modules/users/user/user.entity';
 import { DiscountEntity } from 'src/modules/products/discount/discount.entity';
-import { BaseEntity } from 'src/modules/bases/base.entity';
+import { BaseEntity } from 'src/common/bases/base.entity';
 
 @Entity({ name: 'Orders' })
 export class OrderEntity extends BaseEntity {

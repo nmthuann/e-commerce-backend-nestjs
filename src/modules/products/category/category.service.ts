@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { DeleteResult, Repository } from 'typeorm';
 import { CategoryEntity } from './category.entity';
-import { BaseService } from 'src/modules/bases/base.abstract';
+import { BaseService } from 'src/common/bases/base.abstract';
 import { ICategoryService } from './category.service.interface';
 import { InjectRepository } from '@nestjs/typeorm';
 

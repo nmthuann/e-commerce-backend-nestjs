@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { ProductEntity } from '../product/entities/product.entity';
-import { BaseEntity } from 'src/modules/bases/base.entity';
+import { BaseEntity } from 'src/common/bases/base.entity';
 
 @Entity({ name: 'Images' }) 
 export class ImageEntity extends BaseEntity {

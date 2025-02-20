@@ -8,16 +8,18 @@ import {
   UseGuards,
 } from '@nestjs/common';
 
-import { RegisterDto } from './auth-dto/register.dto';
-import { TokensDto } from './auth-dto/token.dto';
-import { Public } from 'src/decorators/public.decorator';
-import { AuthDto } from './auth-dto/auth.dto';
+
 
 import { IAuthService } from './auth.service.interface';
 import { CreateEmployeePipeValidator } from 'src/pipes/create-employee.validator.pipe';
-import { CreateEmployeeDto } from './auth-dto/create-employee.dto';
-import { RegisterCustomerDto } from './auth-dto/register-customer.dto';
+
 import { ManagerRoleGuard } from 'src/guards/manager.role.guard';
+import { Public } from 'src/decorators/public.decorator';
+import { RegisterCustomerDto } from './dto/register-customer.dto';
+import { TokensDto } from './dto/token.dto';
+import { AuthDto } from './dto/auth.dto';
+import { CreateEmployeeDto } from './dto/create-employee.dto';
+import { RegisterDto } from './dto/register.dto';
 
 @Controller('auth')
 export class AuthController {

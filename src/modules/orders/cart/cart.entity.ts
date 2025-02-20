@@ -6,7 +6,7 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { BaseEntity } from 'src/modules/bases/base.entity';
+import { BaseEntity } from 'src/common/bases/base.entity';
 
 @Entity({ name: 'Carts' })
 export class CartEntity extends BaseEntity {

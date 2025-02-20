@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { BaseService } from 'src/modules/bases/base.abstract';
+import { BaseService } from 'src/common/bases/base.abstract';
 import { CartDto } from './cart-dto/cart.dto';
 import { ICartService } from './cart.service.interface';
 import { InjectRepository } from '@nestjs/typeorm';

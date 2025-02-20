@@ -9,7 +9,7 @@ import {
 import { AccountEntity } from '../account/account.entity';
 import { EmployeeEntity } from '../employee/employee.entity';
 import { OrderEntity } from 'src/modules/orders/order/order.entity';
-import { BaseEntity } from 'src/modules/bases/base.entity';
+import { BaseEntity } from 'src/common/bases/base.entity';
 
 /**
  * user_id, first_name, last_name

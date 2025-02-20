@@ -10,7 +10,7 @@ import {
 import { PositionEntity } from '../position/position.entity';
 import { UserEntity } from '../user/user.entity';
 import { OrderEntity } from 'src/modules/orders/order/order.entity';
-import { BaseEntity } from 'src/modules/bases/base.entity';
+import { BaseEntity } from 'src/common/bases/base.entity';
 
 @Entity({ name: 'Employees' })
 export class EmployeeEntity extends BaseEntity {

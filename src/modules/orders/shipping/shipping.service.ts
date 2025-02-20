@@ -1,4 +1,4 @@
-import { BaseService } from 'src/modules/bases/base.abstract';
+import { BaseService } from 'src/common/bases/base.abstract';
 import { IShippingService } from './shipping.service.interface';
 import { ShippingDto } from './shipping.dto';
 import { Injectable } from '@nestjs/common';
