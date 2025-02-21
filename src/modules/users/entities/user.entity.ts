@@ -3,8 +3,10 @@ import { Entity,
   Column, 
   CreateDateColumn, 
   UpdateDateColumn, 
-  BeforeInsert 
+  BeforeInsert, 
+  OneToOne
 } from 'typeorm';
+import { EmployeeEntity } from './employee.entity';
 
 @Entity({name: 'users'})
 export class UserEntity {
@@ -46,6 +48,9 @@ export class UserEntity {
   
   @Column({name:'auth_method',type: 'varchar', length: 50, nullable: false }) //select: false
   authMethod!: string;
+
+  @OneToOne(() => EmployeeEntity, (employee) => employee.user)
+  employee: EmployeeEntity;
 
   @BeforeInsert()
   emailToLowerCase() {
