@@ -14,7 +14,7 @@ export class UserEntity {
   @Column({ length: 255, unique: true })
   email!: string;
 
-  @Column({ length: 255, nullable: true })
+  @Column({name:'sub_id', length: 255, nullable: true })
   subId?: string;
 
   @Column('text')
@@ -23,13 +23,13 @@ export class UserEntity {
   @Column({ type: 'varchar', length: 50 })
   status!: 'ACTIVE' | 'INACTIVE' | 'BANNED';
 
-  @Column('text', { nullable: true })
+  @Column('text', {name:'refresh_token', nullable: true })
   refreshToken?: string;
 
-  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @CreateDateColumn({name:'created_at', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 
-  @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
+  @UpdateDateColumn({name:'updated_at', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
   updatedAt: Date;
 
   @Column({ type: 'varchar', length: 10, nullable: true })
@@ -41,10 +41,10 @@ export class UserEntity {
   @Column({ type: 'date', nullable: true })
   birthday?: Date;
 
-  @Column({ type: 'varchar', length: 10, default: 'USER' })
+  @Column({name:'role_type', type: 'varchar', length: 10, default: 'USER' })
   roleType!: 'USER' | 'ADMIN';
   
-  @Column({type: 'varchar', length: 50, nullable: false }) //select: false
+  @Column({name:'auth_method',type: 'varchar', length: 50, nullable: false }) //select: false
   authMethod!: string;
 
   @BeforeInsert()

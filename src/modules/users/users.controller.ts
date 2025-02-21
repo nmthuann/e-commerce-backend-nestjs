@@ -1,6 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { PositionEntity } from './entities/position.entity';
+import { UserEntity } from './entities/user.entity';
+import { EmployeeEntity } from './entities/employee.entity';
 
 @Controller('users')
 export class UsersController {
@@ -10,7 +11,7 @@ constructor(
   ) {}
 
     @Get('positions')
-    async getPositions(): Promise<PositionEntity[]> {
+    async getPositions(): Promise<EmployeeEntity[]> {
       return await this.usersService.getPositions();
     }
 }

@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { PositionEntity } from './position.entity';
 import { UserEntity } from './user.entity';
 
@@ -8,19 +8,21 @@ export class EmployeeEntity {
   id: number;
 
   @ManyToOne(() => UserEntity, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
+  @JoinColumn({ name: 'user_id' })
   user: UserEntity;
 
   @Column({ type: 'double precision' })
   salary: number;
 
-  @Column({ type: 'boolean' })
-  work_status: boolean;
+  @Column({name:'work_status', type: 'boolean' })
+  workStatus: boolean;
 
   @ManyToOne(() => PositionEntity, { onDelete: 'RESTRICT', onUpdate: 'NO ACTION' })
+  @JoinColumn({ name: 'position_id' })
   position: PositionEntity;
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  work_start_date: Date;
+  @Column({name:'work_start_date', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  workStartDate: Date;
 
   @Column({ type: 'varchar', length: 255, nullable: true })
   address: string;
