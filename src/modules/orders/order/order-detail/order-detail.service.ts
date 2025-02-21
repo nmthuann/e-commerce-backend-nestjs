@@ -1,5 +1,4 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { BaseService } from 'src/common/bases/base.abstract';
 import { IOrderDetailService } from './order-detail.service.interface';
 import { InjectRepository } from '@nestjs/typeorm';
 import { OrderDetailEntity } from '../order-detail.entity';
@@ -8,10 +7,11 @@ import { IProductService } from 'src/modules/products/product/product.service.in
 import { ProductDto } from 'src/modules/products/product/product-dto/product.dto';
 import { OrderDetailError } from 'src/constants/errors.enum';
 import { ProductEntity } from 'src/modules/products/product/entities/product.entity';
+import { AbstractBaseService } from 'src/common/bases/base.abstract.service';
 
 @Injectable()
 export class OrderDetailService
-  extends BaseService<OrderDetailEntity>
+  extends AbstractBaseService<OrderDetailEntity>
   implements IOrderDetailService
 {
   constructor(

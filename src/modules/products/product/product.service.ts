@@ -1,5 +1,4 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { BaseService } from 'src/common/bases/base.abstract';
 import { IProductService } from './product.service.interface';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ProductEntity } from './entities/product.entity';
@@ -13,10 +12,11 @@ import { ProductError } from 'src/constants/errors.enum';
 import { ProductDuplicateDto } from './product-dto/product-duplicate.dto';
 import { FilterProductDto } from './product-dto/filter-product.dto';
 import { ImageEntity } from '../image/image.entity';
+import { AbstractBaseService } from 'src/common/bases/base.abstract.service';
 
 @Injectable()
 export class ProductService
-  extends BaseService<ProductEntity>
+  extends AbstractBaseService<ProductEntity>
   implements IProductService
 {
   constructor(
@@ -229,40 +229,40 @@ export class ProductService
     return check;
   }
 
-  async createOne(data: CreateProductDto): Promise<ProductEntity> {
+  // async createOne(data: CreateProductDto): Promise<ProductEntity> {
     
-    try {
-      const newProduct = new ProductEntity();
-      newProduct.model_name = data.model_name;
-      newProduct.price = data.price;
-      newProduct.unit_price = data.unit_price;
-      newProduct.quantity = data.quantity;
-      newProduct.status = true;
-      newProduct.description = data.description;
-      newProduct.operation_system = data.operation_system;
-      newProduct.hardware = data.hardware;
-      newProduct.warranty_time = data.warranty_time;
-      newProduct.screen = data.screen;
-      newProduct.vote = 0;
-      newProduct.color = data.color;
-      newProduct.battery = data.battery;
-      newProduct.memory = data.memory;
-      newProduct.front_camera = data.front_camera;
-      newProduct.behind_camera = data.behind_camera;
-      newProduct.ram = data.ram;
-      newProduct.category = await this.categoryService.getOneById(
-        data.category_id as unknown as number,
-      );
-      newProduct.discount = await this.discountService.getOneById(
-        data.discount_id as unknown as number,
-      );
-      const createProduct = await this.productRepository.save(newProduct);
-      return createProduct;
-    } catch (error) {
-      console.log(`${error}`);
-      throw new Error(ProductError.CREATE_PRODUCT_ERROR);
-    }
-  }
+  //   try {
+  //     const newProduct = new ProductEntity();
+  //     newProduct.model_name = data.model_name;
+  //     newProduct.price = data.price;
+  //     newProduct.unit_price = data.unit_price;
+  //     newProduct.quantity = data.quantity;
+  //     newProduct.status = true;
+  //     newProduct.description = data.description;
+  //     newProduct.operation_system = data.operation_system;
+  //     newProduct.hardware = data.hardware;
+  //     newProduct.warranty_time = data.warranty_time;
+  //     newProduct.screen = data.screen;
+  //     newProduct.vote = 0;
+  //     newProduct.color = data.color;
+  //     newProduct.battery = data.battery;
+  //     newProduct.memory = data.memory;
+  //     newProduct.front_camera = data.front_camera;
+  //     newProduct.behind_camera = data.behind_camera;
+  //     newProduct.ram = data.ram;
+  //     newProduct.category = await this.categoryService.getOneById(
+  //       data.category_id as unknown as number,
+  //     );
+  //     newProduct.discount = await this.discountService.getOneById(
+  //       data.discount_id as unknown as number,
+  //     );
+  //     const createProduct = await this.productRepository.save(newProduct);
+  //     return createProduct;
+  //   } catch (error) {
+  //     console.log(`${error}`);
+  //     throw new Error(ProductError.CREATE_PRODUCT_ERROR);
+  //   }
+  // }
 
   async getOneById(id: string | number): Promise<ProductEntity> {
     const findProduct = await this.productRepository.findOne({

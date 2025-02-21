@@ -1,17 +1,15 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { BaseService } from 'src/common/bases/base.abstract';
-
+import { AbstractBaseService } from 'src/common/bases/base.abstract.service';
 import { IUserService } from './user.service.interface';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './user.entity';
 import { Repository } from 'typeorm';
 import { IAccountService } from '../account/account.service.interface';
-
 import { EmployeeEntity } from '../employee/employee.entity';
 
 @Injectable()
 export class UserService
-  extends BaseService<UserEntity>
+  extends AbstractBaseService<UserEntity>
   implements IUserService
 {
   constructor(

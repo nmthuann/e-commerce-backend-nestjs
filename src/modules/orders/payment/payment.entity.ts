@@ -6,7 +6,7 @@ export class PaymentEntity {
   @PrimaryGeneratedColumn()
   payment_id: number;
 
-  @Column({ type: 'nvarchar', length: 100, nullable: false })
+  @Column({ length: 100, nullable: false })
   payment_name: string;
 
   @Column()

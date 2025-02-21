@@ -6,7 +6,7 @@ export class ShippingEntity {
   @PrimaryGeneratedColumn()
   shipping_id: number;
 
-  @Column({ type: 'nvarchar', length: 100, nullable: false })
+  @Column({length: 100, nullable: false })
   shipping_name: string;
 
   @Column({ default: 0, nullable: false })

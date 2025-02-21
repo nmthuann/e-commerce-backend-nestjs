@@ -23,6 +23,8 @@ import { TokensDto } from './dto/token.dto';
 import { AuthDto } from './dto/auth.dto';
 import { RegisterDto } from './dto/register.dto';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
+import { LoginResponse } from './dto/responses/login.response';
+import { LoginDto } from './dto/login.dto';
 
 dotenv.config();
 
@@ -35,27 +37,30 @@ export class AuthService implements IAuthService {
     private readonly jwtService: JwtService,
     @Inject('IAccountService')
     private readonly accountService: IAccountService,
+    
     @Inject('IUserService')
     private readonly userService: IUserService,
     @Inject('IEmployeeService')
     private readonly employeeService: IEmployeeService,
   ) {}
 
-  async hashPassword(password: string): Promise<string> {
-    //console.log(await bcrypt.hash(password, 10))
+
+
+
+  private async hashPassword(password: string): Promise<string> {
     return await bcrypt.hash(password, '10');
   }
 
-  async comparePassword(
+  private async comparePassword(
     password: string,
     storePasswordHash: string,
   ): Promise<any> {
     return await bcrypt.compare(password, storePasswordHash);
   }
 
-  // gettoken -> [access,refresh] -> create sign
-  async getTokens(payload: Payload): Promise<Tokens> {
-    const [jwt, refresh] = await Promise.all([
+
+  private async getTokens(payload: Payload): Promise<Tokens> {
+    const [jwt, refreshjwt] = await Promise.all([
       this.jwtService.signAsync(
         { payload },
         {
@@ -73,27 +78,71 @@ export class AuthService implements IAuthService {
     ]);
 
     return {
-      access_token: jwt,
-      refresh_token: refresh,
+      accessToken: jwt,
+      refreshToken: refreshjwt,
     };
   }
 
-  // hàm random password
-  randomPassword(length: number, base: string): string {
-    //const baseString = "0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
+  private randomPassword(length: number, base: string): string {
     const getRandomInt = (min: number, max: number) => {
       return Math.floor(Math.random() * (max - min)) + min;
     };
-    let result = '';
+    let result: string = '';
     const baseLength = base.length;
     for (let i = 0; i < length; i++) {
       const randomIndex = getRandomInt(0, baseLength);
       result += base[randomIndex];
     }
-    return result as string;
+    return result;
   }
 
-  // đăng kí tài khoản -> Done!
+
+  async register(data: RegisterDto): Promise<LoginResponse> {
+    throw new Error('Method not implemented.');
+  }
+
+  async login(data: LoginDto): Promise<LoginResponse>{
+    const findAccount: AccountEntity = await this.accountService.getOneById(
+      data.email,
+    );
+    // console.log(findUser)
+    if (findAccount) {
+      const checkPass = await this.comparePassword(
+        data.password,
+        findAccount.password,
+      );
+      if (!checkPass) {
+        console.log('password wrong!');
+        throw new AuthException(AuthExceptionMessages.PASSWORD_WRONG);
+        // return { message: AuthExceptionMessages.PASSWORD_WRONG };
+      }
+    } else {
+      throw new AuthException(AuthExceptionMessages.LOGIN_INVAILD);
+      // return { message: AuthExceptionMessages.LOGIN_INVAILD };
+    }
+
+    // write infor put in Payload
+    const payload: Payload = {
+      email: data.email,
+      role: findAccount.role,
+    };
+
+    const tokens: Tokens = await this.getTokens(payload);
+    findAccount.refresh_token = tokens.refreshToken;
+    await this.accountService.updateOneById(findAccount.email, findAccount);
+
+    const userInfo = await this.userService.getUserByEmail(data.email);
+
+    return {
+      accessToken: tokens.accessToken,
+      firstName: userInfo.first_name,
+      avatarUrl: userInfo.avatar_url,
+      email: userInfo.account.email,
+      lastName: userInfo.last_name,
+      refreshToken: tokens.refreshToken,
+    };
+  }
+
   public async registerCustomer(
     input: RegisterCustomerDto,
   ): Promise<TokensDto | object> {
@@ -123,7 +172,7 @@ export class AuthService implements IAuthService {
       const update = new AccountDto(
         createAccount.email,
         true,
-        tokens.refresh_token,
+        tokens.accessToken,
         createAccount.password,
         Role.User,
         null,
@@ -145,7 +194,7 @@ export class AuthService implements IAuthService {
       });
 
       return {
-        access_token: tokens.access_token,
+        access_token: tokens.accessToken,
         first_name: createUser.first_name,
       };
     } catch (error) {
@@ -155,43 +204,9 @@ export class AuthService implements IAuthService {
   }
 
   // đăng nhập
-  public async login(input: AuthDto): Promise<Tokens | object | any> {
-    const findAccount: AccountEntity = await this.accountService.getOneById(
-      input.email,
-    );
-    // console.log(findUser)
-    if (findAccount) {
-      const checkPass = await this.comparePassword(
-        input.password,
-        findAccount.password,
-      );
-      if (!checkPass) {
-        console.log('password wrong!');
-        // throw new AuthException(AuthExceptionMessages.PASSWORD_WRONG);
-        return { message: AuthExceptionMessages.PASSWORD_WRONG };
-      }
-    } else {
-      // throw new AuthException(AuthExceptionMessages.LOGIN_INVAILD);
-      return { message: AuthExceptionMessages.LOGIN_INVAILD };
-    }
-
-    // write infor put in Payload
-    const payload: Payload = {
-      email: input.email,
-      role: findAccount.role,
-    };
-
-    const tokens: Tokens = await this.getTokens(payload);
-    findAccount.refresh_token = tokens.refresh_token;
-    await this.accountService.updateOneById(findAccount.email, findAccount);
-
-    const userInfo = await this.userService.getUserByEmail(input.email);
-
-    return {
-      access_token: tokens.access_token,
-      first_name: userInfo.first_name,
-    };
-  }
+  // public async login(input: AuthDto): Promise<Tokens | object | any> {
+    
+  // }
 
   // logout -> refresh token = null -> delete cache
   public async logout(email: string): Promise<boolean> {
@@ -221,7 +236,7 @@ export class AuthService implements IAuthService {
       const updateAccount = new AccountEntity();
       updateAccount.email = newUser.email;
       updateAccount.password = newUser.password;
-      updateAccount.refresh_token = tokens.refresh_token;
+      updateAccount.refresh_token = tokens.refreshToken;
       updateAccount.role = Role.Admin;
       updateAccount.status = true;
       updateAccount.user = null;
@@ -276,7 +291,7 @@ export class AuthService implements IAuthService {
     };
 
     const tokens: Tokens = await this.getTokens(payload);
-    findUser.refresh_token = tokens.refresh_token;
+    findUser.refresh_token = tokens.refreshToken;
     await this.accountService.updateOneById(findUser.email, findUser);
 
     const userInfo = await this.userService.getUserByEmail(input.email);
@@ -285,13 +300,13 @@ export class AuthService implements IAuthService {
     //return tokens;
 
     console.log({
-      access_token: tokens.access_token,
+      access_token: tokens.refreshToken,
       first_name: userInfo.first_name,
       avatar_url: userInfo.avatar_url,
       position: (await Promise.resolve(positionInfo.position)).position_id, // mã chức vụ
     })
     return {
-      access_token: tokens.access_token,
+      access_token: tokens.accessToken,
       first_name: userInfo.first_name,
       avatar_url: userInfo.avatar_url,
       position: (await Promise.resolve(positionInfo.position)).position_id, // mã chức vụ
@@ -306,7 +321,7 @@ export class AuthService implements IAuthService {
       // return {message: AuthMessage.SEND_MAIL_SUCCESS};
 
       try {
-        const baseString = '0123456789';
+        const baseString = '0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM';
         const defaulPassword = this.randomPassword(8, baseString);
         const receiver = email;
         const subject = AuthMessage.SUBJECT_REGISTER_EMAIL;
@@ -317,7 +332,12 @@ export class AuthService implements IAuthService {
 
         if (resultSendMail.message === AuthMessage.SEND_MAIL_SUCCESS) {
           // create account
-          const data = new RegisterDto(email, defaulPassword);
+          const data = new RegisterDto();
+          data.email = email;
+          data.password = defaulPassword;
+          data.firstName = 'true';
+          data.lastName = "Role.User";
+          data.avatarUrl = '';
           return await this.registerEmployee(data); // hash pass
         }
 

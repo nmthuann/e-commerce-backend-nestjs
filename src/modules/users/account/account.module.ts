@@ -5,13 +5,13 @@ import { AccountEntity } from './account.entity';
 import { AccountService } from './account.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([AccountEntity])],
+  imports: [TypeOrmModule.forFeature([])],
   providers: [
-    {
-      provide: 'IAccountService',
-      useClass: AccountService,
-    },
+    // {
+    //   provide: 'IAccountService',
+    //   useClass: AccountService,
+    // },
   ],
-  exports: ['IAccountService'],
+  // exports: ['IAccountService'],
 })
 export class AccountModule {}

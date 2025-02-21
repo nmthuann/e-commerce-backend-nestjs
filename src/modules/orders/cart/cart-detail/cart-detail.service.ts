@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { BaseService } from 'src/common/bases/base.abstract';
 import { CartDetailDto } from '../cart-dto/cart-detail.dto';
 import { ICartDetailService } from './cart-detail.service.interface';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CartDetailEntity } from '../cart-detail.entity';
 import { Repository } from 'typeorm';
+import { AbstractBaseService } from 'src/common/bases/base.abstract.service';
 
 @Injectable()
 export class CartDetailService
-  extends BaseService<CartDetailDto>
+  extends AbstractBaseService<CartDetailDto>
   implements ICartDetailService
 {
   constructor(

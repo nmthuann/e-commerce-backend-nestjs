@@ -15,7 +15,7 @@ import { OrderDetailEntity } from '../order-detail.entity';
 export class OrderDetailController {
   constructor(
     @Inject('IOrderDetailService')
-    private orderDetailService: IOrderDetailService,
+    private readonly orderDetailService: IOrderDetailService,
   ) {}
 
   @Post('create')

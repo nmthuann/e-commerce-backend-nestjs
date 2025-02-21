@@ -1,10 +1,13 @@
 import { Role } from 'src/constants/role.enum';
-import { Entity, Column, PrimaryColumn, BeforeInsert, OneToOne } from 'typeorm';
+import { Entity, Column, PrimaryColumn, BeforeInsert, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { UserEntity } from '../user/user.entity';
 
-@Entity({ name: 'Accounts' })
+@Entity({ name: 'accounts' })
 export class AccountEntity {
-  @PrimaryColumn({ type: 'nvarchar', length: 50 })
+  @PrimaryGeneratedColumn('uuid')
+  id: string
+
+  @PrimaryColumn({  length: 50 })
   email: string;
 
   @Column({ nullable: false }) //select: false
@@ -16,7 +19,7 @@ export class AccountEntity {
   @Column({ default: null })
   refresh_token: string;
 
-  @Column({ type: 'nvarchar', length: 10, default: Role.User })
+  @Column({  length: 10, default: Role.User })
   role: string;
 
   @OneToOne(() => UserEntity, (user) => user.account)

@@ -1,5 +1,4 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { BaseService } from 'src/common/bases/base.abstract';
 import { RevenueByMonth } from './order-dto/order.dto';
 import { IOrderService } from './order.service.interface';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -25,6 +24,7 @@ import { Role } from 'src/constants/role.enum';
 import { OrderOfflineDto } from './order-dto/order-offline.dto';
 import { OrderError } from 'src/constants/errors.enum';
 import { CategoryEnum } from 'src/constants/order.enum';
+import { AbstractBaseService } from 'src/common/bases/base.abstract.service';
 
 enum OrderPaymentMethod{
   
@@ -35,7 +35,7 @@ enum OrderPaymentMethod{
 
 @Injectable()
 export class OrderService
-  extends BaseService<OrderEntity>
+  extends AbstractBaseService<OrderEntity>
   implements IOrderService
 {
   constructor(

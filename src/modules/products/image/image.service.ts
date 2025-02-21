@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { BaseService } from 'src/common/bases/base.abstract';
+import { AbstractBaseService } from 'src/common/bases/base.abstract.service';
 
 import { ImageEntity } from './image.entity';
 import { Repository } from 'typeorm';
@@ -11,7 +11,7 @@ import { ImageError } from 'src/constants/errors.enum';
 
 @Injectable()
 export class ImageService
-  extends BaseService<ImageEntity>
+  extends AbstractBaseService<ImageEntity>
   implements IImageService
 {
   constructor(

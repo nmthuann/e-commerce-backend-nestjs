@@ -14,7 +14,7 @@ import { BaseEntity } from 'src/common/bases/base.entity';
 
 @Entity({ name: 'Employees' })
 export class EmployeeEntity extends BaseEntity {
-  @PrimaryColumn({ type: 'nvarchar', length: 50 })
+  @PrimaryColumn({  length: 50 })
   employee_id: string; //  cccd
 
   @Column({ type: 'int', default: 0 })

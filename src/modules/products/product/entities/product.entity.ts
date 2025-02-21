@@ -44,9 +44,9 @@ export class ProductEntity extends BaseEntity {
 
   @Column()
   description: string;
-  @Column({ type: 'nvarchar', length: 100, nullable: false })
+  @Column({ length: 100, nullable: false })
   operation_system: string; //  thương hiệu
-  @Column({ type: 'nvarchar', length: 100, nullable: false })
+  @Column({  length: 100, nullable: false })
   hardware: string; //  xuất xứ
   @Column()
   warranty_time: number; // thới gian bảo hành
@@ -86,7 +86,7 @@ export class ProductEntity extends BaseEntity {
    * 7. ram: int
    */
 
-  @Column({ type: 'nvarchar', length: 50, nullable: false })
+  @Column({  length: 50, nullable: false })
   color: string;
 
   @Column({ type: 'int', nullable: false })

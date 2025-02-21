@@ -6,7 +6,7 @@ export class PositionEntity {
   @PrimaryGeneratedColumn()
   position_id: number;
 
-  @Column({ type: 'nvarchar', length: 100, nullable: false })
+  @Column({ length: 100, nullable: false })
   position_name: string;
 
   @Column({

@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { BaseService } from 'src/common/bases/base.abstract';
 import { PaymentDto } from './payment.dto';
 import { IPaymentService } from './payment.service.interface';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PaymentEntity } from './payment.entity';
 import { Repository } from 'typeorm';
+import { AbstractBaseService } from 'src/common/bases/base.abstract.service';
 
 @Injectable()
 export class PaymentService
-  extends BaseService<PaymentDto>
+  extends AbstractBaseService<PaymentDto>
   implements IPaymentService
 {
   constructor(

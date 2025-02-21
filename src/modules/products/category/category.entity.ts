@@ -7,7 +7,7 @@ export class CategoryEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   category_id: number;
 
-  @Column({ type: 'nvarchar', length: 50, nullable: false })
+  @Column({ length: 50, nullable: false })
   category_name: string;
 
   @Column()

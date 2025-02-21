@@ -3,4 +3,5 @@ import { AccountEntity } from './account.entity';
 
 export interface IAccountService extends IBaseService<AccountEntity> {
   deleteAccountFail(email: string);
+  findByEmail(email: string): Promise<AccountEntity>;
 }

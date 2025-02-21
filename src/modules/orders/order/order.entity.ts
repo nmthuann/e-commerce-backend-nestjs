@@ -27,7 +27,7 @@ export class OrderEntity extends BaseEntity {
   @Column()
   delivery_address: string;
 
-  @Column({ type: 'nvarchar', length: 15 })
+  @Column({ length: 15 })
   contact: string;
 
   @ManyToOne(() => DiscountEntity, (discount) => discount.orders, {

@@ -21,7 +21,7 @@ export class UserEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   user_id: number;
 
-  @Column({ type: 'nvarchar', length: 50, nullable: false })
+  @Column({  length: 50, nullable: false })
   first_name: string;
 
   @Column()
@@ -30,7 +30,7 @@ export class UserEntity extends BaseEntity {
   @Column() // 225
   avatar_url: string;
 
-  @Column({ type: 'nvarchar', length: 50 })
+  @Column({  length: 50 })
   gender: string;
 
   @Column({ nullable: false })
@@ -39,7 +39,7 @@ export class UserEntity extends BaseEntity {
   @Column() // 225
   address: string;
 
-  @Column({ type: 'nvarchar', length: 10, nullable: false })
+  @Column({ length: 10, nullable: false })
   phone: string;
 
   @OneToOne(() => AccountEntity, (account) => account.user) //  ,  (account) =>  account.email{ cascade: true }

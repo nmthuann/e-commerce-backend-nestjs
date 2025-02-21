@@ -1,6 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { BaseService } from 'src/common/bases/base.abstract';
 import { EmployeeDto } from './employee-dto/employee.dto';
 import { IEmployeeService } from './employee.service.interface';
 import { EmployeeEntity } from './employee.entity';
@@ -10,12 +9,13 @@ import { IUserService } from '../user/user.service.interface';
 import { GetEmployeeListDto } from './employee-dto/get-employee-list.dto';
 import * as dotenv from 'dotenv';
 import { ErrorType } from 'src/constants/errors.enum';
+import { AbstractBaseService } from 'src/common/bases/base.abstract.service';
 
 dotenv.config();
 
 @Injectable()
 export class EmployeeService
-  extends BaseService<EmployeeEntity>
+  extends AbstractBaseService<EmployeeEntity>
   implements IEmployeeService
 {
   constructor(
