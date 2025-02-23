@@ -7,7 +7,6 @@ import { ProductFilterDto } from './product-dto/product-filter.dto';
 
 export interface IProductService extends IBaseService<ProductEntity> {
   getSomeFields(): Promise<Partial<ProductEntity>[]>;
-
   getProductsByCategoryId(category_id: number): Promise<ProductEntity[]>;
   getProductsByPriceRange(
     category_id: number,
