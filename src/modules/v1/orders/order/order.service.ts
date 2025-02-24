@@ -5,9 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { OrderEntity } from './order.entity';
 import { Between, Repository } from 'typeorm';
 import { IShippingService } from '../shipping/Shipping.service.interface';
-import { IPaymentService } from '../payment/payment.service.interface';
 import { IProductService } from 'src/modules/v1/products/product/product.service.interface';
-import { IUserService } from 'src/modules/users/user/user.service.interface';
 import { IEmployeeService } from 'src/modules/v1/users/employee/Employee.service.interface';
 import { IOrderDetailService } from './order-detail/order-detail.service.interface';
 import { OrderDetailEntity } from './order-detail.entity';
@@ -15,16 +13,18 @@ import { ShippingEntity } from '../shipping/shipping.entity';
 import { IDiscountService } from 'src/modules/v1/products/discount/discount.service.interface';
 import { DiscountEntity } from 'src/modules/v1/products/discount/discount.entity';
 import { EmployeeEntity } from 'src/modules/v1/users/employee/employee.entity';
-import { UserEntity } from 'src/modules/users/user/user.entity';
-import { PaymentEntity } from '../payment/payment.entity';
 import { GetTaskOrdersDto } from './order-dto/get-task-orders.dto';
-import { GetCustomerListDto } from 'src/modules/users/user/user-dto/get-customer-list.dto';
 import { OrderStatus } from 'src/constants/order-status.enum';
 import { Role } from 'src/constants/role.enum';
 import { OrderOfflineDto } from './order-dto/order-offline.dto';
 import { OrderError } from 'src/constants/errors.enum';
 import { CategoryEnum } from 'src/constants/category.enum';
 import { AbstractBaseService } from 'src/common/bases/base.abstract.service';
+import { IPaymentService } from '../payment/payment.service.interface';
+import { PaymentEntity } from '../payment/payment.entity';
+import { UserEntity } from '../../users/user/user.entity';
+import { IUserService } from '../../users/user/user.service.interface';
+import { GetCustomerListDto } from '../../users/user/user-dto/get-customer-list.dto';
 
 enum OrderPaymentMethod{
   

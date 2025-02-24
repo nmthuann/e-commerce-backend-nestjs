@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 import { AccountEntity } from '../account/account.entity';
 import { EmployeeEntity } from '../employee/employee.entity';
-import { OrderEntity } from 'src/modules/orders/order/order.entity';
+import { OrderEntity } from 'src/modules/v1/orders/order/order.entity';
 import { BaseEntity } from 'src/common/bases/base.entity';
 
 /**

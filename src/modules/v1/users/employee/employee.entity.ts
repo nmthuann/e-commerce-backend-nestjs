@@ -9,7 +9,7 @@ import {
 } from 'typeorm';
 import { PositionEntity } from '../position/position.entity';
 import { UserEntity } from '../user/user.entity';
-import { OrderEntity } from 'src/modules/orders/order/order.entity';
+import { OrderEntity } from 'src/modules/v1/orders/order/order.entity';
 import { BaseEntity } from 'src/common/bases/base.entity';
 
 @Entity({ name: 'Employees' })

@@ -8,7 +8,7 @@ import {
   Put,
   Inject,
 } from '@nestjs/common';
-import { ShippingDto } from '../shipping/shipping.dto';
+import { ShippingDto } from './shipping.dto';
 import { IShippingService } from './Shipping.service.interface';
 
 @Controller('shipping')

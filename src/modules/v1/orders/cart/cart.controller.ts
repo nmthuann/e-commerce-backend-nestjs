@@ -8,7 +8,7 @@ import {
   Put,
   Inject,
 } from '@nestjs/common';
-import { CartDto } from '../cart/cart-dto/cart.dto';
+import { CartDto } from './cart-dto/cart.dto';
 import { ICartService } from './cart.service.interface';
 
 

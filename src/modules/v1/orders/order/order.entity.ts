@@ -7,11 +7,11 @@ import {
 } from 'typeorm';
 
 import { ShippingEntity } from '../shipping/shipping.entity';
-import { PaymentEntity } from '../payment/payment.entity';
 import { EmployeeEntity } from 'src/modules/v1/users/employee/employee.entity';
-import { UserEntity } from 'src/modules/users/user/user.entity';
 import { DiscountEntity } from 'src/modules/v1/products/discount/discount.entity';
 import { BaseEntity } from 'src/common/bases/base.entity';
+import { UserEntity } from '../../users/user/user.entity';
+import { PaymentEntity } from '../payment/payment.entity';
 
 @Entity({ name: 'Orders' })
 export class OrderEntity extends BaseEntity {

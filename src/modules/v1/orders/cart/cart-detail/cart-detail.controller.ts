@@ -9,7 +9,7 @@ import {
   Inject,
 } from '@nestjs/common';
 import { CartDetailDto } from '../cart-dto/cart-detail.dto';
-import { ICartDetailService } from '../cart-detail/cart-detail.service.interface';
+import { ICartDetailService } from './cart-detail.service.interface';
 
 
 @Controller('CartDetail')

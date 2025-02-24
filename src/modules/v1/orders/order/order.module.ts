@@ -8,14 +8,14 @@ import { OrderDetailModule } from './order-detail/order-detail.module';
 import { DiscountModule } from 'src/modules/v1/products/discount/discount.module';
 import { ProductModule } from 'src/modules/v1/products/product/product.module';
 import { ShippingModule } from '../shipping/shipping.module';
-import { PaymentModule } from '../payment/payment.module';
 import { EmployeeModule } from 'src/modules/v1/users/employee/employee.module';
-import { UserModule } from 'src/modules/users/user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { OrderEntity } from './order.entity';
 import { AuthMiddleware } from 'src/middlewares/auth.middleware';
 import { JwtModule } from '@nestjs/jwt';
 import * as dotenv from 'dotenv';
+import { PaymentModule } from '../payment/payment.module';
+import { UserModule } from '../../users/user/user.module';
 dotenv.config();
 
 
@@ -31,12 +31,9 @@ dotenv.config();
     OrderDetailModule,
     ShippingModule,
     PaymentModule,
-
     EmployeeModule,
     UserModule,
-
     ProductModule,
-
   ],
   controllers: [OrderController],
   providers: [

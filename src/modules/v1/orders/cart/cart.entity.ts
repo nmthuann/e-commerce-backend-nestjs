@@ -1,4 +1,3 @@
-import { UserEntity } from 'src/modules/users/user/user.entity';
 import {
   Column,
   Entity,
@@ -7,6 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { BaseEntity } from 'src/common/bases/base.entity';
+import { UserEntity } from '../../users/user/user.entity';
 
 @Entity({ name: 'Carts' })
 export class CartEntity extends BaseEntity {
