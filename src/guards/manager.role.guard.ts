@@ -8,7 +8,7 @@ import {
 import { Reflector } from '@nestjs/core';
 import { Role } from 'src/constants/role.enum';
 import { IUserService } from 'src/modules/users/user/user.service.interface';
-import { EmployeeEntity } from 'src/modules/users/employee/employee.entity';
+import { EmployeeEntity } from 'src/modules/v1/users/employee/employee.entity';
 import { GuardError } from 'src/constants/errors.enum';
 
 @Injectable()

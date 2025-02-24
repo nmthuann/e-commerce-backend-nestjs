@@ -3,7 +3,6 @@ import { CategoryEntity } from './category.entity';
 import { BrandEntity } from './brand.entity';
 
 @Entity({ name: 'products' })
-
 export class ProductEntity {
   @PrimaryGeneratedColumn()
   id: number;

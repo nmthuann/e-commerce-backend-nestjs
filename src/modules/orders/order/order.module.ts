@@ -9,7 +9,7 @@ import { DiscountModule } from 'src/modules/products/discount/discount.module';
 import { ProductModule } from 'src/modules/products/product/backup/product.module';
 import { ShippingModule } from '../shipping/shipping.module';
 import { PaymentModule } from '../payment/payment.module';
-import { EmployeeModule } from 'src/modules/users/employee/employee.module';
+import { EmployeeModule } from 'src/modules/v1/users/employee/employee.module';
 import { UserModule } from 'src/modules/users/user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { OrderEntity } from './order.entity';

@@ -1,4 +1,4 @@
-import { EmployeeDto } from 'src/modules/users/employee/employee-dto/employee.dto';
+import { EmployeeDto } from 'src/modules/v1/users/employee/employee-dto/employee.dto';
 import { PaymentDto } from '../../payment/payment.dto';
 import { ShippingDto } from '../../shipping/shipping.dto';
 import { UserDto } from 'src/modules/users/user/user-dto/user.dto';
