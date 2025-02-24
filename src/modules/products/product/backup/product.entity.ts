@@ -10,9 +10,9 @@ import {
   BeforeUpdate,
   BeforeInsert,
 } from 'typeorm';
-import { CategoryEntity } from '../category/category.entity';
-import { ImageEntity } from '../image/image.entity';
-import { DiscountEntity } from '../discount/discount.entity';
+import { CategoryEntity } from '../../category/category.entity';
+import { ImageEntity } from '../../image/image.entity';
+import { DiscountEntity } from '../../discount/discount.entity';
 import { ErrorInput } from 'src/constants/errors.enum';
 
 @Entity({ name: 'Products' })

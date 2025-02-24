@@ -6,7 +6,7 @@ import { OrderEntity } from './order.entity';
 import { Between, Repository } from 'typeorm';
 import { IShippingService } from '../shipping/Shipping.service.interface';
 import { IPaymentService } from '../payment/payment.service.interface';
-import { IProductService } from 'src/modules/products/product/product.service.interface';
+import { IProductService } from 'src/modules/products/product/backup/product.service.interface';
 import { IUserService } from 'src/modules/users/user/user.service.interface';
 import { IEmployeeService } from 'src/modules/users/employee/Employee.service.interface';
 import { IOrderDetailService } from './order-detail/order-detail.service.interface';

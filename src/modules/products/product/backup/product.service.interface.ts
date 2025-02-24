@@ -1,4 +1,4 @@
-import { IBaseService } from '../../../common/bases/base.interface';
+import { IBaseService } from '../../../../common/bases/base.interface';
 import { ProductEntity } from './product.entity';
 import { FilterProductDto } from './product-dto/filter-product.dto';
 import { GetProductForOrderDto } from './product-dto/get-product-order.dto';

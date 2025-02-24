@@ -3,10 +3,10 @@ import { IOrderDetailService } from './order-detail.service.interface';
 import { InjectRepository } from '@nestjs/typeorm';
 import { OrderDetailEntity } from '../order-detail.entity';
 import { Repository } from 'typeorm';
-import { IProductService } from 'src/modules/products/product/product.service.interface';
-import { ProductDto } from 'src/modules/products/product/product-dto/product.dto';
+import { IProductService } from 'src/modules/products/product/backup/product.service.interface';
+import { ProductDto } from 'src/modules/products/product/backup/product-dto/product.dto';
 import { OrderDetailError } from 'src/constants/errors.enum';
-import { ProductEntity } from 'src/modules/products/product/product.entity';
+import { ProductEntity } from 'src/modules/products/product/backup/product.entity';
 import { AbstractBaseService } from 'src/common/bases/base.abstract.service';
 
 @Injectable()

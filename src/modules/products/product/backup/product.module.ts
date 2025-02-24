@@ -3,10 +3,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProductEntity } from './product.entity';
 import { ProductService } from './product.service';
 import { ProductController } from './product.controller';
-import { CategoryEntity } from '../category/category.entity';
-import { CategoryModule } from '../category/category.module';
-import { DiscountEntity } from '../discount/discount.entity';
-import { DiscountModule } from '../discount/discount.module';
+import { CategoryEntity } from '../../category/category.entity';
+import { CategoryModule } from '../../category/category.module';
+import { DiscountEntity } from '../../discount/discount.entity';
+import { DiscountModule } from '../../discount/discount.module';
 
 @Module({
   imports: [

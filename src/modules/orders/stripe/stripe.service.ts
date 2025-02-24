@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { IOrderService } from '../order/order.service.interface';
-import { ProductEntity } from 'src/modules/products/product/product.entity';
-import { IProductService } from 'src/modules/products/product/product.service.interface';
+import { ProductEntity } from 'src/modules/products/product/backup/product.entity';
+import { IProductService } from 'src/modules/products/product/backup/product.service.interface';
 import { OrderEntity } from '../order/order.entity';
 import Stripe from 'stripe';
 

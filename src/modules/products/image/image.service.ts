@@ -4,7 +4,7 @@ import { AbstractBaseService } from 'src/common/bases/base.abstract.service';
 
 import { ImageEntity } from './image.entity';
 import { Repository } from 'typeorm';
-import { IProductService } from '../product/product.service.interface';
+import { IProductService } from '../product/backup/product.service.interface';
 import { IImageService } from './image.service.interface';
 
 import { ImageError } from 'src/constants/errors.enum';
