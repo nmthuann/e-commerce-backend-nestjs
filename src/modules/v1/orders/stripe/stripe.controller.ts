@@ -7,7 +7,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { StripeService } from './stripe.service';
-import { UserRoleGuard } from 'src/guards/user.role.guard';
+import { UserRoleGuard } from '../../guards/user.role.guard';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',

@@ -11,11 +11,11 @@ import { ShippingModule } from '../shipping/shipping.module';
 import { EmployeeModule } from 'src/modules/v1/users/employee/employee.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { OrderEntity } from './order.entity';
-import { AuthMiddleware } from 'src/middlewares/auth.middleware';
 import { JwtModule } from '@nestjs/jwt';
 import * as dotenv from 'dotenv';
 import { PaymentModule } from '../payment/payment.module';
 import { UserModule } from '../../users/user/user.module';
+import { AuthMiddleware } from '../../middlewares/auth.middleware';
 dotenv.config();
 
 

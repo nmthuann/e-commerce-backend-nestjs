@@ -1,7 +1,7 @@
 // import { Exclude, classToPlain } from 'class-transformer';
 import { IsEmail, IsNotEmpty } from 'class-validator';
-import { Role } from 'src/constants/role.enum';
 import { UserDto } from '../../user/user-dto/user.dto';
+import { Role } from 'src/modules/v1/constants/role.enum';
 
 export class AccountDto {
   @IsNotEmpty()

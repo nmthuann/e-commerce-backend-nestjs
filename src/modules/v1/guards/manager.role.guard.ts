@@ -6,10 +6,10 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { Role } from 'src/constants/role.enum';
-import { IUserService } from 'src/modules/users/user/user.service.interface';
 import { EmployeeEntity } from 'src/modules/v1/users/employee/employee.entity';
-import { GuardError } from 'src/constants/errors.enum';
+import { IUserService } from '../users/user/user.service.interface';
+import { GuardError } from '../constants/errors.enum';
+import { Role } from '../constants/role.enum';
 
 @Injectable()
 export class ManagerRoleGuard implements CanActivate {

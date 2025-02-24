@@ -1,6 +1,6 @@
 import { PipeTransform, Injectable, BadRequestException } from '@nestjs/common';
 import { CreateEmployeeDto } from 'src/modules/v1/auth/dto/create-employee.dto';
-import { PipeError } from 'src/modules/v1/constants/errors.enum';
+import { PipeError } from '../constants/errors.enum';
 
 @Injectable()
 export class CreateEmployeePipeValidator implements PipeTransform {

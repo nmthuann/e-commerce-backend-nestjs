@@ -5,8 +5,8 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { GuardError } from 'src/constants/errors.enum';
-import { Role } from 'src/constants/role.enum';
+import { GuardError } from '../constants/errors.enum';
+import { Role } from '../constants/role.enum';
 
 @Injectable()
 export class AdminRoleGuard implements CanActivate {

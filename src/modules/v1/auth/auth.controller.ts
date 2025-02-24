@@ -13,13 +13,13 @@ import {
 import { IAuthService } from './auth.service.interface';
 import { CreateEmployeePipeValidator } from 'src/pipes/create-employee.validator.pipe';
 
-import { ManagerRoleGuard } from 'src/guards/manager.role.guard';
 import { Public } from 'src/decorators/public.decorator';
 import { RegisterCustomerDto } from './dto/register-customer.dto';
 import { TokensDto } from './dto/token.dto';
 import { AuthDto } from './dto/auth.dto';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { RegisterDto } from './dto/register.dto';
+import { ManagerRoleGuard } from '../guards/manager.role.guard';
 
 @Controller('auth')
 export class AuthController {

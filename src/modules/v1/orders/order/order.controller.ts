@@ -12,8 +12,8 @@ import { IOrderService } from './order.service.interface';
 import { OrderEntity } from './order.entity';
 import { GetTaskOrdersDto } from './order-dto/get-task-orders.dto';
 import { RevenueByMonth } from './order-dto/order.dto';
-import { AdminRoleGuard } from 'src/guards/admin.role.guard';
 import { GetCustomerListDto } from '../../users/user/user-dto/get-customer-list.dto';
+import { AdminRoleGuard } from '../../guards/admin.role.guard';
 
 @Controller('order')
 export class OrderController {

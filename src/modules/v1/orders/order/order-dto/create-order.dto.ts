@@ -1,5 +1,5 @@
+import { GetProductForOrderDto } from "src/modules/v1/products/product/product-dto/get-product-order.dto";
 
-import { GetProductForOrderDto } from '../../../v1/products/product/backup/product-dto/get-product-order.dto';
 
 export class CreateOrderDto {
   products: GetProductForOrderDto[]; 

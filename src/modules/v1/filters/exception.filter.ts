@@ -9,8 +9,8 @@ import {
 
 import { HttpArgumentsHost } from '@nestjs/common/interfaces/features/arguments-host.interface';
 import { Response } from 'express';
-import { SystemError } from 'src/modules/v1/constants/errors.enum';
 import { QueryFailedError } from 'typeorm';
+import { SystemError } from '../constants/errors.enum';
 
 @Catch()
 export class AllExceptionFilter implements ExceptionFilter {

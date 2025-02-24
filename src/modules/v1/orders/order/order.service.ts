@@ -14,17 +14,17 @@ import { IDiscountService } from 'src/modules/v1/products/discount/discount.serv
 import { DiscountEntity } from 'src/modules/v1/products/discount/discount.entity';
 import { EmployeeEntity } from 'src/modules/v1/users/employee/employee.entity';
 import { GetTaskOrdersDto } from './order-dto/get-task-orders.dto';
-import { OrderStatus } from 'src/constants/order-status.enum';
-import { Role } from 'src/constants/role.enum';
 import { OrderOfflineDto } from './order-dto/order-offline.dto';
-import { OrderError } from 'src/constants/errors.enum';
-import { CategoryEnum } from 'src/constants/category.enum';
 import { AbstractBaseService } from 'src/modules/v1/bases/base.abstract.service';
 import { IPaymentService } from '../payment/payment.service.interface';
 import { PaymentEntity } from '../payment/payment.entity';
 import { UserEntity } from '../../users/user/user.entity';
 import { IUserService } from '../../users/user/user.service.interface';
 import { GetCustomerListDto } from '../../users/user/user-dto/get-customer-list.dto';
+import { CategoryEnum } from '../../constants/category.enum';
+import { OrderStatus } from '../../constants/order-status.enum';
+import { OrderError } from '../../constants/errors.enum';
+import { Role } from '../../constants/role.enum';
 
 enum OrderPaymentMethod{
   
