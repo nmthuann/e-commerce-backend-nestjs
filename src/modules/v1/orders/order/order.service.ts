@@ -19,7 +19,7 @@ import { Role } from 'src/constants/role.enum';
 import { OrderOfflineDto } from './order-dto/order-offline.dto';
 import { OrderError } from 'src/constants/errors.enum';
 import { CategoryEnum } from 'src/constants/category.enum';
-import { AbstractBaseService } from 'src/common/bases/base.abstract.service';
+import { AbstractBaseService } from 'src/modules/v1/bases/base.abstract.service';
 import { IPaymentService } from '../payment/payment.service.interface';
 import { PaymentEntity } from '../payment/payment.entity';
 import { UserEntity } from '../../users/user/user.entity';

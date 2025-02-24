@@ -5,7 +5,7 @@ import { Between, Repository } from 'typeorm';
 import { ICategoryService } from '../category/category.service.interface';
 import { IDiscountService } from '../discount/discount.service.interface';
 import { ImageEntity } from '../image/image.entity';
-import { AbstractBaseService } from 'src/common/bases/base.abstract.service';
+import { AbstractBaseService } from 'src/modules/v1/bases/base.abstract.service';
 import { ProductEntity } from './product.entity';
 import { FilterProductDto } from 'src/modules/v1/products/product/product-dto/filter-product.dto';
 import { ProductDuplicateDto } from 'src/modules/v1/products/product/product-dto/product-duplicate.dto';

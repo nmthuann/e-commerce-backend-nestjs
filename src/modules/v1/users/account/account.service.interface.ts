@@ -1,4 +1,4 @@
-import { IBaseService } from 'src/common/bases/base.interface';
+import { IBaseService } from 'src/modules/v1/bases/base.interface';
 import { AccountEntity } from './account.entity';
 
 export interface IAccountService extends IBaseService<AccountEntity> {

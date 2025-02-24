@@ -7,7 +7,7 @@ import { IProductService } from 'src/modules/v1/products/product/product.service
 import { ProductDto } from 'src/modules/v1/products/product/product.dto';
 import { OrderDetailError } from 'src/constants/errors.enum';
 import { ProductEntity } from 'src/modules/v1/products/product/product.entity';
-import { AbstractBaseService } from 'src/common/bases/base.abstract.service';
+import { AbstractBaseService } from 'src/modules/v1/bases/base.abstract.service';
 
 @Injectable()
 export class OrderDetailService

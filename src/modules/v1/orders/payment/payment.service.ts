@@ -4,7 +4,7 @@ import { IPaymentService } from './payment.service.interface';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PaymentEntity } from './payment.entity';
 import { Repository } from 'typeorm';
-import { AbstractBaseService } from 'src/common/bases/base.abstract.service';
+import { AbstractBaseService } from 'src/modules/v1/bases/base.abstract.service';
 
 @Injectable()
 export class PaymentService

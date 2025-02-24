@@ -1,4 +1,4 @@
-import { IBaseService } from 'src/common/bases/base.interface';
+import { IBaseService } from 'src/modules/v1/bases/base.interface';
 import {  RevenueByMonth } from './order-dto/order.dto';
 import { OrderEntity } from './order.entity';
 import { GetTaskOrdersDto } from './order-dto/get-task-orders.dto';

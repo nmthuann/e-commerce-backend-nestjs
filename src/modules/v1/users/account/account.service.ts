@@ -3,7 +3,7 @@ import { IAccountService } from './account.service.interface';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AccountEntity } from './account.entity';
 import { Repository } from 'typeorm';
-import { AbstractBaseService } from 'src/common/bases/base.abstract.service';
+import { AbstractBaseService } from 'src/modules/v1/bases/base.abstract.service';
 
 @Injectable()
 export class AccountService

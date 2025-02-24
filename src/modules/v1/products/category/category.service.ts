@@ -3,7 +3,7 @@ import { DeleteResult, Repository } from 'typeorm';
 import { CategoryEntity } from './category.entity';
 import { ICategoryService } from './category.service.interface';
 import { InjectRepository } from '@nestjs/typeorm';
-import { AbstractBaseService } from 'src/common/bases/base.abstract.service';
+import { AbstractBaseService } from 'src/modules/v1/bases/base.abstract.service';
 
 @Injectable()
 export class CategoryService

@@ -1,4 +1,4 @@
-import { BaseEntity } from 'src/common/bases/base.entity';
+import { BaseEntity } from 'src/modules/v1/bases/base.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,

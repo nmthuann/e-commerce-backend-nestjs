@@ -1,4 +1,4 @@
-import { IBaseService } from 'src/common/bases/base.interface';
+import { IBaseService } from 'src/modules/v1/bases/base.interface';
 import { UserEntity } from './user.entity';
 import { EmployeeEntity } from '../employee/employee.entity';
 

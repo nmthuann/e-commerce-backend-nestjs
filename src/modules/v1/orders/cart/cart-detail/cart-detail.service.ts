@@ -4,7 +4,7 @@ import { ICartDetailService } from './cart-detail.service.interface';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CartDetailEntity } from '../cart-detail.entity';
 import { Repository } from 'typeorm';
-import { AbstractBaseService } from 'src/common/bases/base.abstract.service';
+import { AbstractBaseService } from 'src/modules/v1/bases/base.abstract.service';
 
 @Injectable()
 export class CartDetailService
