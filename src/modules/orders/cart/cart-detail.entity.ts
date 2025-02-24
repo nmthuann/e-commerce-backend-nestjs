@@ -1,4 +1,4 @@
-import { ProductEntity } from 'src/modules/products/product/backup/product.entity';
+import { ProductEntity } from 'src/modules/v1/products/product/product.entity';
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 import { CartEntity } from './cart.entity';
 

@@ -2,11 +2,11 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProductEntity } from './product.entity';
 import { ProductService } from './product.service';
+import { CategoryEntity } from '../category/category.entity';
+import { CategoryModule } from '../category/category.module';
+import { DiscountEntity } from '../discount/discount.entity';
+import { DiscountModule } from '../discount/discount.module';
 import { ProductController } from './product.controller';
-import { CategoryEntity } from '../../category/category.entity';
-import { CategoryModule } from '../../category/category.module';
-import { DiscountEntity } from '../../discount/discount.entity';
-import { DiscountModule } from '../../discount/discount.module';
 
 @Module({
   imports: [

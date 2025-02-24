@@ -1,4 +1,4 @@
-import { IBaseService } from '../../../common/bases/base.interface';
+import { IBaseService } from '../../../../common/bases/base.interface';
 import { DiscountEntity } from './discount.entity';
 
 export interface IDiscountService extends IBaseService<DiscountEntity> {

@@ -10,7 +10,7 @@ import { ShippingEntity } from '../shipping/shipping.entity';
 import { PaymentEntity } from '../payment/payment.entity';
 import { EmployeeEntity } from 'src/modules/v1/users/employee/employee.entity';
 import { UserEntity } from 'src/modules/users/user/user.entity';
-import { DiscountEntity } from 'src/modules/products/discount/discount.entity';
+import { DiscountEntity } from 'src/modules/v1/products/discount/discount.entity';
 import { BaseEntity } from 'src/common/bases/base.entity';
 
 @Entity({ name: 'Orders' })

@@ -1,18 +1,16 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { IProductService } from './product.service.interface';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ProductEntity } from './product.entity';
 import { Between, Repository } from 'typeorm';
-import { ICategoryService } from '../../category/category.service.interface';
-import { IDiscountService } from '../../discount/discount.service.interface';
-import { CreateProductDto } from './product-dto/create-product.dto';
-import { ProductFilterDto } from './product-dto/product-filter.dto';
-import { GetProductForOrderDto } from './product-dto/get-product-order.dto';
-import { ProductError } from 'src/constants/errors.enum';
-import { ProductDuplicateDto } from './product-dto/product-duplicate.dto';
-import { FilterProductDto } from './product-dto/filter-product.dto';
-import { ImageEntity } from '../../image/image.entity';
+import { ICategoryService } from '../category/category.service.interface';
+import { IDiscountService } from '../discount/discount.service.interface';
+import { ImageEntity } from '../image/image.entity';
 import { AbstractBaseService } from 'src/common/bases/base.abstract.service';
+import { ProductEntity } from './product.entity';
+import { FilterProductDto } from 'src/modules/v1/products/product/product-dto/filter-product.dto';
+import { ProductDuplicateDto } from 'src/modules/v1/products/product/product-dto/product-duplicate.dto';
+import { ProductFilterDto } from 'src/modules/v1/products/product/product-dto/product-filter.dto';
+import { GetProductForOrderDto } from 'src/modules/v1/products/product/product-dto/get-product-order.dto';
 
 @Injectable()
 export class ProductService

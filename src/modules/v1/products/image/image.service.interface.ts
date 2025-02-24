@@ -1,4 +1,4 @@
-import { IBaseService } from '../../../common/bases/base.interface';
+import { IBaseService } from '../../../../common/bases/base.interface';
 import { ImageEntity } from './image.entity';
 
 export interface IImageService extends IBaseService<ImageEntity> {

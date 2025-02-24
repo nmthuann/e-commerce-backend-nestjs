@@ -1,4 +1,4 @@
-import { ProductDto } from 'src/modules/products/product/backup/product-dto/product.dto';
+import { ProductDto } from 'src/modules/v1/products/product/product.dto';
 import { CartDto } from './cart.dto';
 
 export class CartDetailDto {
