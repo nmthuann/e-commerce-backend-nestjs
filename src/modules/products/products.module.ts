@@ -7,6 +7,7 @@ import { ProductSkuEntity } from './entities/product-sku.entity';
 import { SpuSkuMappingEntity } from './entities/spu-sku-mapping.entity';
 import { ProductsService } from './products.service';
 import { ProductsController } from './products.controller';
+import { PriceEntity } from './entities/price.entity';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { ProductsController } from './products.controller';
         ProductEntity,
         ProductSkuEntity,
         SpuSkuMappingEntity,
+        PriceEntity
     ])],
   providers: [ProductsService],
   controllers: [ProductsController],

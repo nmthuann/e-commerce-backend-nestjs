@@ -18,7 +18,5 @@ export class CartEntity extends BaseEntity {
   user: UserEntity;
 
   @Column()
-  status: boolean;
-
-
+  status: boolean; 
 }
