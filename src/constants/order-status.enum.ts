@@ -6,3 +6,15 @@ export enum OrderStatus {
   Completed = 'completed', //  đã hoàn thành
   Refunded = 'refunded', //  đã hoàn trả
 }
+
+export enum OrderStatus {
+  PENDING = 'PENDING',
+  CANCELED = 'CANCELED',
+  CONFIRMED = 'CONFIRMED',
+  PROCESSING = 'PROCESSING',
+  SHIPPING = 'SHIPPING',
+  DELIVERED = 'DELIVERED',
+  COMPLETED = 'COMPLETED',
+  RETURNED = 'RETURNED',
+  REFUNDED = 'REFUNDED',
+}

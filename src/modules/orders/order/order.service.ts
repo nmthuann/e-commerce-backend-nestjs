@@ -23,7 +23,7 @@ import { OrderStatus } from 'src/constants/order-status.enum';
 import { Role } from 'src/constants/role.enum';
 import { OrderOfflineDto } from './order-dto/order-offline.dto';
 import { OrderError } from 'src/constants/errors.enum';
-import { CategoryEnum } from 'src/constants/order.enum';
+import { CategoryEnum } from 'src/constants/category.enum';
 import { AbstractBaseService } from 'src/common/bases/base.abstract.service';
 
 enum OrderPaymentMethod{

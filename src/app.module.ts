@@ -6,6 +6,7 @@ import { AppDataSource } from './database/datasource';
 import { UsersModule } from './modules/users/users.module';
 import { ProductsModule } from './modules/products/products.module';
 import { InventoriesModule } from './modules/inventories/inventories.module';
+import { OrdersModule } from './modules/orders/orders.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { InventoriesModule } from './modules/inventories/inventories.module';
     UsersModule,
     ProductsModule,
     InventoriesModule,
+    OrdersModule
   ],
   controllers: [AppController],
   providers: [AppService],
