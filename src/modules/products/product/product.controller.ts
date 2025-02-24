@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { IProductService } from './product.service.interface';
 import { ProductDto } from './product-dto/product.dto';
-import { ProductEntity } from './entities/product.entity';
+import { ProductEntity } from './product.entity';
 import { GetProductForOrderDto } from './product-dto/get-product-order.dto';
 import { ProductDuplicateDto } from './product-dto/product-duplicate.dto';
 import { FilterProductDto } from './product-dto/filter-product.dto';

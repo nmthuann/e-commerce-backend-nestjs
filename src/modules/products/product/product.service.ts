@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { IProductService } from './product.service.interface';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ProductEntity } from './entities/product.entity';
+import { ProductEntity } from './product.entity';
 import { Between, Repository } from 'typeorm';
 import { ICategoryService } from '../category/category.service.interface';
 import { IDiscountService } from '../discount/discount.service.interface';
