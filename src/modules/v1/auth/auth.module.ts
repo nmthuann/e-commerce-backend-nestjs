@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { AccountModule } from 'src/modules/v1/users/account/account.module';
 import { UserModule } from '../users/user/user.module';
-import { EmployeeModule } from '../v1/users/employee/employee.module';
+import { EmployeeModule } from '../users/employee/employee.module';
 import { AuthMiddleware } from 'src/middlewares/auth.middleware';
 
 @Module({

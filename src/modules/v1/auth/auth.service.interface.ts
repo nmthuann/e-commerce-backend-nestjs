@@ -1,5 +1,5 @@
-import { Tokens } from '../../common/types/token.type';
-import { AccountEntity } from '../v1/users/account/account.entity';
+import { Tokens } from '../../../common/types/token.type';
+import { AccountEntity } from '../users/account/account.entity';
 import { AuthDto } from './dto/auth.dto';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { LoginDto } from './dto/login.dto';

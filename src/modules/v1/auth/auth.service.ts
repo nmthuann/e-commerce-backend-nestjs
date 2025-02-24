@@ -15,7 +15,7 @@ import * as dotenv from 'dotenv';
 import { AuthMessage } from 'src/constants/auth.message.enum';
 import { ErrorInput, ErrorType, GuardError } from 'src/constants/errors.enum';
 import { IUserService } from '../users/user/user.service.interface';
-import { IEmployeeService } from '../v1/users/employee/Employee.service.interface';
+import { IEmployeeService } from '../users/employee/Employee.service.interface';
 import { AuthMessages } from 'src/constants/message.enum';
 import { UserEntity } from '../users/user/user.entity';
 import { RegisterCustomerDto } from './dto/register-customer.dto';
