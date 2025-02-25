@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
-import { ProductsService } from './products.service';
-import { SpuSkuMappingEntity } from './entities/spu-sku-mapping.entity';
+import { SpuSkuMappingEntity } from '../domain/entities/spu-sku-mapping.entity';
+import { ProductsService } from '../services/impl/products.service';
 
 
 @Controller('products')

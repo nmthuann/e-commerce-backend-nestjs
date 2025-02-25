@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
-import { CategoryEntity } from './category.entity';
-import { BrandEntity } from './brand.entity';
+import { CategoryEntity } from '../../../category/category.entity';
+import { BrandEntity } from '../../../brand/brand.entity';
 
 @Entity({ name: 'products' })
 export class ProductEntity {

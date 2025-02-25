@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { WarehouseReceiptEntity } from './warehouse-receipt.entity';
-import { ProductSkuEntity } from 'src/modules/products/entities/product-sku.entity';
+import { ProductSkuEntity } from 'src/modules/products/product/domain/entities/product-sku.entity';
 
 @Entity({ name: 'product_serials' })
 export class ProductSerialEntity {

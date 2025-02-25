@@ -1,5 +1,5 @@
 import { Entity, PrimaryColumn, Column, ManyToOne, JoinColumn, CreateDateColumn } from 'typeorm';
-import { ProductSkuEntity } from './product-sku.entity';
+import { ProductSkuEntity } from '../product/domain/entities/product-sku.entity';
 
 @Entity({ name: 'prices' })
 export class PriceEntity {
