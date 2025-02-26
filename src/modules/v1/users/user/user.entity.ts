@@ -1,15 +1,8 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  OneToMany,
-  OneToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
-import { AccountEntity } from '../account/account.entity';
-import { EmployeeEntity } from '../employee/employee.entity';
-import { OrderEntity } from 'src/modules/v1/orders/order/order.entity';
-import { BaseEntity } from 'src/modules/v1/bases/base.entity';
+import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm'
+import { AccountEntity } from '../account/account.entity'
+import { EmployeeEntity } from '../employee/employee.entity'
+import { OrderEntity } from 'src/modules/v1/orders/order/order.entity'
+import { BaseEntity } from 'src/modules/v1/bases/base.entity'
 
 /**
  * user_id, first_name, last_name
@@ -19,37 +12,37 @@ import { BaseEntity } from 'src/modules/v1/bases/base.entity';
 @Entity({ name: 'Users' })
 export class UserEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
-  user_id: number;
+  user_id: number
 
-  @Column({  length: 50, nullable: false })
-  first_name: string;
+  @Column({ length: 50, nullable: false })
+  first_name: string
 
   @Column()
-  last_name: string;
+  last_name: string
 
   @Column() // 225
-  avatar_url: string;
+  avatar_url: string
 
-  @Column({  length: 50 })
-  gender: string;
+  @Column({ length: 50 })
+  gender: string
 
   @Column({ nullable: false })
-  birthday: Date;
+  birthday: Date
 
   @Column() // 225
-  address: string;
+  address: string
 
   @Column({ length: 10, nullable: false })
-  phone: string;
+  phone: string
 
-  @OneToOne(() => AccountEntity, (account) => account.user) //  ,  (account) =>  account.email{ cascade: true }
+  @OneToOne(() => AccountEntity, account => account.user) //  ,  (account) =>  account.email{ cascade: true }
   @JoinColumn({ name: 'email' }) // fix here
-  account: AccountEntity;
+  account: AccountEntity
 
-  @OneToOne(() => EmployeeEntity, (employee) => employee.user) // , { cascade: true }
+  @OneToOne(() => EmployeeEntity, employee => employee.user) // , { cascade: true }
   @JoinColumn({ name: 'employee_id' })
-  employee: EmployeeEntity;
+  employee: EmployeeEntity
 
-  @OneToMany(() => OrderEntity, (order) => order.user)
-  orders: OrderEntity[];
+  @OneToMany(() => OrderEntity, order => order.user)
+  orders: OrderEntity[]
 }

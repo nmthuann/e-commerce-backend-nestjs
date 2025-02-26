@@ -1,29 +1,25 @@
-import {
-  MiddlewareConsumer,
-  Module, NestModule, RequestMethod,
-} from '@nestjs/common';
-import { OrderController } from './order.controller';
-import { OrderService } from './order.service';
-import { OrderDetailModule } from './order-detail/order-detail.module';
-import { DiscountModule } from 'src/modules/v1/products/discount/discount.module';
-import { ProductModule } from 'src/modules/v1/products/product/product.module';
-import { ShippingModule } from '../shipping/shipping.module';
-import { EmployeeModule } from 'src/modules/v1/users/employee/employee.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { OrderEntity } from './order.entity';
-import { JwtModule } from '@nestjs/jwt';
-import * as dotenv from 'dotenv';
-import { PaymentModule } from '../payment/payment.module';
-import { UserModule } from '../../users/user/user.module';
-import { AuthMiddleware } from '../../middlewares/auth.middleware';
-dotenv.config();
-
+import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common'
+import { OrderController } from './order.controller'
+import { OrderService } from './order.service'
+import { OrderDetailModule } from './order-detail/order-detail.module'
+import { DiscountModule } from 'src/modules/v1/products/discount/discount.module'
+import { ProductModule } from 'src/modules/v1/products/product/product.module'
+import { ShippingModule } from '../shipping/shipping.module'
+import { EmployeeModule } from 'src/modules/v1/users/employee/employee.module'
+import { TypeOrmModule } from '@nestjs/typeorm'
+import { OrderEntity } from './order.entity'
+import { JwtModule } from '@nestjs/jwt'
+import * as dotenv from 'dotenv'
+import { PaymentModule } from '../payment/payment.module'
+import { UserModule } from '../../users/user/user.module'
+import { AuthMiddleware } from '../../middlewares/auth.middleware'
+dotenv.config()
 
 @Module({
   imports: [
     JwtModule.register({
       secret: process.env.JWT_SECRET_KEY,
-      signOptions: { expiresIn: 60 },
+      signOptions: { expiresIn: 60 }
     }),
     TypeOrmModule.forFeature([OrderEntity]),
     DiscountModule,
@@ -33,19 +29,19 @@ dotenv.config();
     PaymentModule,
     EmployeeModule,
     UserModule,
-    ProductModule,
+    ProductModule
   ],
   controllers: [OrderController],
   providers: [
     {
       provide: 'IOrderService',
-      useClass: OrderService,
-    },
+      useClass: OrderService
+    }
 
     // AdminRoleGuard,
     // UserRoleGuard,
   ],
-  exports: ['IOrderService'],
+  exports: ['IOrderService']
 })
 export class OrderModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
@@ -67,8 +63,8 @@ export class OrderModule implements NestModule {
         { path: 'order/count-product-sold', method: RequestMethod.GET },
         { path: 'order/statistical-OnOffOrder-count', method: RequestMethod.GET },
         { path: 'order/statistical-category-by-order', method: RequestMethod.GET },
-        { path: 'order/find-top-user-buy-product', method: RequestMethod.GET },
+        { path: 'order/find-top-user-buy-product', method: RequestMethod.GET }
       )
-      .forRoutes(OrderController);
+      .forRoutes(OrderController)
   }
 }

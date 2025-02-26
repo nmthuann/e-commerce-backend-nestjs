@@ -1,23 +1,23 @@
-import { EmployeeDto } from 'src/modules/v1/users/employee/employee-dto/employee.dto';
-import { ShippingDto } from '../../shipping/shipping.dto';
-import { DiscountDto } from 'src/modules/v1/products/discount/discount-dto/discount.dto';
-import { PaymentDto } from '../../payment/payment.dto';
-import { UserDto } from 'src/modules/v1/users/user/user-dto/user.dto';
+import { EmployeeDto } from 'src/modules/v1/users/employee/employee-dto/employee.dto'
+import { ShippingDto } from '../../shipping/shipping.dto'
+import { DiscountDto } from 'src/modules/v1/products/discount/discount-dto/discount.dto'
+import { PaymentDto } from '../../payment/payment.dto'
+import { UserDto } from 'src/modules/v1/users/user/user-dto/user.dto'
 
 export class OrderDto {
-  order_id: number;
-  total_price: number;
-  status: string;
+  order_id: number
+  total_price: number
+  status: string
 
   //  5 FK: Shippings- Payment - Employee - User - Employee
-  shipping: ShippingDto;
-  payment: PaymentDto;
-  employee: EmployeeDto;
-  user: UserDto;
-  discount: DiscountDto;
+  shipping: ShippingDto
+  payment: PaymentDto
+  employee: EmployeeDto
+  user: UserDto
+  discount: DiscountDto
 }
 
 export interface RevenueByMonth {
-  month: string;
-  total: number;
+  month: string
+  total: number
 }

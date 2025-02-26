@@ -1,58 +1,52 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
 
-import { ShippingEntity } from '../shipping/shipping.entity';
-import { EmployeeEntity } from 'src/modules/v1/users/employee/employee.entity';
-import { DiscountEntity } from 'src/modules/v1/products/discount/discount.entity';
-import { BaseEntity } from 'src/modules/v1/bases/base.entity';
-import { UserEntity } from '../../users/user/user.entity';
-import { PaymentEntity } from '../payment/payment.entity';
+import { ShippingEntity } from '../shipping/shipping.entity'
+import { EmployeeEntity } from 'src/modules/v1/users/employee/employee.entity'
+import { DiscountEntity } from 'src/modules/v1/products/discount/discount.entity'
+import { BaseEntity } from 'src/modules/v1/bases/base.entity'
+import { UserEntity } from '../../users/user/user.entity'
+import { PaymentEntity } from '../payment/payment.entity'
 
 @Entity({ name: 'Orders' })
 export class OrderEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
-  order_id: number;
+  order_id: number
 
   @Column({ default: 0 })
-  total_price: number;
+  total_price: number
 
   @Column({ nullable: false })
-  status: string;
+  status: string
 
   @Column()
-  delivery_address: string;
+  delivery_address: string
 
   @Column({ length: 15 })
-  contact: string;
+  contact: string
 
-  @ManyToOne(() => DiscountEntity, (discount) => discount.orders, {
-    lazy: true,
+  @ManyToOne(() => DiscountEntity, discount => discount.orders, {
+    lazy: true
   })
   @JoinColumn({ name: 'discount_id' })
-  discount: DiscountEntity;
+  discount: DiscountEntity
 
-  @ManyToOne(() => UserEntity, (user) => user.orders, { lazy: true })
+  @ManyToOne(() => UserEntity, user => user.orders, { lazy: true })
   @JoinColumn({ name: 'user_id' })
-  user: UserEntity;
+  user: UserEntity
 
-  @ManyToOne(() => EmployeeEntity, (employee) => employee.orders, {
-    lazy: true,
+  @ManyToOne(() => EmployeeEntity, employee => employee.orders, {
+    lazy: true
   })
   @JoinColumn({ name: 'employee_id' })
-  employee: EmployeeEntity;
+  employee: EmployeeEntity
 
-  @ManyToOne(() => ShippingEntity, (shipping) => shipping.orders, {
-    lazy: true,
+  @ManyToOne(() => ShippingEntity, shipping => shipping.orders, {
+    lazy: true
   })
   @JoinColumn({ name: 'shipping_id' })
-  shipping: ShippingEntity;
+  shipping: ShippingEntity
 
-  @ManyToOne(() => PaymentEntity, (payment) => payment.orders, { lazy: true })
+  @ManyToOne(() => PaymentEntity, payment => payment.orders, { lazy: true })
   @JoinColumn({ name: 'payment_id' })
-  payment: PaymentEntity;
+  payment: PaymentEntity
 }
