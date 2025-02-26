@@ -1,12 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common'
 import { IOrderService } from '../order/order.service.interface'
-import { ProductEntity } from 'src/modules/v1/products/product/product.entity'
-import { IProductService } from 'src/modules/v1/products/product/product.service.interface'
 import { OrderEntity } from '../order/order.entity'
 import Stripe from 'stripe'
 
 import * as dotenv from 'dotenv'
 import { ProductError } from '../../../constants/errors.enum'
+import { IProductService } from '../../products/product/product.service.interface'
+import { ProductEntity } from '../../products/product/product.entity'
 dotenv.config()
 
 @Injectable()

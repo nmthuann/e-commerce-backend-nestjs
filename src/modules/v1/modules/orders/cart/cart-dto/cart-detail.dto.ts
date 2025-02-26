@@ -1,10 +1,10 @@
-import { ProductDto } from 'src/modules/v1/products/product/product.dto';
-import { CartDto } from './cart.dto';
+import { ProductDto } from '../../../products/product/product-dto/product.dto'
+import { CartDto } from './cart.dto'
 
 export class CartDetailDto {
-  cart_id: number;
-  product_id: number;
-  quantity: number;
-  product: ProductDto;
-  cart: CartDto;
+  cart_id: number
+  product_id: number
+  quantity: number
+  product: ProductDto
+  cart: CartDto
 }

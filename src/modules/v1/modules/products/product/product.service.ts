@@ -1,31 +1,28 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { IProductService } from './product.service.interface';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Between, Repository } from 'typeorm';
-import { ICategoryService } from '../category/category.service.interface';
-import { IDiscountService } from '../discount/discount.service.interface';
-import { ImageEntity } from '../image/image.entity';
-import { AbstractBaseService } from 'src/modules/v1/bases/base.abstract.service';
-import { ProductEntity } from './product.entity';
-import { FilterProductDto } from 'src/modules/v1/products/product/product-dto/filter-product.dto';
-import { ProductDuplicateDto } from 'src/modules/v1/products/product/product-dto/product-duplicate.dto';
-import { ProductFilterDto } from 'src/modules/v1/products/product/product-dto/product-filter.dto';
-import { GetProductForOrderDto } from 'src/modules/v1/products/product/product-dto/get-product-order.dto';
+import { Inject, Injectable } from '@nestjs/common'
+import { IProductService } from './product.service.interface'
+import { InjectRepository } from '@nestjs/typeorm'
+import { Between, Repository } from 'typeorm'
+import { ICategoryService } from '../category/category.service.interface'
+import { IDiscountService } from '../discount/discount.service.interface'
+import { ImageEntity } from '../image/image.entity'
+import { AbstractBaseService } from 'src/modules/v1/bases/base.abstract.service'
+import { ProductEntity } from './product.entity'
+import { FilterProductDto } from './product-dto/filter-product.dto'
+import { ProductDuplicateDto } from './product-dto/product-duplicate.dto'
+import { ProductFilterDto } from './product-dto/product-filter.dto'
+import { GetProductForOrderDto } from './product-dto/get-product-order.dto'
 
 @Injectable()
-export class ProductService
-  extends AbstractBaseService<ProductEntity>
-  implements IProductService
-{
+export class ProductService extends AbstractBaseService<ProductEntity> implements IProductService {
   constructor(
     @InjectRepository(ProductEntity)
     private readonly productRepository: Repository<ProductEntity>,
     @Inject('ICategoryService')
     private readonly categoryService: ICategoryService,
     @Inject('IDiscountService')
-    private readonly discountService: IDiscountService,
+    private readonly discountService: IDiscountService
   ) {
-    super(productRepository);
+    super(productRepository)
   }
 
   async getModelName() {
@@ -34,168 +31,164 @@ export class ProductService
       .select('image.url', 'url')
       .leftJoin(ImageEntity, 'image', 'image.product = subQuery.product_id')
       .limit(1)
-      .where('subQuery.product_id = product.product_id ');
-      const query = this.productRepository
+      .where('subQuery.product_id = product.product_id ')
+    const query = this.productRepository
       .createQueryBuilder('product')
       .select(['product_id', 'model_name'])
       .addSelect(`(${subQuery.getQuery()})`, 'image')
-       .where('product.status = 1')
-      .getRawMany();
+      .where('product.status = 1')
+      .getRawMany()
 
-    return await query;
+    return await query
   }
-
 
   async filterProductsByRam(products: ProductEntity[], ram: number): Promise<ProductEntity[]> {
     // Thực hiện lọc sản phẩm dựa trên RAM
-    return products.filter(product => product.ram === ram);
+    return products.filter(product => product.ram === ram)
   }
 
   async filterProductsByMemory(products: ProductEntity[], memory: number): Promise<ProductEntity[]> {
     // Thực hiện lọc sản phẩm dựa trên bộ nhớ
-    return products.filter(product => product.memory === memory);
+    return products.filter(product => product.memory === memory)
   }
 
   async filterProductsByCategory(products: ProductEntity[], category: number): Promise<ProductEntity[]> {
-    const productIds = products.map(product => product.product_id);
-    const productList = await this.productRepository.createQueryBuilder('product')
+    const productIds = products.map(product => product.product_id)
+    const productList = await this.productRepository
+      .createQueryBuilder('product')
       .where('product.category.category_id = :category', { category })
       .andWhere('product.product_id IN (:...productIds)', { productIds })
-      .getMany();
-    return productList;
+      .getMany()
+    return productList
   }
 
-  async filterProductsByPrice(products: ProductEntity[], minPrice:number, maxPrice: number): Promise<ProductEntity[]> {
-      const filteredProducts = products.filter(product => {
+  async filterProductsByPrice(products: ProductEntity[], minPrice: number, maxPrice: number): Promise<ProductEntity[]> {
+    const filteredProducts = products.filter(product => {
       if (minPrice !== undefined && product.price < minPrice) {
-        return false; // Không thỏa mãn điều kiện dưới mức giá tối thiểu
+        return false // Không thỏa mãn điều kiện dưới mức giá tối thiểu
       }
 
       if (maxPrice !== undefined && product.price > maxPrice) {
-        return false; // Không thỏa mãn điều kiện trên mức giá tối đa
+        return false // Không thỏa mãn điều kiện trên mức giá tối đa
       }
 
-      return true; // Thỏa mãn cả hai điều kiện hoặc không có điều kiện nào
-    });
+      return true // Thỏa mãn cả hai điều kiện hoặc không có điều kiện nào
+    })
 
     // console.log(filteredProducts)
-    return filteredProducts;
+    return filteredProducts
   }
 
-
   /**
-   * 
-   * @param ram 
+   *
+   * @param ram
    * @returns [ids] | null
    */
   async createFilterProductsByRam(ram: number): Promise<number[] | null> {
     const productList = await this.productRepository.find({
-      select: ["product_id"], // Chỉ chọn cột id
+      select: ['product_id'], // Chỉ chọn cột id
       where: {
         ram: ram
       }
-    });
+    })
 
     if (productList.length === 0) {
-      return null;
+      return null
     }
 
-    return productList.map(product => product.product_id);
+    return productList.map(product => product.product_id)
   }
 
   async createFilterProductsByMemory(memory: number): Promise<number[] | null> {
     const productList = await this.productRepository.find({
-      select: ["product_id"], // Chỉ chọn cột id
+      select: ['product_id'], // Chỉ chọn cột id
       where: {
         memory: memory
       }
-    });
+    })
 
     if (productList.length === 0) {
-      return null;
+      return null
     }
 
-    return productList.map(product => product.product_id);
+    return productList.map(product => product.product_id)
   }
 
   async createFilterProductsByCategory(category_id: number): Promise<number[] | null> {
-  // Tìm sản phẩm dựa vào khóa ngoại category_id
+    // Tìm sản phẩm dựa vào khóa ngoại category_id
     const productList = await this.productRepository.find({
       relations: {
         category: true // Sử dụng tên của trường thể hiện tương ứng trong entity của bạn
       },
       where: {
-        category:{
+        category: {
           category_id: category_id
         }
       },
-      select: ['product_id'], // Chọn các trường bạn muốn trả về (product_id)
-    });
+      select: ['product_id'] // Chọn các trường bạn muốn trả về (product_id)
+    })
 
     if (productList && productList.length > 0) {
       // Chuyển danh sách sản phẩm thành mảng các product_id
-      const productIds = productList.map(product => product.product_id);
-      return productIds;
+      const productIds = productList.map(product => product.product_id)
+      return productIds
     } else {
-      return null;
+      return null
     }
   }
-  
-  async createFilterProductsByPrice(minPrice: number, maxPrice: number) {
-    const queryBuilder = this.productRepository.createQueryBuilder('products');
 
-    queryBuilder.select('products.product_id', 'id'); // Chỉ lấy cột id
+  async createFilterProductsByPrice(minPrice: number, maxPrice: number) {
+    const queryBuilder = this.productRepository.createQueryBuilder('products')
+
+    queryBuilder.select('products.product_id', 'id') // Chỉ lấy cột id
 
     if (minPrice !== undefined && maxPrice !== undefined) {
-      queryBuilder.andWhere('products.price BETWEEN :minPrice AND :maxPrice', { minPrice, maxPrice });
+      queryBuilder.andWhere('products.price BETWEEN :minPrice AND :maxPrice', { minPrice, maxPrice })
     } else if (minPrice !== undefined) {
-      queryBuilder.andWhere('products.price >= :minPrice', { minPrice });
+      queryBuilder.andWhere('products.price >= :minPrice', { minPrice })
     } else if (maxPrice !== undefined) {
-      queryBuilder.andWhere('products.price <= :maxPrice', { maxPrice });
+      queryBuilder.andWhere('products.price <= :maxPrice', { maxPrice })
     }
 
-    const result = await queryBuilder.getRawMany();
-    return result.map(item => item.id);
+    const result = await queryBuilder.getRawMany()
+    return result.map(item => item.id)
   }
 
-
-  async * createFilterProducts(filter: FilterProductDto) { 
+  async *createFilterProducts(filter: FilterProductDto) {
     if (filter.ram) {
-      const filterRam = await this.createFilterProductsByRam(filter.ram);
-      const result =  filterRam;
-      yield result;
+      const filterRam = await this.createFilterProductsByRam(filter.ram)
+      const result = filterRam
+      yield result
     } else {
-      yield null;
+      yield null
     }
   }
-
 
   async filterProducts(filter: FilterProductDto): Promise<ProductEntity[]> {
     // Sử dụng các bộ lọc theo điều kiện từ FilterProductDto
-    let products = await this.getAll();
+    let products = await this.getAll()
     /**
      * 1. lấy cái to bớt dần
      * 2. mỗi lần push vào
      */
     if (filter.ram) {
-      products = await this.filterProductsByRam(products, filter.ram);
+      products = await this.filterProductsByRam(products, filter.ram)
     }
     if (filter.memory) {
-      products = await this.filterProductsByMemory(products, filter.memory);
+      products = await this.filterProductsByMemory(products, filter.memory)
     }
     if (filter.category) {
-      products = await this.filterProductsByCategory(products, filter.category);
+      products = await this.filterProductsByCategory(products, filter.category)
     }
     if (filter.maxPrice || filter.minPrice) {
-      products = await this.filterProductsByPrice(products,filter.minPrice, filter.maxPrice);
+      products = await this.filterProductsByPrice(products, filter.minPrice, filter.maxPrice)
     }
-    return products;
+    return products
   }
-  
 
-  async checkProductDuplicate(product: ProductDuplicateDto): Promise<ProductEntity>{
+  async checkProductDuplicate(product: ProductDuplicateDto): Promise<ProductEntity> {
     const productDuplicate = await this.productRepository.findOne({
-      where:{
+      where: {
         model_name: product.model_name,
         hardware: product.hardware,
         color: product.color,
@@ -207,28 +200,28 @@ export class ProductService
         ram: product.ram
       }
     })
-    return productDuplicate;
+    return productDuplicate
   }
 
   async checkInventoryOrderOnline(product_ids: number[]): Promise<boolean> {
-    let check = true; // Biến cờ, mặc định tất cả sản phẩm đều còn hàng tồn
+    let check = true // Biến cờ, mặc định tất cả sản phẩm đều còn hàng tồn
 
     for (const product_id of product_ids) {
-      const product = await this.productRepository.findOneById(product_id);
+      const product = await this.productRepository.findOneById(product_id)
       if (product) {
-        const quantity = product.quantity;
+        const quantity = product.quantity
         if (quantity <= 0) {
-          check = false;
+          check = false
         }
       } else {
-        check = false;
+        check = false
       }
     }
-    return check;
+    return check
   }
 
   // async createOne(data: CreateProductDto): Promise<ProductEntity> {
-    
+
   //   try {
   //     const newProduct = new ProductEntity();
   //     newProduct.model_name = data.model_name;
@@ -265,15 +258,15 @@ export class ProductService
   async getOneById(id: string | number): Promise<ProductEntity> {
     const findProduct = await this.productRepository.findOne({
       where: {
-        product_id: id as number,
+        product_id: id as number
       },
       relations: {
         category: true,
         discount: true,
-        images: true,
-      },
-    });
-    return findProduct;
+        images: true
+      }
+    })
+    return findProduct
   }
 
   async getAll(): Promise<ProductEntity[]> {
@@ -281,149 +274,128 @@ export class ProductService
       relations: {
         category: true,
         discount: true,
-        images: true,
-      },
-    });
-    return findProducts;
+        images: true
+      }
+    })
+    return findProducts
   }
 
   async getSomeFields(): Promise<Partial<ProductEntity>[]> {
     const findProducts = await this.productRepository
       .createQueryBuilder('product')
-      .select([
-        'product.product_id',
-        'product.product_name',
-        'product.vote',
-        'product.price',
-        'product.discount',
-      ])
+      .select(['product.product_id', 'product.product_name', 'product.vote', 'product.price', 'product.discount'])
       .leftJoinAndSelect('product.discount', 'discount')
-      .getMany();
+      .getMany()
 
-    return findProducts;
+    return findProducts
   }
-
 
   async getProductsByCategoryId(category_id: number): Promise<ProductEntity[]> {
     const findProducts = await this.productRepository.find({
       where: {
         category: {
-          category_id: category_id,
-        },
+          category_id: category_id
+        }
       },
       relations: {
         category: true,
         discount: true,
-        images: true,
-      },
-    });
-    return findProducts;
+        images: true
+      }
+    })
+    return findProducts
   }
 
-  async getProductsByPriceRange(
-    category_id: number,
-    maxPrice: number,
-  ): Promise<ProductEntity[]> {
+  async getProductsByPriceRange(category_id: number, maxPrice: number): Promise<ProductEntity[]> {
     return await this.productRepository.find({
       where: {
         category: {
-          category_id: category_id,
+          category_id: category_id
         },
-        price: Between(0, maxPrice),
+        price: Between(0, maxPrice)
       },
       relations: {
         category: true,
         discount: true,
-        images: true,
-      },
-    });
+        images: true
+      }
+    })
   }
 
-  async getProductsByBrand(
-    category_id: number,
-    brand: string,
-  ): Promise<ProductEntity[]> {
+  async getProductsByBrand(category_id: number, brand: string): Promise<ProductEntity[]> {
     return await this.productRepository.find({
       where: {
         category: {
-          category_id: category_id,
+          category_id: category_id
         },
-        operation_system: brand,
+        operation_system: brand
       },
       relations: {
         category: true,
         discount: true,
-        images: true,
-      },
-    });
+        images: true
+      }
+    })
   }
 
-  async getProductsByFilter(
-    category_id: number,
-    filterDto: ProductFilterDto,
-  ): Promise<ProductEntity[]> {
-    const { price, brand } = filterDto;
-    console.log(filterDto);
-    const query = this.productRepository.createQueryBuilder('product');
+  async getProductsByFilter(category_id: number, filterDto: ProductFilterDto): Promise<ProductEntity[]> {
+    const { price, brand } = filterDto
+    console.log(filterDto)
+    const query = this.productRepository.createQueryBuilder('product')
 
     if (category_id) {
       query.andWhere('product.categoryCategoryId = :category_id', {
-        category_id: category_id,
-      });
+        category_id: category_id
+      })
     }
 
     if (price) {
-      query.andWhere('product.price <= :maxPrice', { maxPrice: price });
+      query.andWhere('product.price <= :maxPrice', { maxPrice: price })
     }
 
     if (brand) {
-      query.andWhere('product.brand LIKE :brand', { brand: `%${brand}%` });
+      query.andWhere('product.brand LIKE :brand', { brand: `%${brand}%` })
     }
-    return query.getMany();
+    return query.getMany()
   }
 
   async getProductBrandByCategoryId(category_id: number): Promise<string[]> {
-    const query = this.productRepository.createQueryBuilder('product');
-    query.select('DISTINCT product.brand');
-    query.where('product.categoryCategoryId = :category_id', { category_id });
-    const result = await query.getRawMany();
-    return result.map((item) => item.brand);
+    const query = this.productRepository.createQueryBuilder('product')
+    query.select('DISTINCT product.brand')
+    query.where('product.categoryCategoryId = :category_id', { category_id })
+    const result = await query.getRawMany()
+    return result.map(item => item.brand)
   }
 
-  async getProductsByIds(
-    data: GetProductForOrderDto[],
-  ): Promise<ProductEntity[]> {
-    const productIds: number[] = data.map((product) => product.product_id);
-    console.log('productsIds:::: ', productIds);
+  async getProductsByIds(data: GetProductForOrderDto[]): Promise<ProductEntity[]> {
+    const productIds: number[] = data.map(product => product.product_id)
+    console.log('productsIds:::: ', productIds)
     /// Use 'map' instead of 'forEach'
-    const getProduct = productIds.map(async (product_id) => {
+    const getProduct = productIds.map(async product_id => {
       try {
         // Fetch the product by its ID and return it
         const product = await this.productRepository.findOne({
           where: {
-            product_id: product_id,
+            product_id: product_id
           },
           relations: {
             // category: true,
-            discount: true,
-          },
-        });
+            discount: true
+          }
+        })
 
-        return product;
+        return product
       } catch (error) {
-        console.error(
-          `Error fetching product with ID ${product_id}:`,
-          error.message,
-        );
+        console.error(`Error fetching product with ID ${product_id}:`, error.message)
       }
-    });
-    const products = await Promise.all(getProduct);
-    return products;
+    })
+    const products = await Promise.all(getProduct)
+    return products
   }
 
   async getProductsByProductIds(ids: number[]): Promise<ProductEntity[]> {
-    const findProducts = await this.productRepository.findByIds(ids);
-    return findProducts;
+    const findProducts = await this.productRepository.findByIds(ids)
+    return findProducts
   }
 
   async getNewestProducts(topProduct: number): Promise<ProductEntity[]> {
@@ -433,8 +405,8 @@ export class ProductService
       .where('product.status = :status', { status: true })
       .orderBy('product.created_at', 'DESC')
       .limit(topProduct)
-      .getMany();
+      .getMany()
 
-    return newestProducts;
+    return newestProducts
   }
 }

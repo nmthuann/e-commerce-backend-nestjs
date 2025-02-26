@@ -2,8 +2,6 @@ import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/c
 import { OrderController } from './order.controller'
 import { OrderService } from './order.service'
 import { OrderDetailModule } from './order-detail/order-detail.module'
-import { DiscountModule } from 'src/modules/v1/products/discount/discount.module'
-import { ProductModule } from 'src/modules/v1/products/product/product.module'
 import { ShippingModule } from '../shipping/shipping.module'
 import { EmployeeModule } from 'src/modules/v1/modules/users/employee/employee.module'
 import { TypeOrmModule } from '@nestjs/typeorm'
@@ -13,6 +11,8 @@ import * as dotenv from 'dotenv'
 import { PaymentModule } from '../payment/payment.module'
 import { UserModule } from '../../users/user/user.module'
 import { AuthMiddleware } from '../../../middlewares/auth.middleware'
+import { DiscountModule } from '../../products/discount/discount.module'
+import { ProductModule } from '../../products/product/product.module'
 dotenv.config()
 
 @Module({

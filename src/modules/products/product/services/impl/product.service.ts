@@ -6,7 +6,6 @@ import { CategoryEntity } from '../../../category/category.entity'
 import { ProductEntity } from '../../domain/entities/product.entity'
 import { IProductService } from '../product.service.interface'
 import { PageDto } from 'src/common/dtos/page.dto'
-import { CreateProductDto } from 'src/modules/v1/products/product/product-dto/create-product.dto'
 import { ProductDto } from '../../domain/dtos/product.dto'
 import { GetProductsQueryDto } from '../../domain/dtos/requests/get-products-query.dto'
 import { SkuDto } from '../../domain/dtos/sku.dto'
@@ -15,6 +14,7 @@ import { SpuSkuMappingEntity } from '../../domain/entities/spu-sku-mapping.entit
 import { ProductSkuEntity } from '../../domain/entities/product-sku.entity'
 import { PriceEntity } from 'src/modules/products/pricing/price.entity'
 import { ProductResponse, SkuResponse } from '../../domain/dtos/responses/product.response'
+import { CreateProductDto } from '../../domain/dtos/requests/create-product.dto'
 
 @Injectable()
 export class ProductService implements IProductService {

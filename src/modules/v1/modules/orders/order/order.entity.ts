@@ -2,10 +2,10 @@ import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 't
 
 import { ShippingEntity } from '../shipping/shipping.entity'
 import { EmployeeEntity } from 'src/modules/v1/modules/users/employee/employee.entity'
-import { DiscountEntity } from 'src/modules/v1/products/discount/discount.entity'
 import { BaseEntity } from 'src/modules/v1/bases/base.entity'
 import { UserEntity } from '../../users/user/user.entity'
 import { PaymentEntity } from '../payment/payment.entity'
+import { DiscountEntity } from '../../products/discount/discount.entity'
 
 @Entity({ name: 'Orders' })
 export class OrderEntity extends BaseEntity {
