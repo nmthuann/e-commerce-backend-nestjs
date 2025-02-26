@@ -1,7 +1,7 @@
 import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm'
 import { AccountEntity } from '../account/account.entity'
 import { EmployeeEntity } from '../employee/employee.entity'
-import { OrderEntity } from 'src/modules/v1/orders/order/order.entity'
+import { OrderEntity } from 'src/modules/v1/modules/orders/order/order.entity'
 import { BaseEntity } from 'src/modules/v1/bases/base.entity'
 
 /**

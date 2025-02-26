@@ -11,8 +11,8 @@ import { OrderEntity } from './order.entity'
 import { JwtModule } from '@nestjs/jwt'
 import * as dotenv from 'dotenv'
 import { PaymentModule } from '../payment/payment.module'
-import { UserModule } from '../../modules/users/user/user.module'
-import { AuthMiddleware } from '../../middlewares/auth.middleware'
+import { UserModule } from '../../users/user/user.module'
+import { AuthMiddleware } from '../../../middlewares/auth.middleware'
 dotenv.config()
 
 @Module({

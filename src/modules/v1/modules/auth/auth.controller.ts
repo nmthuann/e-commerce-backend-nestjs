@@ -1,7 +1,6 @@
 import { Body, Controller, HttpCode, Inject, Param, Post, UseGuards } from '@nestjs/common'
 
 import { IAuthService } from './auth.service.interface'
-import { CreateEmployeePipeValidator } from 'src/pipes/create-employee.validator.pipe'
 
 import { RegisterCustomerDto } from './dto/register-customer.dto'
 import { TokensDto } from './dto/token.dto'
@@ -10,6 +9,7 @@ import { CreateEmployeeDto } from './dto/create-employee.dto'
 import { RegisterDto } from './dto/register.dto'
 import { ManagerRoleGuard } from '../../guards/manager.role.guard'
 import { Public } from '../../decorators/public.decorator'
+import { CreateEmployeePipeValidator } from '../../pipes/create-employee.validator.pipe'
 
 @Controller('auth')
 export class AuthController {
