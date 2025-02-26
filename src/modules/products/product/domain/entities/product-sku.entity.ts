@@ -1,38 +1,42 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne } from 'typeorm';
-import { SpuSkuMappingEntity } from './spu-sku-mapping.entity';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, OneToMany } from 'typeorm'
+import { SpuSkuMappingEntity } from './spu-sku-mapping.entity'
+import { PriceEntity } from 'src/modules/products/pricing/price.entity'
 
 @Entity({ name: 'product_skus' })
 export class ProductSkuEntity {
   @PrimaryGeneratedColumn()
-  id: number;
+  id: number
 
-  @Column({ 
-    name: 'sku_no', 
-    type: 'varchar', 
-    length: 32, 
-    nullable: false, 
-    unique: true 
+  @Column({
+    name: 'sku_no',
+    type: 'varchar',
+    length: 32,
+    nullable: false,
+    unique: true
   })
-  skuNo!: string;
+  skuNo!: string
 
   @Column({ type: 'varchar', length: 32, nullable: false })
-  barcode!: string;
+  barcode!: string
 
   @Column({ name: 'sku_name', type: 'varchar', length: 150, nullable: false })
-  skuName!: string;
+  skuName!: string
 
   @Column({ type: 'varchar', length: 255, nullable: false })
-  image!: string;
+  image!: string
 
   @Column({ type: 'boolean', default: true })
-  status!: boolean;
+  status!: boolean
 
   @Column({ name: 'sku_attributes', type: 'jsonb', nullable: true })
-  skuAttributes?: Record<string, unknown>;
+  skuAttributes?: Record<string, unknown>
 
-  @Column({ type: 'varchar', length: 100, nullable: false, unique: true})
-  slug!: string;
+  @Column({ type: 'varchar', length: 100, nullable: false, unique: true })
+  slug!: string
 
-  @OneToOne(() => SpuSkuMappingEntity, (spuSkuMapping) => spuSkuMapping.sku)
-  spuSkuMapping: SpuSkuMappingEntity;
+  @OneToOne(() => SpuSkuMappingEntity, spuSkuMapping => spuSkuMapping.sku)
+  spuSkuMapping: SpuSkuMappingEntity
+
+  @OneToMany(() => PriceEntity, price => price.productSku)
+  prices!: PriceEntity[]
 }

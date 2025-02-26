@@ -1,44 +1,47 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger'
 
 export class SkuResponse {
   @ApiProperty()
-  id: number;
+  id: number
 
   @ApiProperty()
-  skuName: string;
+  skuName: string
 
   @ApiProperty()
-  image: string;
+  image: string
 
   @ApiProperty()
-  slug: string;
+  slug: string
+
+  @ApiProperty()
+  skuAttributes?: Record<string, unknown>
 
   @ApiProperty({ required: false })
-  sellingPrice?: number;
+  sellingPrice?: number
 }
 
 export class ProductResponse {
   @ApiProperty()
-  id: number;
+  id: number
 
   @ApiProperty()
-  productName: string;
+  productName: string
 
   @ApiProperty()
-  slug: string;
+  slug: string
 
   @ApiProperty({ required: false })
-  categoryName?: string;
+  categoryName?: string
 
   @ApiProperty({ required: false })
-  categoryUrl?: string;
+  categoryUrl?: string
 
   @ApiProperty({ required: false })
-  brandName?: string;
+  brandName?: string
 
   @ApiProperty({ required: false })
-  brandUrl?: string;
+  brandUrl?: string
 
   @ApiProperty({ type: [SkuResponse] })
-  skus: SkuResponse[];
+  skus: SkuResponse[]
 }
