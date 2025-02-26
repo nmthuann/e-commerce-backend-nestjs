@@ -2,9 +2,9 @@ import { AuthService } from './auth.service'
 import { AuthController } from './auth.controller'
 import { JwtModule } from '@nestjs/jwt'
 import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common'
-import { AccountModule } from 'src/modules/v1/users/account/account.module'
-import { UserModule } from '../../users/user/user.module'
-import { EmployeeModule } from '../../users/employee/employee.module'
+import { AccountModule } from 'src/modules/v1/modules/users/account/account.module'
+import { UserModule } from '../users/user/user.module'
+import { EmployeeModule } from '../users/employee/employee.module'
 import { AuthMiddleware } from '../../middlewares/auth.middleware'
 
 @Module({

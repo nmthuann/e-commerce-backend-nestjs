@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryColumn, BeforeInsert, OneToOne, PrimaryGeneratedColumn } from 'typeorm'
 import { UserEntity } from '../user/user.entity'
-import { Role } from '../../constants/role.enum'
+import { Role } from '../../../constants/role.enum'
 
 @Entity({ name: 'accounts' })
 export class AccountEntity {

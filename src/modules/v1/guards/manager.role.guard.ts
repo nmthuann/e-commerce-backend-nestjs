@@ -1,7 +1,7 @@
 import { CanActivate, ExecutionContext, ForbiddenException, Inject, Injectable } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
-import { EmployeeEntity } from 'src/modules/v1/users/employee/employee.entity'
-import { IUserService } from '../users/user/user.service.interface'
+import { EmployeeEntity } from 'src/modules/v1/modules/users/employee/employee.entity'
+import { IUserService } from '../modules/users/user/user.service.interface'
 import { GuardError } from '../constants/errors.enum'
 import { Role } from '../constants/role.enum'
 

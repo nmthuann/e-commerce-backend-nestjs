@@ -9,7 +9,7 @@ import { IUserService } from '../user/user.service.interface'
 import { GetEmployeeListDto } from './employee-dto/get-employee-list.dto'
 import * as dotenv from 'dotenv'
 import { AbstractBaseService } from 'src/modules/v1/bases/base.abstract.service'
-import { ErrorType } from '../../constants/errors.enum'
+import { ErrorType } from '../../../constants/errors.enum'
 
 dotenv.config()
 
