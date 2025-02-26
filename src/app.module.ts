@@ -4,16 +4,18 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppDataSource } from './database/datasource';
 import { UsersModule } from './modules/users/users.module';
-import { ProductsModule } from './modules/products/products.module';
+// import { ProductsModule } from './modules/products/products.module';
 import { InventoriesModule } from './modules/inventories/inventories.module';
 import { OrdersModule } from './modules/orders/orders.module';
+import { ProductModule } from './modules/products/product/product.module';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(AppDataSource.options),
     // AuthModule,
     UsersModule,
-    ProductsModule,
+    // ProductsModule,
+    ProductModule,
     InventoriesModule,
     OrdersModule
   ],

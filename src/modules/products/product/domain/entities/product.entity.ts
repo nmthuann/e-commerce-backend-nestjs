@@ -1,6 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
 import { CategoryEntity } from '../../../category/category.entity';
 import { BrandEntity } from '../../../brand/brand.entity';
+import { SpuSkuMappingEntity } from './spu-sku-mapping.entity';
 
 @Entity({ name: 'products' })
 export class ProductEntity {
@@ -44,4 +45,7 @@ export class ProductEntity {
 
   @UpdateDateColumn({ name: 'updated_at', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   updatedAt!: Date;
+
+  @OneToMany(() => SpuSkuMappingEntity, (spuSkuMapping) => spuSkuMapping.spu)
+  spuSkuMappings!: SpuSkuMappingEntity[];
 }

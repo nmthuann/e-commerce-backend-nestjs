@@ -2,7 +2,9 @@ import {
     Entity, 
     PrimaryGeneratedColumn, 
     ManyToOne, 
-    JoinColumn, 
+    JoinColumn,
+    Column,
+    OneToOne, 
  
 } from 'typeorm';
 import { ProductEntity } from './product.entity';
@@ -13,11 +15,11 @@ export class SpuSkuMappingEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => ProductEntity, product => product.id, { onDelete: 'CASCADE' })
+  @ManyToOne(() => ProductEntity, product => product.spuSkuMappings, { onDelete: 'CASCADE' }) //, product => product.id,
   @JoinColumn({ name: 'spu_id' })
   spu!: ProductEntity;
 
-  @ManyToOne(() => ProductSkuEntity, sku => sku.id, { onDelete: 'CASCADE' })
+  @OneToOne(() => ProductSkuEntity, productSku => productSku.spuSkuMapping,{ onDelete: 'CASCADE' }) //, sku => sku.id,
   @JoinColumn({ name: 'sku_id' })
   sku!: ProductSkuEntity;
 }

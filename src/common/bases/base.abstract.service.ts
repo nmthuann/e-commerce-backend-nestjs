@@ -62,9 +62,9 @@ export abstract class AbstractBaseService<T> implements IBaseService<T> {
     }
   }
 
-  async deleteOneById(id: number): Promise<DeleteResult> {
+  async deleteOneById(id: number): Promise<void> {
     try {
-      return await this.baseRepository
+      await this.baseRepository
         .createQueryBuilder()
         .softDelete()
         .where('id = :id', { id })
