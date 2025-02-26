@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, OneToMany } from 'typeorm'
 import { SpuSkuMappingEntity } from './spu-sku-mapping.entity'
-import { PriceEntity } from 'src/modules/products/pricing/price.entity'
+import { PriceEntity } from 'src/modules/products/product/domain/entities/price.entity'
 
 @Entity({ name: 'product_skus' })
 export class ProductSkuEntity {

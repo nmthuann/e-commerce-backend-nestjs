@@ -1,6 +1,6 @@
-import { PipeTransform, Injectable, BadRequestException } from '@nestjs/common';
-import { CreateEmployeeDto } from 'src/modules/v1/auth/dto/create-employee.dto';
-import { PipeError } from '../constants/errors.enum';
+import { PipeTransform, Injectable, BadRequestException } from '@nestjs/common'
+import { PipeError } from '../constants/errors.enum'
+import { CreateEmployeeDto } from '../modules/auth/dto/create-employee.dto'
 
 @Injectable()
 export class CreateEmployeePipeValidator implements PipeTransform {
@@ -14,19 +14,17 @@ export class CreateEmployeePipeValidator implements PipeTransform {
       'address',
       'phone',
       'employee_id',
-      'position_id',
-    ];
+      'position_id'
+    ]
 
-    const missingFields = requiredFields.filter((field) => !value[field]);
+    const missingFields = requiredFields.filter(field => !value[field])
 
     if (missingFields.length > 0) {
-      console.log(value);
-      throw new BadRequestException(
-        `${missingFields.join(', ')} ${PipeError.VALIDATOR_MISSING}`,
-      );
+      console.log(value)
+      throw new BadRequestException(`${missingFields.join(', ')} ${PipeError.VALIDATOR_MISSING}`)
     }
 
-    return value;
+    return value
   }
 }
 

@@ -12,9 +12,10 @@ import { SkuDto } from '../../domain/dtos/sku.dto'
 import { PageMetaDto } from 'src/common/dtos/page-meta.dto'
 import { SpuSkuMappingEntity } from '../../domain/entities/spu-sku-mapping.entity'
 import { ProductSkuEntity } from '../../domain/entities/product-sku.entity'
-import { PriceEntity } from 'src/modules/products/pricing/price.entity'
+import { PriceEntity } from 'src/modules/products/product/domain/entities/price.entity'
 import { ProductResponse, SkuResponse } from '../../domain/dtos/responses/product.response'
 import { CreateProductDto } from '../../domain/dtos/requests/create-product.dto'
+import { CreatePriceDto } from '../../domain/dtos/requests/create-price.dto'
 
 @Injectable()
 export class ProductService implements IProductService {
@@ -37,6 +38,10 @@ export class ProductService implements IProductService {
     @InjectRepository(PriceEntity)
     private readonly priceRepository: Repository<PriceEntity>
   ) {}
+
+  createPriceBySkuId(skuId: number, data: CreatePriceDto): Promise<SkuDto> {
+    throw new Error('Method not implemented.')
+  }
   createOne(data: CreateProductDto): Promise<ProductDto> {
     throw new Error('Method not implemented.')
   }
@@ -141,7 +146,7 @@ export class ProductService implements IProductService {
       categoryUrl: product.category?.categoryUrl || null,
       brandName: product.brand?.brandName || null,
       brandUrl: product.brand?.brandUrl || null,
-      skus: productSkuMap[product.id] || [] // Danh sách SKU của sản phẩm
+      skus: productSkuMap[product.id] || []
     }))
 
     const pageMeta = new PageMetaDto({ pageOptionsDto: query, itemCount })
