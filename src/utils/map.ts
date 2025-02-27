@@ -1,6 +1,6 @@
-import { SkuAttribute } from 'src/common/types/sku-attribute.type'
+import { Attribute } from 'src/common/types/attribute.type'
 
-export const mapSkuAttributes = (skuAttributes: Record<string, unknown>): SkuAttribute[] => {
+export const mapAttributes = (skuAttributes: Record<string, unknown>): Attribute[] => {
   return Object.entries(skuAttributes).map(([key, value]) => ({
     key,
     value

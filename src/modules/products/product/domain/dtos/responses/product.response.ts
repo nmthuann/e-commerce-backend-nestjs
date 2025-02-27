@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { SkuAttribute } from 'src/common/types/sku-attribute.type'
+import { Attribute } from 'src/common/types/attribute.type'
 
 export class SkuResponse {
   @ApiProperty()
@@ -15,7 +15,7 @@ export class SkuResponse {
   slug: string
 
   @ApiProperty()
-  skuAttributes: SkuAttribute[]
+  skuAttributes: Attribute[]
 
   @ApiProperty({ required: false })
   sellingPrice?: number

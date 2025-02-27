@@ -1,8 +1,10 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
-import { IsBoolean, IsInt, IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator'
+import { ProductSkuDto } from './product-sku.dto'
+import { IsArray, IsBoolean, IsInt, IsNotEmpty, IsOptional, IsString, MaxLength, ValidateNested } from 'class-validator'
 import { Attribute } from 'src/common/types/attribute.type'
+import { Type } from 'class-transformer'
 
-export class ProductDto {
+export class SpuSkuMappingDto {
   @ApiProperty({ description: 'ID của sản phẩm', example: 1 })
   @IsInt()
   readonly id: number
@@ -41,4 +43,10 @@ export class ProductDto {
   @ApiPropertyOptional({ description: 'Tên thương hiệu', example: 'Apple' })
   @IsOptional()
   readonly brandName?: string
+
+  @ApiProperty({ description: 'Danh sách SKU của sản phẩm', type: [ProductSkuDto] })
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => ProductSkuDto)
+  sku: ProductSkuDto[]
 }

@@ -1,8 +1,6 @@
 import { Controller, Get, Inject, Query } from '@nestjs/common'
 import { GetProductsQueryDto } from '../domain/dtos/requests/get-products-query.dto'
-import { PageDto } from 'src/common/dtos/page.dto'
 import { IProductService } from '../services/product.service.interface'
-import { ProductResponse } from '../domain/dtos/responses/product.response'
 
 @Controller('products')
 export class ProductController {
@@ -12,8 +10,11 @@ export class ProductController {
   ) {}
 
   @Get()
-  async getProducts(@Query() query: GetProductsQueryDto): Promise<PageDto<ProductResponse>> {
+  async getData(@Query() query: GetProductsQueryDto) {
     console.log(query)
-    return this.productService.getProductsWithPagination(query)
+    if (query.slug) {
+      return await this.productService.getProductBySlug(query.slug)
+    }
+    return await this.productService.getProductsWithPagination(query)
   }
 }

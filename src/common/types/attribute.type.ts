@@ -1,4 +1,4 @@
-export type SkuAttribute = {
+export type Attribute = {
   key: string
   value: unknown
 }
