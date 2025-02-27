@@ -7,7 +7,7 @@ import { ProductDuplicateDto } from './product-dto/product-duplicate.dto'
 import { FilterProductDto } from './product-dto/filter-product.dto'
 import { CreateProductDto } from './product-dto/create-product.dto'
 import { ProductError } from 'src/modules/v1/constants/errors.enum'
-@Controller('product')
+@Controller('/v1/product')
 export class ProductController {
   constructor(
     @Inject('IProductService')
@@ -19,8 +19,8 @@ export class ProductController {
     console.log('Create Product', product)
     let productDuplicate: ProductDuplicateDto = {}
     console.log(product.model_name)
-    productDuplicate.model_name = product.model_name
-    ;(productDuplicate.hardware = product.hardware),
+    ;(productDuplicate.model_name = product.model_name),
+      (productDuplicate.hardware = product.hardware),
       (productDuplicate.color = product.color),
       (productDuplicate.screen = product.screen),
       (productDuplicate.battery = product.battery),

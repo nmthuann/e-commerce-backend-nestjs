@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, Param, Post, Put, Inject } from '@nestjs
 import { PaymentDto } from './payment.dto'
 import { IPaymentService } from './payment.service.interface'
 
-@Controller('payment')
+@Controller('/v1/payment')
 export class PaymentController {
   constructor(
     @Inject('IPaymentService')

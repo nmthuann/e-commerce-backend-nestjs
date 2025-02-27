@@ -7,7 +7,7 @@ import { RevenueByMonth } from './order-dto/order.dto'
 import { GetCustomerListDto } from '../../users/user/user-dto/get-customer-list.dto'
 import { AdminRoleGuard } from '../../../guards/admin.role.guard'
 
-@Controller('order')
+@Controller('/v1/order')
 export class OrderController {
   constructor(
     @Inject('IOrderService')

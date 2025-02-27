@@ -11,7 +11,7 @@ import { ManagerRoleGuard } from '../../guards/manager.role.guard'
 import { Public } from '../../decorators/public.decorator'
 import { CreateEmployeePipeValidator } from '../../pipes/create-employee.validator.pipe'
 
-@Controller('auth')
+@Controller('/v1/auth')
 export class AuthController {
   constructor(
     @Inject('IAuthService')

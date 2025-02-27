@@ -5,7 +5,7 @@ import { UserEntity } from './user.entity'
 import { CreateUserDto } from './user-dto/create-user.dto'
 import { EmployeeEntity } from '../employee/employee.entity'
 
-@Controller('user')
+@Controller('/v1/user')
 export class UserController {
   constructor(
     @Inject('IUserService')

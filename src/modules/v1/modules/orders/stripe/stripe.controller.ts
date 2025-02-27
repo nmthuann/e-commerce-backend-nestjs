@@ -14,14 +14,14 @@ export class StripeController {
   constructor(private readonly stripeService: StripeService) {}
 
   @UseGuards(UserRoleGuard)
-  @Post('checkout')
+  @Post('/v1/checkout')
   async CheckOut(@Request() req: any, @Body() productIds: any, res: Response) {
     const customer = req['email']
     const result = await this.stripeService.CheckOut(customer, productIds)
     return result
   }
 
-  @Post('webhook')
+  @Post('/v1/webhook')
   async handleWebhook(@Request() req: any, @Headers('Stripe-Signature') signature: string) {
     const result = await this.stripeService.Webhook(req)
     return result

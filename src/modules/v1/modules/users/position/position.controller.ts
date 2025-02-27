@@ -3,7 +3,7 @@ import { PositionDto } from './position.dto'
 import { IPositionService } from './position.service.interface'
 import { PositionEntity } from './position.entity'
 
-@Controller('position')
+@Controller('/v1/position')
 export class PositionController {
   constructor(
     @Inject('IPositionService')
