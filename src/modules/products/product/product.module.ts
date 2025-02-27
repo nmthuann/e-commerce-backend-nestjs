@@ -8,6 +8,7 @@ import { SpuSkuMappingEntity } from './domain/entities/spu-sku-mapping.entity'
 import { ProductService } from './services/impl/product.service'
 import { ProductController } from './controllers/product.controller'
 import { PriceEntity } from './domain/entities/price.entity'
+import { InventoryModule } from 'src/modules/inventories/inventory/inventory.module'
 
 @Module({
   imports: [
@@ -18,7 +19,8 @@ import { PriceEntity } from './domain/entities/price.entity'
       ProductSkuEntity,
       SpuSkuMappingEntity,
       PriceEntity
-    ])
+    ]),
+    InventoryModule
   ],
   controllers: [ProductController],
   providers: [

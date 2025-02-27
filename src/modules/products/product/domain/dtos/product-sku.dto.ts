@@ -56,4 +56,8 @@ export class ProductSkuDto {
   @ApiProperty({ description: 'Giá hiển thị của SKU', example: 30500000 })
   @IsInt()
   readonly displayPrice: number
+
+  @ApiProperty({ description: 'Số lượng của SKU', example: 2 })
+  @IsInt()
+  readonly stock: number
 }

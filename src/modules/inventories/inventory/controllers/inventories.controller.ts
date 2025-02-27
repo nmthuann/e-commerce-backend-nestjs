@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common'
-import { ProductSerialEntity } from '../../entities/product-serial.entity'
-import { InventoriesService } from '../services/inventories.service'
+import { ProductSerialEntity } from '../domain/entities/product-serial.entity'
+import { InventoriesService } from '../services/impl/inventories.service'
 
 @Controller('inventories')
 export class InventoriesController {

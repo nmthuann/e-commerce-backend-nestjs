@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
-import { ProductSerialEntity } from '../../entities/product-serial.entity'
+import { ProductSerialEntity } from '../../domain/entities/product-serial.entity'
 
 @Injectable()
 export class InventoriesService {

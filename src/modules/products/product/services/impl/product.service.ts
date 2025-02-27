@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import { Inject, Injectable, NotFoundException } from '@nestjs/common'
 import { Repository } from 'typeorm'
 import { InjectRepository } from '@nestjs/typeorm'
 import { BrandEntity } from '../../../brand/brand.entity'
@@ -19,6 +19,7 @@ import { ProductSkuDto } from '../../domain/dtos/product-sku.dto'
 import { SpuSkuMappingDto } from '../../domain/dtos/spu-sku-mapping.dto'
 import { mapAttributes } from 'src/utils/map'
 import { SpuSkuMappingType, SpuSkusType } from '../../domain/types/spu-sku-mapping.type'
+import { IInventoryService } from 'src/modules/inventories/inventory/services/inventory.service.interface'
 
 @Injectable()
 export class ProductService implements IProductService {
@@ -39,10 +40,10 @@ export class ProductService implements IProductService {
     private readonly supSkuMappingRepository: Repository<SpuSkuMappingEntity>,
 
     @InjectRepository(PriceEntity)
-    private readonly priceRepository: Repository<PriceEntity>
+    private readonly priceRepository: Repository<PriceEntity>,
 
-    // @Inject('')
-    // private readonly productSerialService: IProductSerialService
+    @Inject('IInventoryService')
+    private readonly inventoryService: IInventoryService
   ) {}
 
   createPriceBySkuId(skuId: number, data: CreatePriceDto): Promise<ProductSkuDto> {
@@ -219,20 +220,24 @@ export class ProductService implements IProductService {
       ])
       .where('spuSkuMapping.spu = :spu', { spu: product.id })
       .getRawMany()
+
     // console.log('spuSkus:::', spuSkus)
 
-    const skuMapping: ProductSkuDto[] = spuSkus.map(spuSku => ({
-      id: spuSku.id,
-      skuNo: spuSku.skuno,
-      barcode: spuSku.barcode,
-      skuName: spuSku.skuname,
-      image: spuSku.image,
-      status: spuSku.status,
-      skuAttributes: mapAttributes(spuSku.skuattributes),
-      slug: spuSku.slug,
-      sellingPrice: spuSku.sellingprice,
-      displayPrice: spuSku.displayprice
-    }))
+    const skuMapping: ProductSkuDto[] = await Promise.all(
+      spuSkus.map(async spuSku => ({
+        id: spuSku.id,
+        skuNo: spuSku.skuno,
+        barcode: spuSku.barcode,
+        skuName: spuSku.skuname,
+        image: spuSku.image,
+        status: spuSku.status,
+        skuAttributes: mapAttributes(spuSku.skuattributes),
+        slug: spuSku.slug,
+        sellingPrice: spuSku.sellingprice,
+        displayPrice: spuSku.displayprice,
+        stock: (await this.inventoryService.getStock(spuSku.id)) || 0
+      }))
+    )
 
     return {
       id: product.id,

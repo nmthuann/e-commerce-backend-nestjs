@@ -1,6 +1,5 @@
-import { Controller, Get, Inject } from "@nestjs/common";
-import { ICategoryService } from "./category.service.interface";
-import { CategoryDto } from "./category.dto";
+import { Controller, Get, Inject, Query } from '@nestjs/common'
+import { ICategoryService } from './category.service.interface'
 
 @Controller('categories')
 export class CategoryController {
@@ -10,7 +9,10 @@ export class CategoryController {
   ) {}
 
   @Get()
-  async getAll(): Promise<CategoryDto[]> {
-    return await this.categoryService.getAll();
+  async getAll(@Query('categoryUrl') query: string) {
+    if (query) {
+      return await this.categoryService.getOneBySlug(query)
+    }
+    return await this.categoryService.getAll()
   }
 }
