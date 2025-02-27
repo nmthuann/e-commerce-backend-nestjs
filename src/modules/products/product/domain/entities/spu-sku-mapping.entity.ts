@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn, OneToOne } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn, OneToOne, Column } from 'typeorm'
 import { ProductEntity } from './product.entity'
 import { ProductSkuEntity } from './product-sku.entity'
 
@@ -6,6 +6,9 @@ import { ProductSkuEntity } from './product-sku.entity'
 export class SpuSkuMappingEntity {
   @PrimaryGeneratedColumn()
   id: number
+
+  @Column({ type: 'boolean', nullable: false })
+  status!: boolean
 
   @ManyToOne(() => ProductEntity, product => product.spuSkuMappings, { onDelete: 'CASCADE' }) //, product => product.id,
   @JoinColumn({ name: 'spu_id' })

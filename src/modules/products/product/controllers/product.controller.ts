@@ -13,6 +13,7 @@ export class ProductController {
 
   @Get()
   async getProducts(@Query() query: GetProductsQueryDto): Promise<PageDto<ProductResponse>> {
+    console.log(query)
     return this.productService.getProductsWithPagination(query)
   }
 }

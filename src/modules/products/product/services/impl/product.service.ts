@@ -16,6 +16,7 @@ import { PriceEntity } from 'src/modules/products/product/domain/entities/price.
 import { ProductResponse, SkuResponse } from '../../domain/dtos/responses/product.response'
 import { CreateProductDto } from '../../domain/dtos/requests/create-product.dto'
 import { CreatePriceDto } from '../../domain/dtos/requests/create-price.dto'
+import { mapSkuAttributes } from 'src/utils/map'
 
 @Injectable()
 export class ProductService implements IProductService {
@@ -107,7 +108,7 @@ export class ProductService implements IProductService {
         qb =>
           qb
             .subQuery()
-            .select(['p1.product_sku_id', 'p1.selling_price', 'p1.begin_at'])
+            .select(['p1.product_sku_id', 'p1.selling_price', 'p1.display_price', 'p1.begin_at'])
             .from('prices', 'p1')
             .where('p1.begin_at = (SELECT MAX(p2.begin_at) FROM prices p2 WHERE p2.product_sku_id = p1.product_sku_id)')
             .orderBy('p1.begin_at', 'DESC'),
@@ -115,6 +116,7 @@ export class ProductService implements IProductService {
         'latest_price.product_sku_id = sku.id'
       )
       .where('spuSkuMapping.spu IN (:...spuIds)', { spuIds })
+      .andWhere('spuSkuMapping.status = true') // ✅ Chỉ lấy mapping đang hoạt động
       .select([
         'spuSkuMapping.spu AS spu',
         'sku.id AS sku',
@@ -122,7 +124,8 @@ export class ProductService implements IProductService {
         'sku.image AS image',
         'sku.slug AS slug',
         'sku.skuAttributes AS skuAttributes',
-        'latest_price.selling_price AS sellingPrice'
+        'latest_price.selling_price AS sellingPrice',
+        'latest_price.display_price AS displayPrice'
       ])
       .getRawMany()
     const productSkuMap = skusWithPrices.reduce((acc, sku) => {
@@ -132,8 +135,9 @@ export class ProductService implements IProductService {
         skuName: sku.skuname,
         image: sku.image,
         slug: sku.slug,
-        skuAttributes: sku.skuattributes,
-        sellingPrice: sku.sellingprice || 0
+        skuAttributes: mapSkuAttributes(sku.skuattributes),
+        sellingPrice: sku.sellingprice || 0,
+        displayPrice: sku.displayprice || 0
       })
       return acc as SkuResponse[]
     }, {})

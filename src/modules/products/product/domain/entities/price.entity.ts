@@ -12,6 +12,9 @@ export class PriceEntity {
   @Column({ name: 'selling_price', type: 'double precision' })
   sellingPrice: number
 
+  @Column({ name: 'display_price', type: 'double precision' })
+  displayPrice: number
+
   @CreateDateColumn({ name: 'created_at', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date
 

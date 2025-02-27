@@ -6,4 +6,5 @@ type SpuSkuMappingType = {
   slug: string
   skuattributes: Record<string, unknown>
   sellingprice: number
+  displayprice: number
 }
