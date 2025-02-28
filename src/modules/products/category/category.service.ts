@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 import { ICategoryService } from './category.service.interface'
 import { InjectRepository } from '@nestjs/typeorm'
 import { CategoryEntity } from './category.entity'
@@ -19,6 +19,9 @@ export class CategoryService implements ICategoryService {
 
   async getOneBySlug(categoryUrl: string): Promise<CategoryDto> {
     const category = await this.categoryRepository.findOne({ where: { categoryUrl } })
-    return new CategoryDto(category)
+    if (category) {
+      return new CategoryDto(category)
+    }
+    throw new NotFoundException(`Category with slug "${categoryUrl}" not found`)
   }
 }

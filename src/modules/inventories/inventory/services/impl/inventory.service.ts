@@ -16,11 +16,11 @@ export class InventoryService implements IInventoryService {
     const createBuilder: Promise<InventoryDto> = this.productSerialRepository
       .createQueryBuilder('productSerial')
       .leftJoin('order_details', 'od', 'productSerial.id = od.product_serial_id')
-      .where('od.product_serial_id IS NULL') // Chưa có trong order_details (chưa bán)
+      .where('od.product_serial_id IS NULL')
       .andWhere('productSerial.product_sku_id = :productSkuId', { productSkuId })
       .select('COUNT(*)', 'stock')
       .getRawOne()
-    console.log('createBuilder:::', await createBuilder)
+    // console.log('createBuilder:::', await createBuilder)
     return (await createBuilder).stock
   }
 }

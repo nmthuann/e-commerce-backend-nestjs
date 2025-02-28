@@ -122,7 +122,6 @@ export class ProductService implements IProductService {
         'latest_price.product_sku_id = sku.id'
       )
       .where('spuSkuMapping.spu IN (:...spuIds)', { spuIds })
-      .andWhere('sku.status = false') // ✅ Chỉ lấy mapping đang hoạt động
       .select([
         'spuSkuMapping.spu AS spu',
         'sku.id AS sku',
@@ -134,6 +133,7 @@ export class ProductService implements IProductService {
         'latest_price.display_price AS displayPrice'
       ])
       .getRawMany()
+
     const productSkuMap = skusWithPrices.reduce((acc, sku) => {
       if (!acc[sku.spu]) acc[sku.spu] = []
       acc[sku.spu].push({
