@@ -1,4 +1,4 @@
-import { AuthResponse } from './dtos/auth.response'
+import { AuthResponse } from './dtos/responses/auth.response'
 import { LoginDto } from './dtos/login.dto'
 import { RegisterDto } from './dtos/register.dto'
 

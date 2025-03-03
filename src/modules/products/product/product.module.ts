@@ -9,6 +9,8 @@ import { ProductService } from './services/impl/product.service'
 import { ProductController } from './controllers/product.controller'
 import { PriceEntity } from './domain/entities/price.entity'
 import { InventoryModule } from 'src/modules/inventories/inventory/inventory.module'
+import { ProductSkuService } from './services/impl/product-sku.service'
+import { ProductSkuController } from './controllers/product-sku.controller'
 
 @Module({
   imports: [
@@ -22,13 +24,17 @@ import { InventoryModule } from 'src/modules/inventories/inventory/inventory.mod
     ]),
     InventoryModule
   ],
-  controllers: [ProductController],
+  controllers: [ProductController, ProductSkuController],
   providers: [
     {
       provide: 'IProductService',
       useClass: ProductService
+    },
+    {
+      provide: 'IProductSkuService',
+      useClass: ProductSkuService
     }
   ],
-  exports: ['IProductService']
+  exports: ['IProductService', 'IProductSkuService']
 })
 export class ProductModule {}

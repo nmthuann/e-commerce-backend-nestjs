@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, CreateDateColumn } from 'typeorm'
-import { OrderEntity } from '../order/order.entity'
+import { OrderEntity } from './order.entity'
 import { EmployeeEntity } from 'src/modules/users/domain/entities/employee.entity'
 
 @Entity({ name: 'invoices' })
@@ -24,3 +24,4 @@ export class InvoiceEntity {
   @Column({ name: 'tax_code', type: 'varchar', length: 20 })
   taxCode: string
 }
+// warranty <- invoice <- order

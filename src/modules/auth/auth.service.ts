@@ -1,6 +1,6 @@
 import { Inject, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common'
 import { IAuthService } from './auth.service.interface'
-import { AuthResponse } from './dtos/auth.response'
+import { AuthResponse } from './dtos/responses/auth.response'
 import { LoginDto } from './dtos/login.dto'
 import { RegisterDto } from './dtos/register.dto'
 import { IUserService } from '../users/services/user.service.interface'

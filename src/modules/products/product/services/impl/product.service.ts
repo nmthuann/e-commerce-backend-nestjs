@@ -10,11 +10,8 @@ import { ProductDto } from '../../domain/dtos/product.dto'
 import { GetProductsQueryDto } from '../../domain/dtos/requests/get-products-query.dto'
 import { PageMetaDto } from 'src/common/dtos/page-meta.dto'
 import { SpuSkuMappingEntity } from '../../domain/entities/spu-sku-mapping.entity'
-import { ProductSkuEntity } from '../../domain/entities/product-sku.entity'
-import { PriceEntity } from 'src/modules/products/product/domain/entities/price.entity'
 import { ProductResponse, SkuResponse } from '../../domain/dtos/responses/product.response'
 import { CreateProductDto } from '../../domain/dtos/requests/create-product.dto'
-import { CreatePriceDto } from '../../domain/dtos/requests/create-price.dto'
 import { ProductSkuDto } from '../../domain/dtos/product-sku.dto'
 import { SpuSkuMappingDto } from '../../domain/dtos/spu-sku-mapping.dto'
 import { mapAttributes } from 'src/utils/map'
@@ -33,22 +30,13 @@ export class ProductService implements IProductService {
     @InjectRepository(ProductEntity)
     private readonly productRepository: Repository<ProductEntity>,
 
-    @InjectRepository(ProductSkuEntity)
-    private readonly skuRepository: Repository<ProductSkuEntity>,
-
     @InjectRepository(SpuSkuMappingEntity)
     private readonly supSkuMappingRepository: Repository<SpuSkuMappingEntity>,
-
-    @InjectRepository(PriceEntity)
-    private readonly priceRepository: Repository<PriceEntity>,
 
     @Inject('IInventoryService')
     private readonly inventoryService: IInventoryService
   ) {}
 
-  createPriceBySkuId(skuId: number, data: CreatePriceDto): Promise<ProductSkuDto> {
-    throw new Error('Method not implemented.')
-  }
   createOne(data: CreateProductDto): Promise<ProductDto> {
     throw new Error('Method not implemented.')
   }
@@ -164,10 +152,6 @@ export class ProductService implements IProductService {
   }
 
   getOneById(id: number): Promise<ProductDto> {
-    throw new Error('Method not implemented.')
-  }
-
-  getProductsBySku(skuId: number): Promise<ProductSkuDto[]> {
     throw new Error('Method not implemented.')
   }
 
