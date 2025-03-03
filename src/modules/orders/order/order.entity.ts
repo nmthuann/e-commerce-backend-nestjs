@@ -7,9 +7,9 @@ import {
   CreateDateColumn,
   UpdateDateColumn
 } from 'typeorm'
-import { EmployeeEntity } from 'src/modules/users/employee/domain/entities/employee.entity'
+import { EmployeeEntity } from 'src/modules/users/domain/entities/employee.entity'
 import { OrderStatus } from 'src/constants/order-status.enum'
-import { UserEntity } from 'src/modules/users/user/user.entity'
+import { UserEntity } from 'src/modules/users/domain/entities/user.entity'
 
 @Entity({ name: 'orders' })
 export class OrderEntity {

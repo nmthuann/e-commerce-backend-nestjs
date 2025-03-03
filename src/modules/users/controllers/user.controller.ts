@@ -1,5 +1,5 @@
 import { Controller, Get, Inject, Query } from '@nestjs/common'
-import { IUserService } from './user.service.interface'
+import { IUserService } from '../services/user.service.interface'
 
 @Controller('users')
 export class UserController {
@@ -12,5 +12,10 @@ export class UserController {
   async getData(@Query('email') email: string) {
     console.log(typeof email)
     return await this.userService.getOneByEmail(email)
+  }
+
+  @Get('me')
+  async getProfile() {
+    console.log('Get Profile')
   }
 }

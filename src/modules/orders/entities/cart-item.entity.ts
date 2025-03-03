@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryColumn, ManyToOne, JoinColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm'
 import { ProductSkuEntity } from 'src/modules/products/product/domain/entities/product-sku.entity'
 import { IsPositive } from 'class-validator'
-import { UserEntity } from 'src/modules/users/user/user.entity'
+import { UserEntity } from 'src/modules/users/domain/entities/user.entity'
 
 @Entity({ name: 'cart_items' })
 export class CartItemEntity {

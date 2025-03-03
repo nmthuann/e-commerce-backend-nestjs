@@ -7,7 +7,7 @@ import {
   BeforeInsert,
   OneToOne
 } from 'typeorm'
-import { EmployeeEntity } from '../employee/domain/entities/employee.entity'
+import { EmployeeEntity } from './employee.entity'
 
 @Entity({ name: 'users' })
 export class UserEntity {

@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, CreateDateColumn } from 'typeorm'
 import { PurchaseOrderEntity } from './purchase-order.entity'
-import { EmployeeEntity } from 'src/modules/users/employee/domain/entities/employee.entity'
+import { EmployeeEntity } from 'src/modules/users/domain/entities/employee.entity'
 
 @Entity({ name: 'warehouse_receipts' })
 export class WarehouseReceiptEntity {
