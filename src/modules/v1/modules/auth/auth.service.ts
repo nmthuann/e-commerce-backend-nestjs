@@ -37,7 +37,6 @@ export class AuthService implements IAuthService {
     private readonly jwtService: JwtService,
     @Inject('IAccountService')
     private readonly accountService: IAccountService,
-
     @Inject('IUserService')
     private readonly userService: IUserService,
     @Inject('IEmployeeService')

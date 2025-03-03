@@ -7,7 +7,7 @@ import {
   BeforeInsert,
   OneToOne
 } from 'typeorm'
-import { EmployeeEntity } from './employee.entity'
+import { EmployeeEntity } from '../employee/domain/entities/employee.entity'
 
 @Entity({ name: 'users' })
 export class UserEntity {
@@ -33,7 +33,7 @@ export class UserEntity {
   password: string
 
   @Column({ type: 'varchar', length: 50 })
-  status!: 'ACTIVE' | 'INACTIVE' | 'BANNED'
+  status!: string
 
   @Column('text', { name: 'refresh_token', nullable: true })
   refreshToken?: string
@@ -59,7 +59,7 @@ export class UserEntity {
   birthday?: Date
 
   @Column({ name: 'role_type', type: 'varchar', length: 10, default: 'USER' })
-  roleType!: 'USER' | 'ADMIN'
+  roleType!: string
 
   @Column({ name: 'auth_method', type: 'varchar', length: 50, nullable: false }) //select: false
   authMethod!: string

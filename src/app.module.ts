@@ -7,9 +7,17 @@ import { UsersModule } from './modules/users/users.module'
 import { InventoriesModule } from './modules/inventories/inventories.module'
 import { OrdersModule } from './modules/orders/orders.module'
 import { ProductsModule } from './modules/products/products.module'
+import { AuthModule } from './modules/auth/auth.module'
 
 @Module({
-  imports: [TypeOrmModule.forRoot(AppDataSource.options), UsersModule, ProductsModule, InventoriesModule, OrdersModule],
+  imports: [
+    TypeOrmModule.forRoot(AppDataSource.options),
+    AuthModule,
+    UsersModule,
+    ProductsModule,
+    InventoriesModule,
+    OrdersModule
+  ],
   controllers: [AppController],
   providers: [AppService]
 })
