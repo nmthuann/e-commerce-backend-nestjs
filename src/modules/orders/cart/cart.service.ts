@@ -59,7 +59,7 @@ export class CartService implements ICartService {
         'productSku.image AS "image"'
       ])
       .getRawMany()
-    console.log('cartItems:::', cartItems)
+
     if (!cartItems.length) {
       return {
         userId,

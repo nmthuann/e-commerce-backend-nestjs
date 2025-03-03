@@ -1,5 +1,6 @@
-import { Controller, Get, Inject, Query } from '@nestjs/common'
+import { Controller, Get, Inject, Query, UseGuards } from '@nestjs/common'
 import { IUserService } from '../services/user.service.interface'
+import { UserRoleGuard } from 'src/guards/user-role.guard'
 
 @Controller('users')
 export class UserController {
@@ -15,7 +16,9 @@ export class UserController {
   }
 
   @Get('me')
+  @UseGuards(UserRoleGuard)
   async getProfile() {
     console.log('Get Profile')
+    return 'Thông tin user'
   }
 }

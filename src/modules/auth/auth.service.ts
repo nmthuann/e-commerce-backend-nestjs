@@ -8,7 +8,8 @@ import * as bcrypt from 'bcrypt'
 import { Payload } from 'src/common/types/payload.type'
 import { Tokens } from 'src/common/types/token.type'
 import { JwtService } from '@nestjs/jwt'
-
+import * as dotenv from 'dotenv'
+dotenv.config()
 @Injectable()
 export class AuthService implements IAuthService {
   constructor(
@@ -61,14 +62,14 @@ export class AuthService implements IAuthService {
       this.jwtService.signAsync(
         { payload },
         {
-          secret: 'JWT_SECRET_KEY',
+          secret: process.env.JWT_SECRET_KEY,
           expiresIn: 60 * 15
         }
       ),
       this.jwtService.signAsync(
         { payload },
         {
-          secret: 'REFRESH_JWT_SECRET_KEY',
+          secret: process.env.REFRESH_JWT_SECRET_KEY,
           expiresIn: 60 * 60 // 60 * 60 * 24
         }
       )
