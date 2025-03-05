@@ -1,6 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, OneToMany } from 'typeorm'
 import { SpuSkuMappingEntity } from './spu-sku-mapping.entity'
 import { PriceEntity } from 'src/modules/products/product/domain/entities/price.entity'
+import { PurchaseOrderDetailEntity } from 'src/modules/inventories/inventory/domain/entities/purchase-order-detail.entity'
 
 @Entity({ name: 'product_skus' })
 export class ProductSkuEntity {
@@ -39,4 +40,7 @@ export class ProductSkuEntity {
 
   @OneToMany(() => PriceEntity, price => price.productSku)
   prices!: PriceEntity[]
+
+  @OneToMany(() => PurchaseOrderDetailEntity, purchaseOrderDetail => purchaseOrderDetail.sku)
+  purchaseOrderDetails!: PurchaseOrderDetailEntity[]
 }

@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common'
+import { Inject, Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { PurchaseOrderEntity } from '../../domain/entities/purchase-order.entity'
@@ -11,6 +11,7 @@ import { GetPurchaseOrdersQueryDto } from '../../domain/dtos/get-purchase-orders
 import { PurchaseOrderDto } from '../../domain/dtos/purchase-order.dto'
 import { IEmployeeService } from 'src/modules/users/services/employee.service.interface'
 import { PurchaseOrderQueryType } from '../../domain/dtos/purchase-order-query.type'
+import { mapAttributes } from 'src/utils/map'
 
 @Injectable()
 export class PurchaseOrderService implements IPurchaseOrderService {
@@ -23,8 +24,35 @@ export class PurchaseOrderService implements IPurchaseOrderService {
     private readonly employeeService: IEmployeeService
   ) {}
 
-  getOneById(id: number): Promise<PurchaseOrderDto> {
-    throw new Error('Method not implemented.')
+  async getOneById(id: number): Promise<PurchaseOrderDto> {
+    const findPurchaseOrder = await this.purchaseOrderRepository.findOne({
+      where: { id },
+      relations: ['supplier', 'employee', 'purchaseOrderDetails', 'purchaseOrderDetails.sku']
+    })
+    if (!findPurchaseOrder) {
+      throw new NotFoundException('Purchase Order Not Found')
+    }
+    return {
+      id: findPurchaseOrder.id,
+      orderNumber: findPurchaseOrder.orderNumber,
+      supplierId: findPurchaseOrder.supplier.id,
+      employeeId: findPurchaseOrder.employee.id,
+      orderDate: findPurchaseOrder.orderDate,
+      purchaseOrderDetails: findPurchaseOrder.purchaseOrderDetails.map(dto => ({
+        sku: {
+          id: dto.sku.id,
+          skuNo: dto.sku.skuNo,
+          barcode: dto.sku.barcode,
+          skuName: dto.sku.skuName,
+          image: dto.sku.image,
+          status: dto.sku.status,
+          skuAttributes: mapAttributes(dto.sku.skuAttributes),
+          slug: dto.sku.slug
+        },
+        quantity: dto.quantity,
+        unitPrice: dto.unitPrice
+      }))
+    }
   }
 
   getPurchaseOrdersWithPagination(query: GetPurchaseOrdersQueryDto): Promise<PageDto<PurchaseOrderDto>> {
@@ -65,7 +93,21 @@ export class PurchaseOrderService implements IPurchaseOrderService {
     }
   }
 
-  createPurchaseOrderDetailById(id: number, data: CreatePurchaseOrderDetailDto): Promise<PurchaseOrderDto> {
-    throw new Error('Method not implemented.')
+  async createPurchaseOrderDetailById(id: number, data: CreatePurchaseOrderDetailDto): Promise<PurchaseOrderDto> {
+    const queryBuilder = await this.purchaseOrderDetailRepository
+      .createQueryBuilder()
+      .insert()
+      .into(PurchaseOrderDetailEntity)
+      .values({
+        purchaseOrder: { id: id },
+        sku: { id: data.skuId },
+        quantity: data.quantity,
+        unitPrice: data.unitPrice
+      })
+      .returning('*')
+      .execute()
+    const recordCreated = queryBuilder.raw[0]
+    console.log(recordCreated)
+    return await this.getOneById(id)
   }
 }

@@ -1,6 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn, CreateDateColumn } from 'typeorm'
+import { Column, Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn, CreateDateColumn, OneToMany } from 'typeorm'
 import { SupplierEntity } from '../../../supplier/supplier.entity'
 import { EmployeeEntity } from 'src/modules/users/domain/entities/employee.entity'
+import { PurchaseOrderDetailEntity } from './purchase-order-detail.entity'
 
 @Entity({ name: 'purchase_orders' })
 export class PurchaseOrderEntity {
@@ -20,4 +21,7 @@ export class PurchaseOrderEntity {
 
   @CreateDateColumn({ name: 'order_date', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   orderDate: Date
+
+  @OneToMany(() => PurchaseOrderDetailEntity, purchaseOrderDetail => purchaseOrderDetail.purchaseOrder)
+  purchaseOrderDetails!: PurchaseOrderDetailEntity[]
 }

@@ -40,6 +40,7 @@ export class InventoryModule implements NestModule {
       .apply(AuthMiddleware)
       .exclude({ path: 'inventories', method: RequestMethod.GET })
       .exclude({ path: 'purchaseOrders', method: RequestMethod.GET })
+      .exclude({ path: 'purchaseOrders/:id', method: RequestMethod.GET })
       .forRoutes(InventoryController, PurchaseOrderController)
   }
 }
