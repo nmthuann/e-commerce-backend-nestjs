@@ -4,7 +4,7 @@ import { GuardError } from '../constants/errors.enum'
 import { RoleType } from 'src/constants/role-type.enum'
 
 @Injectable()
-export class UserRoleGuard implements CanActivate {
+export class AdminRoleGuard implements CanActivate {
   constructor(private readonly reflector: Reflector) {}
 
   canActivate(context: ExecutionContext): boolean {

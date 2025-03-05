@@ -1,12 +1,20 @@
-import { Module } from '@nestjs/common'
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { CartItemEntity } from './cart-item.entity'
 import { CartController } from './cart.controller'
 import { CartService } from './cart.service'
 import { ProductModule } from 'src/modules/products/product/product.module'
+import { AuthMiddleware } from 'src/middlewares/auth.middleware'
+import { JwtModule } from '@nestjs/jwt'
 
 @Module({
-  imports: [TypeOrmModule.forFeature([CartItemEntity]), ProductModule],
+  imports: [
+    JwtModule.register({
+      secret: process.env.JWT_SECRET_KEY
+    }),
+    TypeOrmModule.forFeature([CartItemEntity]),
+    ProductModule
+  ],
   controllers: [CartController],
   providers: [
     {
@@ -16,4 +24,8 @@ import { ProductModule } from 'src/modules/products/product/product.module'
   ],
   exports: ['ICartService']
 })
-export class CartModule {}
+export class CartModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(AuthMiddleware).forRoutes(CartController)
+  }
+}

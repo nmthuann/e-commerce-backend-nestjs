@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
+import { Attribute } from 'src/common/types/attribute.type'
 
 export class CartItemDto {
   @ApiProperty({ description: 'ID của sản phẩm', example: 1 })
@@ -9,6 +10,9 @@ export class CartItemDto {
 
   @ApiProperty({ description: 'Ảnh sản phẩm', example: 'https://example.com/image.jpg' })
   image: string
+
+  @ApiProperty({ description: 'Ảnh sản phẩm', example: 'https://example.com/image.jpg' })
+  skuAttributes: Attribute[]
 
   @ApiProperty({ description: 'Số lượng sản phẩm trong giỏ', example: 2 })
   quantity: number

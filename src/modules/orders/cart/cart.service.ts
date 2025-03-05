@@ -6,6 +6,8 @@ import { Repository } from 'typeorm'
 import { CartDto, CartItemDto } from './dtos/cart.dto'
 import { CreateCartDto } from './dtos/create-cart.dto'
 import { IProductSkuService } from 'src/modules/products/product/services/product-sku.service.interface'
+import { mapAttributes } from 'src/utils/map'
+import { CartSelectType } from './cart-select.type'
 
 @Injectable()
 export class CartService implements ICartService {
@@ -47,12 +49,13 @@ export class CartService implements ICartService {
   }
 
   async getCart(userId: string): Promise<CartDto> {
-    const cartItems = await this.cartRepository
+    const cartItems: CartSelectType[] = await this.cartRepository
       .createQueryBuilder('cartItem')
       .leftJoinAndSelect('cartItem.productSku', 'productSku')
       .where('cartItem.userId = :userId', { userId })
       .select([
         'cartItem.productSkuId AS "productSkuId"',
+        'productSku.skuAttributes AS "skuAttributes"',
         'cartItem.quantity AS "quantity"',
         'cartItem.priceAtAdded AS "priceAtAdded"',
         'productSku.skuName AS "skuName"',
@@ -73,6 +76,7 @@ export class CartService implements ICartService {
       productSkuId: item.productSkuId,
       skuName: item.skuName,
       image: item.image,
+      skuAttributes: mapAttributes(item.skuAttributes),
       quantity: item.quantity,
       priceAtAdded: item.priceAtAdded,
       totalItemPrice: item.quantity * item.priceAtAdded

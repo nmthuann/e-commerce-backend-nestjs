@@ -1,7 +1,9 @@
-import { Body, Controller, Get, Inject, Post, Query } from '@nestjs/common'
+import { Body, Controller, Get, Inject, Post, Request, UseGuards } from '@nestjs/common'
 import { ICartService } from './cart.service.interface'
 import { CartDto } from './dtos/cart.dto'
 import { CreateCartDto } from './dtos/create-cart.dto'
+import { UserRoleGuard } from 'src/guards/user-role.guard'
+import { UserRequest } from 'src/modules/users/domain/dtos/request/user.request'
 
 @Controller('/carts')
 export class CartController {
@@ -11,8 +13,9 @@ export class CartController {
   ) {}
 
   @Get()
-  async getCart(@Query('userId') userId: string): Promise<CartDto> {
-    return await this.cartService.getCart(userId)
+  @UseGuards(UserRoleGuard)
+  async getCart(@Request() req: UserRequest): Promise<CartDto> {
+    return await this.cartService.getCart(req.userId)
   }
 
   @Post()

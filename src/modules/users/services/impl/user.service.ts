@@ -5,6 +5,7 @@ import { UserEntity } from '../../domain/entities/user.entity'
 import { IUserService } from '../user.service.interface'
 import { UserAuthenticationDto } from '../../domain/dtos/user-authentication.dto'
 import { UserDto } from '../../domain/dtos/user.dto'
+import { UserResponse } from '../../domain/dtos/responses/user.response'
 
 @Injectable()
 export class UserService implements IUserService {
@@ -12,6 +13,19 @@ export class UserService implements IUserService {
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>
   ) {}
+
+  async getOneById(id: string): Promise<UserResponse> {
+    const findUser = await this.userRepository.findOne({ where: { id } })
+    if (!findUser) {
+      throw new NotFoundException(`Không tìm thấy người dùng với email: ${id}`)
+    }
+    return {
+      email: findUser.email,
+      firstName: findUser.firstName,
+      lastName: findUser.lastName,
+      avatarUrl: findUser.avatarUrl
+    }
+  }
 
   async getOneByEmail(email: string): Promise<UserAuthenticationDto> {
     const findUser = await this.userRepository.findOne({ where: { email } })

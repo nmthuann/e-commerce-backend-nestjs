@@ -3,6 +3,7 @@ export type AuthResponse = {
   firstName: string
   lastName: string
   avatarUrl: string
+  phone: string
   accessToken: string
   refreshToken: string
 }

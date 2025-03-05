@@ -44,6 +44,7 @@ export class AuthService implements IAuthService {
       firstName: getUser.firstName,
       lastName: getUser.lastName,
       avatarUrl: getUser.avatarUrl,
+      phone: getUser.phone,
       accessToken: tokens.accessToken,
       refreshToken: tokens.refreshToken
     }
