@@ -1,51 +1,60 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
-import { CategoryEntity } from '../../../category/category.entity';
-import { BrandEntity } from '../../../brand/brand.entity';
-import { SpuSkuMappingEntity } from './spu-sku-mapping.entity';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  JoinColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+  OneToMany
+} from 'typeorm'
+import { CategoryEntity } from '../../../category/category.entity'
+import { BrandEntity } from '../../../brand/brand.entity'
+import { SpuSkuMappingEntity } from './spu-sku-mapping.entity'
 
 @Entity({ name: 'products' })
 export class ProductEntity {
   @PrimaryGeneratedColumn()
-  id: number;
+  id: number
 
   @Column({ name: 'product_name', type: 'varchar', length: 255, nullable: false, unique: true })
-  productName!: string;
+  productName!: string
 
-  @Column({ type: 'varchar', length: 100, nullable: false, unique: true})
-  slug!: string;
+  @Column({ type: 'varchar', length: 100, nullable: false, unique: true })
+  slug!: string
 
   @Column({ name: 'product_line', type: 'varchar', length: 100, nullable: false })
-  productLine!: string;
+  productLine!: string
 
   @Column({ type: 'text', nullable: true })
-  description?: string;
+  description?: string
 
   @Column({ type: 'boolean', nullable: false })
-  status!: boolean;
+  status!: boolean
 
   @Column({ name: 'is_deleted', type: 'boolean', default: false })
-  isDeleted!: boolean;
+  isDeleted!: boolean
 
   @Column({ name: 'priority_sort', type: 'integer', default: 0 })
-  prioritySort!: number;
+  prioritySort!: number
 
   @Column({ name: 'product_specs', type: 'jsonb', nullable: true })
-  productSpecs?: Record<string, unknown>;
+  productSpecs?: Record<string, unknown>
 
   @ManyToOne(() => CategoryEntity, category => category.id, { nullable: true, onDelete: 'SET NULL' })
   @JoinColumn({ name: 'category_id' })
-  category?: CategoryEntity;
+  category?: CategoryEntity // TODO: review code
 
   @ManyToOne(() => BrandEntity, brand => brand.id, { nullable: true, onDelete: 'SET NULL' })
   @JoinColumn({ name: 'brand_id' })
-  brand?: BrandEntity;
+  brand?: BrandEntity // TODO: review code
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  createdAt!: Date;
+  createdAt!: Date
 
   @UpdateDateColumn({ name: 'updated_at', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  updatedAt!: Date;
+  updatedAt!: Date
 
-  @OneToMany(() => SpuSkuMappingEntity, (spuSkuMapping) => spuSkuMapping.spu)
-  spuSkuMappings!: SpuSkuMappingEntity[];
+  @OneToMany(() => SpuSkuMappingEntity, spuSkuMapping => spuSkuMapping.spu)
+  spuSkuMappings!: SpuSkuMappingEntity[]
 }

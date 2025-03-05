@@ -9,16 +9,17 @@ import { UserService } from './services/impl/user.service'
 import { PositionService } from './services/impl/position.service'
 import { AuthMiddleware } from 'src/middlewares/auth.middleware'
 import { JwtModule } from '@nestjs/jwt'
+import { EmployeeService } from './services/impl/employee.service'
+import { EmployeeController } from './controllers/employee.controller'
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([UserEntity, EmployeeEntity, PositionEntity]),
     JwtModule.register({
       secret: process.env.JWT_SECRET_KEY
-      // signOptions: { expiresIn: 60 }
     })
   ],
-  controllers: [UserController, PositionController],
+  controllers: [UserController, PositionController, EmployeeController],
   providers: [
     {
       provide: 'IUserService',
@@ -27,12 +28,19 @@ import { JwtModule } from '@nestjs/jwt'
     {
       provide: 'IPositionService',
       useClass: PositionService
+    },
+    {
+      provide: 'IEmployeeService',
+      useClass: EmployeeService
     }
   ],
-  exports: ['IUserService', 'IPositionService']
+  exports: ['IUserService', 'IPositionService', 'IEmployeeService']
 })
 export class UsersModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(AuthMiddleware).exclude({ path: 'users', method: RequestMethod.GET }).forRoutes(UserController)
+    consumer
+      .apply(AuthMiddleware)
+      .exclude({ path: 'users', method: RequestMethod.GET })
+      .forRoutes(UserController, EmployeeController)
   }
 }
