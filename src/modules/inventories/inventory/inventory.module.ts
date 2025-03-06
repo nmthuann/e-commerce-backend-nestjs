@@ -1,6 +1,5 @@
 import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
-
 import { ProductSerialEntity } from './domain/entities/product-serial.entity'
 import { InventoryController } from './controllers/inventory.controller'
 import { InventoryService } from './services/impl/inventory.service'
@@ -10,18 +9,25 @@ import { PurchaseOrderController } from './controllers/purchase-order.controller
 import { AuthMiddleware } from 'src/middlewares/auth.middleware'
 import { PurchaseOrderEntity } from './domain/entities/purchase-order.entity'
 import { PurchaseOrderDetailEntity } from './domain/entities/purchase-order-detail.entity'
-import { SupplierEntity } from '../supplier/supplier.entity'
 import { JwtModule } from '@nestjs/jwt'
+import { WarehouseReceiptService } from './services/impl/warehouse-receipt.service'
+import { WarehouseReceiptController } from './controllers/warehouse-receipt.controller'
+import { WarehouseReceiptEntity } from './domain/entities/warehouse-receipt.entity'
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([SupplierEntity, PurchaseOrderEntity, PurchaseOrderDetailEntity, ProductSerialEntity]),
+    TypeOrmModule.forFeature([
+      PurchaseOrderEntity,
+      PurchaseOrderDetailEntity,
+      WarehouseReceiptEntity,
+      ProductSerialEntity
+    ]),
     JwtModule.register({
       secret: process.env.JWT_SECRET_KEY
     }),
     UsersModule
   ],
-  controllers: [InventoryController, PurchaseOrderController],
+  controllers: [InventoryController, PurchaseOrderController, WarehouseReceiptController],
   providers: [
     {
       provide: 'IInventoryService',
@@ -30,9 +36,13 @@ import { JwtModule } from '@nestjs/jwt'
     {
       provide: 'IPurchaseOrderService',
       useClass: PurchaseOrderService
+    },
+    {
+      provide: 'IWarehouseReceiptService',
+      useClass: WarehouseReceiptService
     }
   ],
-  exports: ['IInventoryService', 'IPurchaseOrderService']
+  exports: ['IInventoryService', 'IPurchaseOrderService', 'IWarehouseReceiptService']
 })
 export class InventoryModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
@@ -41,6 +51,8 @@ export class InventoryModule implements NestModule {
       .exclude({ path: 'inventories', method: RequestMethod.GET })
       .exclude({ path: 'purchaseOrders', method: RequestMethod.GET })
       .exclude({ path: 'purchaseOrders/:id', method: RequestMethod.GET })
-      .forRoutes(InventoryController, PurchaseOrderController)
+      .exclude({ path: 'warehouseReceipts', method: RequestMethod.GET })
+      .exclude({ path: 'warehouseReceipts/:id', method: RequestMethod.GET })
+      .forRoutes(InventoryController, PurchaseOrderController, WarehouseReceiptController)
   }
 }

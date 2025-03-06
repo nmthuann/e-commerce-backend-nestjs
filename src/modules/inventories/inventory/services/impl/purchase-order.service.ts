@@ -10,7 +10,7 @@ import { CreatePurchaseOrderDto } from '../../domain/dtos/create-purchase-order.
 import { GetPurchaseOrdersQueryDto } from '../../domain/dtos/get-purchase-orders-query.dto'
 import { PurchaseOrderDto } from '../../domain/dtos/purchase-order.dto'
 import { IEmployeeService } from 'src/modules/users/services/employee.service.interface'
-import { PurchaseOrderQueryType } from '../../domain/dtos/purchase-order-query.type'
+import { PurchaseOrderQueryType } from '../../domain/types/purchase-order-query.type'
 import { mapAttributes } from 'src/utils/map'
 
 @Injectable()
@@ -77,7 +77,7 @@ export class PurchaseOrderService implements IPurchaseOrderService {
         orderNumber: orderNumber,
         supplier: { id: data.supplierId },
         employee: { id: getEmployee.id },
-        orderDate: new Date()
+        orderDate: data.orderDate
       })
       .returning('*')
       .execute()

@@ -1,7 +1,17 @@
-import { Column, Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn, CreateDateColumn, OneToMany } from 'typeorm'
+import {
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  JoinColumn,
+  CreateDateColumn,
+  OneToMany,
+  OneToOne
+} from 'typeorm'
 import { SupplierEntity } from '../../../supplier/supplier.entity'
 import { EmployeeEntity } from 'src/modules/users/domain/entities/employee.entity'
 import { PurchaseOrderDetailEntity } from './purchase-order-detail.entity'
+import { WarehouseReceiptEntity } from './warehouse-receipt.entity'
 
 @Entity({ name: 'purchase_orders' })
 export class PurchaseOrderEntity {
@@ -24,4 +34,7 @@ export class PurchaseOrderEntity {
 
   @OneToMany(() => PurchaseOrderDetailEntity, purchaseOrderDetail => purchaseOrderDetail.purchaseOrder)
   purchaseOrderDetails!: PurchaseOrderDetailEntity[]
+
+  @OneToOne(() => WarehouseReceiptEntity, { onDelete: 'SET NULL' })
+  warehouseReceipt: WarehouseReceiptEntity
 }
