@@ -6,5 +6,6 @@ export class PurchaseOrderDto {
   supplierId: number
   employeeId: number
   orderDate: Date
+  createdAt: Date
   purchaseOrderDetails: PurchaseOrderDetailDto[]
 }

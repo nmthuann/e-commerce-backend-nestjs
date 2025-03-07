@@ -1,9 +1,10 @@
-import { Body, Controller, Get, HttpCode, Inject, Param, Post, Request, UseGuards } from '@nestjs/common'
+import { Body, Controller, Get, HttpCode, Inject, Param, Post, Query, Request, UseGuards } from '@nestjs/common'
 import { IPurchaseOrderService } from '../services/purchase-order.service.interface'
 import { CreatePurchaseOrderDto } from '../domain/dtos/create-purchase-order.dto'
 import { UserRequest } from 'src/modules/users/domain/dtos/request/user.request'
 import { AdminRoleGuard } from 'src/guards/admin-role.guard'
 import { CreatePurchaseOrderDetailDto } from '../domain/dtos/create-purchase-order-detail.dto'
+import { GetPurchaseOrdersQueryDto } from '../domain/dtos/get-purchase-orders-query.dto'
 
 @Controller('purchaseOrders')
 export class PurchaseOrderController {
@@ -11,6 +12,15 @@ export class PurchaseOrderController {
     @Inject('IPurchaseOrderService')
     private readonly purchaseOrderService: IPurchaseOrderService
   ) {}
+
+  @Get()
+  async getData(@Query() query: GetPurchaseOrdersQueryDto) {
+    console.log(query)
+    if (query.orderNumber) {
+      return await this.purchaseOrderService.getOneByOrderNumber(query.orderNumber)
+    }
+    return await this.purchaseOrderService.getAllWithPagination(query)
+  }
 
   @Get(':id')
   async getOneById(@Param('id') id: number) {

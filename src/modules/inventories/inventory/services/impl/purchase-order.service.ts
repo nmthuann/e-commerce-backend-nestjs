@@ -12,6 +12,8 @@ import { PurchaseOrderDto } from '../../domain/dtos/purchase-order.dto'
 import { IEmployeeService } from 'src/modules/users/services/employee.service.interface'
 import { PurchaseOrderQueryType } from '../../domain/types/purchase-order-query.type'
 import { mapAttributes } from 'src/utils/map'
+import { PageMetaDto } from 'src/common/dtos/page-meta.dto'
+import { PurchaseOrderResponse } from '../../domain/dtos/purchase-order.response'
 
 @Injectable()
 export class PurchaseOrderService implements IPurchaseOrderService {
@@ -23,10 +25,9 @@ export class PurchaseOrderService implements IPurchaseOrderService {
     @Inject('IEmployeeService')
     private readonly employeeService: IEmployeeService
   ) {}
-
-  async getOneById(id: number): Promise<PurchaseOrderDto> {
+  async getOneByOrderNumber(orderNumber: string): Promise<PurchaseOrderDto> {
     const findPurchaseOrder = await this.purchaseOrderRepository.findOne({
-      where: { id },
+      where: { orderNumber: orderNumber },
       relations: ['supplier', 'employee', 'purchaseOrderDetails', 'purchaseOrderDetails.sku']
     })
     if (!findPurchaseOrder) {
@@ -38,6 +39,7 @@ export class PurchaseOrderService implements IPurchaseOrderService {
       supplierId: findPurchaseOrder.supplier.id,
       employeeId: findPurchaseOrder.employee.id,
       orderDate: findPurchaseOrder.orderDate,
+      createdAt: findPurchaseOrder.createdAt,
       purchaseOrderDetails: findPurchaseOrder.purchaseOrderDetails.map(dto => ({
         sku: {
           id: dto.sku.id,
@@ -55,8 +57,37 @@ export class PurchaseOrderService implements IPurchaseOrderService {
     }
   }
 
-  getPurchaseOrdersWithPagination(query: GetPurchaseOrdersQueryDto): Promise<PageDto<PurchaseOrderDto>> {
-    throw new Error('Method not implemented.')
+  async getOneById(id: number): Promise<PurchaseOrderDto> {
+    const findPurchaseOrder = await this.purchaseOrderRepository.findOne({
+      where: { id },
+      relations: ['supplier', 'employee', 'purchaseOrderDetails', 'purchaseOrderDetails.sku']
+    })
+    if (!findPurchaseOrder) {
+      throw new NotFoundException('Purchase Order Not Found')
+    }
+    return {
+      id: findPurchaseOrder.id,
+      orderNumber: findPurchaseOrder.orderNumber,
+      supplierId: findPurchaseOrder.supplier.id,
+      employeeId: findPurchaseOrder.employee.id,
+      orderDate: findPurchaseOrder.orderDate,
+      createdAt: findPurchaseOrder.createdAt,
+
+      purchaseOrderDetails: findPurchaseOrder.purchaseOrderDetails.map(dto => ({
+        sku: {
+          id: dto.sku.id,
+          skuNo: dto.sku.skuNo,
+          barcode: dto.sku.barcode,
+          skuName: dto.sku.skuName,
+          image: dto.sku.image,
+          status: dto.sku.status,
+          skuAttributes: mapAttributes(dto.sku.skuAttributes),
+          slug: dto.sku.slug
+        },
+        quantity: dto.quantity,
+        unitPrice: dto.unitPrice
+      }))
+    }
   }
 
   async createOne(userId: string, data: CreatePurchaseOrderDto): Promise<PurchaseOrderDto> {
@@ -89,6 +120,7 @@ export class PurchaseOrderService implements IPurchaseOrderService {
       supplierId: recordCreated.supplier_id,
       employeeId: recordCreated.employee_id,
       orderDate: recordCreated.order_date,
+      createdAt: recordCreated.created_at,
       purchaseOrderDetails: []
     }
   }
@@ -109,5 +141,27 @@ export class PurchaseOrderService implements IPurchaseOrderService {
     const recordCreated = queryBuilder.raw[0]
     console.log(recordCreated)
     return await this.getOneById(id)
+  }
+
+  async getAllWithPagination(query: GetPurchaseOrdersQueryDto): Promise<PageDto<PurchaseOrderResponse>> {
+    const [data, total] = await this.purchaseOrderRepository.findAndCount({
+      where: { orderDate: query.orderDate },
+      relations: ['supplier', 'employee'],
+      order: { orderDate: query.order },
+      skip: query.skip,
+      take: query.take
+    })
+
+    console.log('data', Math.ceil(total / query.take))
+    const pageMeta = new PageMetaDto({ pageOptionsDto: query, itemCount: total })
+    const res: PurchaseOrderResponse[] = data.map(response => ({
+      id: response.id,
+      supplierId: response.supplier.id,
+      employeeId: response.employee.id,
+      orderDate: response.orderDate,
+      orderNumber: response.orderNumber,
+      createdAt: response.createdAt
+    }))
+    return new PageDto(res, pageMeta)
   }
 }

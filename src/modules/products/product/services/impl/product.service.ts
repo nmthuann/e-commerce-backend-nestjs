@@ -53,7 +53,7 @@ export class ProductService implements IProductService {
     return category
   }
 
-  async getProductsWithPagination(query: GetProductsQueryDto): Promise<PageDto<ProductResponse>> {
+  async getAllWithPagination(query: GetProductsQueryDto): Promise<PageDto<ProductResponse>> {
     const { categoryUrl, brandUrl, search, order, page, take } = query
 
     const queryBuilder = this.productRepository

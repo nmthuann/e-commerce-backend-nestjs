@@ -29,8 +29,11 @@ export class PurchaseOrderEntity {
   @JoinColumn({ name: 'employee_id' })
   employee: EmployeeEntity
 
-  @CreateDateColumn({ name: 'order_date', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @Column({ name: 'order_date', type: 'date', nullable: false })
   orderDate: Date
+
+  @CreateDateColumn({ name: 'created_at', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  createdAt: Date
 
   @OneToMany(() => PurchaseOrderDetailEntity, purchaseOrderDetail => purchaseOrderDetail.purchaseOrder)
   purchaseOrderDetails!: PurchaseOrderDetailEntity[]

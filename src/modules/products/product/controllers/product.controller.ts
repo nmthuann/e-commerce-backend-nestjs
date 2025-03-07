@@ -15,6 +15,6 @@ export class ProductController {
     if (query.slug) {
       return await this.productService.getProductBySlug(query.slug)
     }
-    return await this.productService.getProductsWithPagination(query)
+    return await this.productService.getAllWithPagination(query)
   }
 }

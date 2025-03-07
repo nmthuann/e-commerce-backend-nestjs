@@ -4,4 +4,5 @@ export type PurchaseOrderQueryType = {
   supplier_id: number
   employee_id: number
   order_date: Date
+  created_at: Date
 }
