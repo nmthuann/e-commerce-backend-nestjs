@@ -144,10 +144,14 @@ export class PurchaseOrderService implements IPurchaseOrderService {
   }
 
   async getAllWithPagination(query: GetPurchaseOrdersQueryDto): Promise<PageDto<PurchaseOrderResponse>> {
+    const whereCondition = query.orderDate ? { orderDate: query.orderDate } : {}
+
     const [data, total] = await this.purchaseOrderRepository.findAndCount({
-      where: { orderDate: query.orderDate },
+      where: whereCondition,
       relations: ['supplier', 'employee'],
-      order: { orderDate: query.order },
+      order: {
+        id: query.order || 'ASC'
+      },
       skip: query.skip,
       take: query.take
     })
