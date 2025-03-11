@@ -4,7 +4,7 @@ import { AdminRoleGuard } from 'src/guards/admin-role.guard'
 import { CreateWarehouseReceiptDto } from '../domain/dtos/create-warehouse-receipt.dto'
 import { UserRequest } from 'src/modules/users/domain/dtos/request/user.request'
 import { CreateProductSerialDto } from '../domain/dtos/create-product-serial.dto'
-import { GetWarehouseReceiptsQueryDto } from '../domain/dtos/get-warehouse-receupot-query.dto'
+import { GetWarehouseReceiptsQueryDto } from '../domain/dtos/get-warehouse-receipts-query.dto'
 
 @Controller('warehouseReceipts')
 export class WarehouseReceiptController {

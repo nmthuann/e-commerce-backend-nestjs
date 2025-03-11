@@ -4,16 +4,16 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { IProductSkuService } from '../product-sku.service.interface'
 import { ProductSkuDto } from '../../domain/dtos/product-sku.dto'
-import { IInventoryService } from 'src/modules/inventories/inventory/services/inventory.service.interface'
 import { mapAttributes } from 'src/utils/map'
+import { IProductSerialService } from 'src/modules/inventories/inventory/services/product-serial.service.interface'
 
 @Injectable()
 export class ProductSkuService implements IProductSkuService {
   constructor(
     @InjectRepository(ProductSkuEntity)
     private readonly productSkuRepository: Repository<ProductSkuEntity>,
-    @Inject('IInventoryService')
-    private readonly inventoryService: IInventoryService
+    @Inject('IProductSerialService')
+    private readonly productSerialService: IProductSerialService
   ) {}
 
   async getOneById(id: number): Promise<ProductSkuDto> {
@@ -55,7 +55,7 @@ export class ProductSkuService implements IProductSkuService {
     return {
       ...productSku,
       skuAttributes: mapAttributes(productSku.skuAttributes),
-      stock: (await this.inventoryService.getStock(productSku.id)) || 0
+      stock: (await this.productSerialService.getStock(productSku.id)) || 0
     }
   }
 }

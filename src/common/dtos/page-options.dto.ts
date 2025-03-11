@@ -16,7 +16,7 @@ export class PageOptionsDto {
   @IsInt()
   @Min(1)
   @Max(20)
-  readonly take: number = 5
+  readonly take: number = 10
 
   get skip(): number {
     return (this.page - 1) * this.take

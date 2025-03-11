@@ -1,7 +1,7 @@
 import { PageDto } from 'src/common/dtos/page.dto'
 import { CreateProductSerialDto } from '../domain/dtos/create-product-serial.dto'
 import { CreateWarehouseReceiptDto } from '../domain/dtos/create-warehouse-receipt.dto'
-import { GetWarehouseReceiptsQueryDto } from '../domain/dtos/get-warehouse-receupot-query.dto'
+import { GetWarehouseReceiptsQueryDto } from '../domain/dtos/get-warehouse-receipts-query.dto'
 import { WarehouseReceiptDto } from '../domain/dtos/warehouse-receipt.dto'
 import { WarehouseReceiptResponse } from '../domain/dtos/warehouse-receipt.response'
 

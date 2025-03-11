@@ -9,7 +9,7 @@ import { CreateWarehouseReceiptDto } from '../../domain/dtos/create-warehouse-re
 import { WarehouseReceiptDto } from '../../domain/dtos/warehouse-receipt.dto'
 import { IEmployeeService } from 'src/modules/users/services/employee.service.interface'
 import { WarehouseReceiptQueryType } from '../../domain/types/warehouse-receipt-query.type'
-import { GetWarehouseReceiptsQueryDto } from '../../domain/dtos/get-warehouse-receupot-query.dto'
+import { GetWarehouseReceiptsQueryDto } from '../../domain/dtos/get-warehouse-receipts-query.dto'
 import { PageDto } from 'src/common/dtos/page.dto'
 import { WarehouseReceiptResponse } from '../../domain/dtos/warehouse-receipt.response'
 import { PageMetaDto } from 'src/common/dtos/page-meta.dto'
@@ -28,23 +28,19 @@ export class WarehouseReceiptService implements IWarehouseReceiptService {
   async getOneById(id: number): Promise<WarehouseReceiptDto> {
     const findWarehouseReceipt = await this.warehouseReceiptRepository.findOne({
       where: { id },
-      relations: ['purchaseOrder', 'employee', 'productSerials']
+      relations: ['purchaseOrder', 'employee']
     })
     if (!findWarehouseReceipt) {
       throw new NotFoundException('Purchase Order Not Found')
     }
+    console.log('findWarehouseReceipt:::', findWarehouseReceipt.productSerials)
     return {
       id: findWarehouseReceipt.id,
       receiptNumber: findWarehouseReceipt.receiptNumber,
       purchaseOrderId: findWarehouseReceipt.purchaseOrder.id,
       receiptDate: findWarehouseReceipt.receiptDate,
       employeeId: findWarehouseReceipt.employee.id,
-      createdAt: findWarehouseReceipt.createdAt,
-      productSerials: findWarehouseReceipt.productSerials.map(dto => ({
-        id: dto.id,
-        serialNumber: dto.serialNumber,
-        dateManufactured: dto.dateManufactured
-      }))
+      createdAt: findWarehouseReceipt.createdAt
     }
   }
 
@@ -78,8 +74,7 @@ export class WarehouseReceiptService implements IWarehouseReceiptService {
       purchaseOrderId: recordCreated.purchase_order_id,
       employeeId: recordCreated.employee_id,
       receiptDate: recordCreated.receipt_date,
-      createdAt: recordCreated.created_at,
-      productSerials: []
+      createdAt: recordCreated.created_at
     }
   }
 
@@ -146,12 +141,7 @@ export class WarehouseReceiptService implements IWarehouseReceiptService {
       purchaseOrderId: findWarehouseReceipt.purchaseOrder.id,
       employeeId: findWarehouseReceipt.employee.id,
       receiptDate: findWarehouseReceipt.receiptDate,
-      createdAt: findWarehouseReceipt.createdAt,
-      productSerials: findWarehouseReceipt.productSerials.map(dto => ({
-        id: dto.id,
-        serialNumber: dto.serialNumber,
-        dateManufactured: dto.dateManufactured
-      }))
+      createdAt: findWarehouseReceipt.createdAt
     }
   }
 }

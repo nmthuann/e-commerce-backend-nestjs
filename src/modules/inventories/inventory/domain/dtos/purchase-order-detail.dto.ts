@@ -6,7 +6,7 @@ export class PurchaseOrderDetailDto {
   unitPrice: number
 }
 
-type SkuDto = {
+export type SkuDto = {
   id: number
   skuNo: string
   barcode: string

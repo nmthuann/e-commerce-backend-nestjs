@@ -1,8 +1,6 @@
 import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { ProductSerialEntity } from './domain/entities/product-serial.entity'
-import { InventoryController } from './controllers/inventory.controller'
-import { InventoryService } from './services/impl/inventory.service'
 import { UsersModule } from 'src/modules/users/users.module'
 import { PurchaseOrderService } from './services/impl/purchase-order.service'
 import { PurchaseOrderController } from './controllers/purchase-order.controller'
@@ -13,6 +11,8 @@ import { JwtModule } from '@nestjs/jwt'
 import { WarehouseReceiptService } from './services/impl/warehouse-receipt.service'
 import { WarehouseReceiptController } from './controllers/warehouse-receipt.controller'
 import { WarehouseReceiptEntity } from './domain/entities/warehouse-receipt.entity'
+import { ProductSerialService } from './services/impl/product-serial.service'
+import { ProductSerialController } from './controllers/product-serial.controller'
 
 @Module({
   imports: [
@@ -27,11 +27,11 @@ import { WarehouseReceiptEntity } from './domain/entities/warehouse-receipt.enti
     }),
     UsersModule
   ],
-  controllers: [InventoryController, PurchaseOrderController, WarehouseReceiptController],
+  controllers: [ProductSerialController, PurchaseOrderController, WarehouseReceiptController],
   providers: [
     {
-      provide: 'IInventoryService',
-      useClass: InventoryService
+      provide: 'IProductSerialService',
+      useClass: ProductSerialService
     },
     {
       provide: 'IPurchaseOrderService',
@@ -42,17 +42,17 @@ import { WarehouseReceiptEntity } from './domain/entities/warehouse-receipt.enti
       useClass: WarehouseReceiptService
     }
   ],
-  exports: ['IInventoryService', 'IPurchaseOrderService', 'IWarehouseReceiptService']
+  exports: ['IProductSerialService', 'IPurchaseOrderService', 'IWarehouseReceiptService']
 })
 export class InventoryModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(AuthMiddleware)
-      .exclude({ path: 'inventories', method: RequestMethod.GET })
+      .exclude({ path: 'productSerials', method: RequestMethod.GET })
       .exclude({ path: 'purchaseOrders', method: RequestMethod.GET })
       .exclude({ path: 'purchaseOrders/:id', method: RequestMethod.GET })
       .exclude({ path: 'warehouseReceipts', method: RequestMethod.GET })
       .exclude({ path: 'warehouseReceipts/:id', method: RequestMethod.GET })
-      .forRoutes(InventoryController, PurchaseOrderController, WarehouseReceiptController)
+      .forRoutes(ProductSerialController, PurchaseOrderController, WarehouseReceiptController)
   }
 }

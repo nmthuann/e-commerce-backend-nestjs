@@ -16,7 +16,7 @@ import { ProductSkuDto } from '../../domain/dtos/product-sku.dto'
 import { SpuSkuMappingDto } from '../../domain/dtos/spu-sku-mapping.dto'
 import { mapAttributes } from 'src/utils/map'
 import { SpuSkuMappingType, SpuSkusType } from '../../domain/types/spu-sku-mapping.type'
-import { IInventoryService } from 'src/modules/inventories/inventory/services/inventory.service.interface'
+import { IProductSerialService } from 'src/modules/inventories/inventory/services/product-serial.service.interface'
 
 @Injectable()
 export class ProductService implements IProductService {
@@ -33,8 +33,8 @@ export class ProductService implements IProductService {
     @InjectRepository(SpuSkuMappingEntity)
     private readonly supSkuMappingRepository: Repository<SpuSkuMappingEntity>,
 
-    @Inject('IInventoryService')
-    private readonly inventoryService: IInventoryService
+    @Inject('IProductSerialService')
+    private readonly productSerialService: IProductSerialService
   ) {}
 
   createOne(data: CreateProductDto): Promise<ProductDto> {
@@ -219,7 +219,7 @@ export class ProductService implements IProductService {
         slug: spuSku.slug,
         sellingPrice: spuSku.sellingprice,
         displayPrice: spuSku.displayprice,
-        stock: (await this.inventoryService.getStock(spuSku.id)) || 0
+        stock: (await this.productSerialService.getStock(spuSku.id)) || 0
       }))
     )
 

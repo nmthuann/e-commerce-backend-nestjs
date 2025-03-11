@@ -1,5 +1,3 @@
-import { ProductSerialDto } from './product-serial.dto'
-
 export class WarehouseReceiptDto {
   id: number
   purchaseOrderId: number
@@ -7,5 +5,4 @@ export class WarehouseReceiptDto {
   receiptNumber: string
   receiptDate: Date
   createdAt: Date
-  productSerials: ProductSerialDto[]
 }
