@@ -25,6 +25,7 @@ export class PurchaseOrderService implements IPurchaseOrderService {
     @Inject('IEmployeeService')
     private readonly employeeService: IEmployeeService
   ) {}
+
   async getOneByOrderNumber(orderNumber: string): Promise<PurchaseOrderDto> {
     const findPurchaseOrder = await this.purchaseOrderRepository.findOne({
       where: { orderNumber: orderNumber },

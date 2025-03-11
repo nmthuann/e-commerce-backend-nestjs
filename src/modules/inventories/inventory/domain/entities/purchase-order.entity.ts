@@ -38,6 +38,6 @@ export class PurchaseOrderEntity {
   @OneToMany(() => PurchaseOrderDetailEntity, purchaseOrderDetail => purchaseOrderDetail.purchaseOrder)
   purchaseOrderDetails!: PurchaseOrderDetailEntity[]
 
-  @OneToOne(() => WarehouseReceiptEntity, { onDelete: 'SET NULL' })
+  @OneToOne(() => WarehouseReceiptEntity, warehouseReceipt => warehouseReceipt.purchaseOrder, { onDelete: 'SET NULL' })
   warehouseReceipt: WarehouseReceiptEntity
 }

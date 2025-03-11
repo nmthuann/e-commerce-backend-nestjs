@@ -20,14 +20,17 @@ export class WarehouseReceiptEntity {
   @Column({ name: 'receipt_number', type: 'varchar', length: 50, unique: true })
   receiptNumber: string
 
-  @OneToOne(() => PurchaseOrderEntity, { onDelete: 'CASCADE' })
+  @OneToOne(() => PurchaseOrderEntity, purchaseOrder => purchaseOrder.warehouseReceipt, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'purchase_order_id' })
   purchaseOrder: PurchaseOrderEntity
 
-  @CreateDateColumn({ name: 'receipt_date', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @Column({ name: 'receipt_date', type: 'date', nullable: false })
   receiptDate: Date
 
-  @ManyToOne(() => EmployeeEntity, { onDelete: 'CASCADE' })
+  @CreateDateColumn({ name: 'created_at', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  createdAt: Date
+
+  @ManyToOne(() => EmployeeEntity, employee => employee.id, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'employee_id' })
   employee: EmployeeEntity
 

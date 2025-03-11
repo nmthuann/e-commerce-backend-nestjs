@@ -4,4 +4,5 @@ export type WarehouseReceiptQueryType = {
   purchase_order_id: number
   employee_id: number
   receipt_date: Date
+  created_at: Date
 }
