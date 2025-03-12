@@ -6,12 +6,20 @@ import { IProductSkuService } from '../product-sku.service.interface'
 import { ProductSkuDto } from '../../domain/dtos/product-sku.dto'
 import { mapAttributes } from 'src/utils/map'
 import { IProductSerialService } from 'src/modules/inventories/inventory/services/product-serial.service.interface'
+import { ProductSkuResponse } from '../../domain/dtos/responses/product-sku.response'
+import { SpuSkuMappingEntity } from '../../domain/entities/spu-sku-mapping.entity'
+import { PriceResponse } from '../../domain/dtos/responses/price.response'
+import { PriceEntity } from '../../domain/entities/price.entity'
 
 @Injectable()
 export class ProductSkuService implements IProductSkuService {
   constructor(
     @InjectRepository(ProductSkuEntity)
     private readonly productSkuRepository: Repository<ProductSkuEntity>,
+    @InjectRepository(SpuSkuMappingEntity)
+    private readonly spuSkuMappingRepository: Repository<SpuSkuMappingEntity>,
+    @InjectRepository(PriceEntity)
+    private readonly priceRepository: Repository<PriceEntity>,
     @Inject('IProductSerialService')
     private readonly productSerialService: IProductSerialService
   ) {}
@@ -57,5 +65,45 @@ export class ProductSkuService implements IProductSkuService {
       skuAttributes: mapAttributes(productSku.skuAttributes),
       stock: (await this.productSerialService.getStock(productSku.id)) || 0
     }
+  }
+
+  async getAllByProductId(productId: number): Promise<ProductSkuResponse[]> {
+    const spuSkus = await this.spuSkuMappingRepository.find({
+      where: { spu: { id: productId } },
+      relations: ['sku']
+    })
+
+    if (!spuSkus) {
+      throw new NotFoundException(`Product with id ${productId} not found`)
+    }
+
+    const res: ProductSkuResponse[] = await Promise.all(
+      spuSkus.map(async spuSku => ({
+        id: spuSku.sku.id,
+        skuNo: spuSku.sku.skuNo,
+        barcode: spuSku.sku.barcode,
+        skuName: spuSku.sku.skuName,
+        image: spuSku.sku.image,
+        status: spuSku.sku.status,
+        slug: spuSku.sku.slug,
+        skuAttributes: mapAttributes(spuSku.sku.skuAttributes),
+        stock: await this.productSerialService.getStock(spuSku.sku.id)
+      }))
+    )
+    return res
+  }
+
+  async getPricesById(id: number): Promise<PriceResponse[]> {
+    const prices = await this.priceRepository.find({ where: { productSkuId: id } })
+    if (!prices) {
+      throw new NotFoundException(`Product SKU with id ${id} not found`)
+    }
+    return prices.map(price => ({
+      productSkuId: price.productSkuId,
+      beginAt: price.beginAt,
+      sellingPrice: price.sellingPrice,
+      displayPrice: price.displayPrice,
+      createdAt: price.createdAt
+    }))
   }
 }

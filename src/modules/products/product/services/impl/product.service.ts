@@ -1,8 +1,6 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common'
 import { Repository } from 'typeorm'
 import { InjectRepository } from '@nestjs/typeorm'
-import { BrandEntity } from '../../../brand/brand.entity'
-import { CategoryEntity } from '../../../category/category.entity'
 import { ProductEntity } from '../../domain/entities/product.entity'
 import { IProductService } from '../product.service.interface'
 import { PageDto } from 'src/common/dtos/page.dto'
@@ -21,12 +19,6 @@ import { IProductSerialService } from 'src/modules/inventories/inventory/service
 @Injectable()
 export class ProductService implements IProductService {
   constructor(
-    @InjectRepository(BrandEntity)
-    private readonly brandRepository: Repository<BrandEntity>,
-
-    @InjectRepository(CategoryEntity)
-    private readonly categoryRepository: Repository<CategoryEntity>,
-
     @InjectRepository(ProductEntity)
     private readonly productRepository: Repository<ProductEntity>,
 
@@ -41,18 +33,6 @@ export class ProductService implements IProductService {
     throw new Error('Method not implemented.')
   }
 
-  private async getBrandByBrandUrl(brandUrl: string): Promise<BrandEntity> {
-    const brand = await this.brandRepository.findOne({ where: { brandUrl } })
-    if (!brand) throw new NotFoundException(`Brand '${brandUrl}' not found`)
-    return brand
-  }
-
-  private async getCategoryByCategoryUrl(categoryUrl: string): Promise<CategoryEntity> {
-    const category = await this.categoryRepository.findOne({ where: { categoryUrl } })
-    if (!category) throw new NotFoundException(`Category '${categoryUrl}' not found`)
-    return category
-  }
-
   async getAllWithPagination(query: GetProductsQueryDto): Promise<PageDto<ProductResponse>> {
     const { categoryUrl, brandUrl, search, order, page, take } = query
 
@@ -63,6 +43,10 @@ export class ProductService implements IProductService {
       .select([
         'product.id',
         'product.productName',
+        'product.productLine',
+        'product.status',
+        'product.description',
+        'product.productSpecs',
         'product.slug',
         'category.categoryName',
         'category.categoryUrl',
@@ -139,6 +123,10 @@ export class ProductService implements IProductService {
     const res: ProductResponse[] = rawProducts.map(product => ({
       id: product.id,
       productName: product.productName,
+      productLine: product.productLine,
+      status: product.status,
+      description: product.description,
+      productSpecs: mapAttributes(product.productSpecs),
       slug: product.slug,
       categoryName: product.category?.categoryName || null,
       categoryUrl: product.category?.categoryUrl || null,
@@ -151,8 +139,21 @@ export class ProductService implements IProductService {
     return new PageDto(res, pageMeta)
   }
 
-  getOneById(id: number): Promise<ProductDto> {
-    throw new Error('Method not implemented.')
+  async getOneById(id: number): Promise<ProductDto> {
+    const product = await this.productRepository.findOne({ where: { id }, relations: ['brand'] })
+    if (!product) {
+      throw new NotFoundException(`Product with slug "${id}" not found`)
+    }
+    return {
+      id: product.id,
+      productName: product.productName,
+      slug: product.slug,
+      productLine: product.productLine,
+      description: product.description,
+      status: product.status,
+      productSpecs: mapAttributes(product.productSpecs),
+      brandName: product.brand.brandName
+    }
   }
 
   async getProductBySlug(slug: string): Promise<SpuSkuMappingDto> {

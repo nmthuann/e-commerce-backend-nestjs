@@ -32,7 +32,19 @@ export class ProductResponse {
   productName: string
 
   @ApiProperty()
+  productLine: string
+
+  @ApiProperty()
+  status: boolean
+
+  @ApiProperty()
   slug: string
+
+  @ApiProperty()
+  description: string
+
+  @ApiProperty()
+  productSpecs: Attribute[]
 
   @ApiProperty({ required: false })
   categoryName?: string
