@@ -14,9 +14,9 @@ import { AuthModule } from './modules/auth/auth.module'
     TypeOrmModule.forRoot(AppDataSource.options),
     AuthModule,
     UsersModule,
+    OrdersModule,
     ProductsModule,
-    InventoriesModule,
-    OrdersModule
+    InventoriesModule
   ],
   controllers: [AppController],
   providers: [AppService]
