@@ -11,13 +11,14 @@ import { InvoiceController } from './controllers/invoice.controller'
 import { OrderService } from './services/impl/order.service'
 import { InvoiceService } from './services/impl/invoice.service'
 import { WarrantyService } from './services/impl/warranty.service'
+import { WarrantyController } from './controllers/warranty.controller'
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([OrderEntity, OrderDetailEntity, InvoiceEntity, WarrantyEntity, WarrantyDetailEntity]),
     UsersModule
   ],
-  controllers: [OrderController, InvoiceController, WarrantyEntity, WarrantyDetailEntity],
+  controllers: [OrderController, InvoiceController, WarrantyController],
   providers: [
     {
       provide: 'IOrderService',

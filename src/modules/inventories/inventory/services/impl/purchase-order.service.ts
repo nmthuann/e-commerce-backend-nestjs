@@ -159,6 +159,7 @@ export class PurchaseOrderService implements IPurchaseOrderService {
 
     console.log('data', Math.ceil(total / query.take))
     const pageMeta = new PageMetaDto({ pageOptionsDto: query, itemCount: total })
+
     const res: PurchaseOrderResponse[] = data.map(response => ({
       id: response.id,
       supplierId: response.supplier.id,
@@ -167,6 +168,7 @@ export class PurchaseOrderService implements IPurchaseOrderService {
       orderNumber: response.orderNumber,
       createdAt: response.createdAt
     }))
+
     return new PageDto(res, pageMeta)
   }
 }

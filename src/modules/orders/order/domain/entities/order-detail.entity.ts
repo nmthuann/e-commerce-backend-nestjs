@@ -1,4 +1,4 @@
-import { Entity, Column, ManyToOne, JoinColumn, PrimaryColumn } from 'typeorm'
+import { Entity, Column, ManyToOne, JoinColumn, PrimaryColumn, OneToOne } from 'typeorm'
 import { OrderEntity } from './order.entity'
 import { ProductSerialEntity } from 'src/modules/inventories/inventory/domain/entities/product-serial.entity'
 
@@ -10,17 +10,17 @@ export class OrderDetailEntity {
   @PrimaryColumn({ name: 'product_serial_id', type: 'uuid' })
   productSerialId: string
 
-  @ManyToOne(() => OrderEntity, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'order_id' })
-  order: OrderEntity
-
-  @ManyToOne(() => ProductSerialEntity, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'product_serial_id' })
-  productSerial: ProductSerialEntity
-
   @Column({ name: 'unit_price', type: 'numeric', precision: 10, scale: 2, default: 0.0 })
   unitPrice: number
 
   @Column({ name: 'tax', type: 'numeric', precision: 5, scale: 2, default: 0.0 })
   tax: number // Phần trăm thuế (%)
+
+  @ManyToOne(() => OrderEntity, order => order.orderDetails, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'order_id' })
+  order: OrderEntity
+
+  @OneToOne(() => ProductSerialEntity, productSerial => productSerial.orderDetail, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'product_serial_id' })
+  productSerial: ProductSerialEntity
 }

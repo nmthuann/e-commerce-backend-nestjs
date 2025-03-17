@@ -1,6 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMany, OneToOne } from 'typeorm'
 import { WarehouseReceiptEntity } from './warehouse-receipt.entity'
 import { ProductSkuEntity } from 'src/modules/products/product/domain/entities/product-sku.entity'
+import { OrderDetailEntity } from 'src/modules/orders/order/domain/entities/order-detail.entity'
 
 @Entity({ name: 'product_serials' })
 export class ProductSerialEntity {
@@ -22,4 +23,7 @@ export class ProductSerialEntity {
   })
   @JoinColumn({ name: 'warehouse_receipt_id' })
   warehouseReceipt: WarehouseReceiptEntity
+
+  @OneToOne(() => OrderDetailEntity, orderDetail => orderDetail.productSerial)
+  orderDetail: OrderDetailEntity
 }

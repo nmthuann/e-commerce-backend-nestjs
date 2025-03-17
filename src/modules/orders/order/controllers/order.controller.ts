@@ -1,4 +1,4 @@
-import { Controller, Get, Inject, Query } from '@nestjs/common'
+import { Controller, Get, Inject, Param, Query } from '@nestjs/common'
 import { IOrderService } from '../services/order.service.interface'
 import { GetOrdersQueryDto } from '../domain/dtos/get-orders-query.dto'
 
@@ -12,5 +12,10 @@ export class OrderController {
   @Get('')
   async getAll(@Query() query: GetOrdersQueryDto) {
     return await this.orderService.getAllWithPagination(query)
+  }
+
+  @Get(':id')
+  async getOneById(@Param('id') id: number) {
+    return await this.orderService.getOneById(id)
   }
 }

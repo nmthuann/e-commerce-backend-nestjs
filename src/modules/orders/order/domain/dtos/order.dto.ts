@@ -1,6 +1,4 @@
-import { OrderCustomerDto } from './order-customer.dto'
 import { OrderDetailDto } from './order-detail.dto'
-import { OrderEmployeeDto } from './order-employee.dto'
 
 export class OrderDto {
   id: number
@@ -16,7 +14,7 @@ export class OrderDto {
   shippingFee: number
   discount: number
   postcode?: string
-  customer: OrderCustomerDto
-  employee: OrderEmployeeDto
+  // customer: OrderCustomerDto
+  // employee: OrderEmployeeDto
   orderDetails: OrderDetailDto[]
 }

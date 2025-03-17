@@ -5,11 +5,13 @@ import {
   ManyToOne,
   JoinColumn,
   CreateDateColumn,
-  UpdateDateColumn
+  UpdateDateColumn,
+  OneToMany
 } from 'typeorm'
 import { EmployeeEntity } from 'src/modules/users/domain/entities/employee.entity'
 import { OrderStatus } from 'src/constants/order-status.enum'
 import { UserEntity } from 'src/modules/users/domain/entities/user.entity'
+import { OrderDetailEntity } from './order-detail.entity'
 
 @Entity({ name: 'orders' })
 export class OrderEntity {
@@ -64,4 +66,7 @@ export class OrderEntity {
 
   @Column({ type: 'varchar', nullable: true })
   postcode?: string
+
+  @OneToMany(() => OrderDetailEntity, orderDetails => orderDetails.order)
+  orderDetails: OrderDetailEntity[]
 }

@@ -1,7 +1,7 @@
 import { ProductSerialDto } from 'src/modules/inventories/inventory/domain/dtos/product-serial.dto'
 
 export class OrderDetailDto {
-  productSerial: ProductSerialDto
+  productSerial: Omit<ProductSerialDto, 'sku'>
   unitPrice: number
   tax: number
 }
