@@ -1,6 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToOne } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToOne, OneToMany } from 'typeorm'
 import { PositionEntity } from './position.entity'
 import { UserEntity } from './user.entity'
+import { InvoiceEntity } from 'src/modules/orders/order/domain/entities/invoice.entity'
 
 @Entity({ name: 'employees' })
 export class EmployeeEntity {
@@ -26,4 +27,7 @@ export class EmployeeEntity {
 
   @Column({ type: 'varchar', length: 255, nullable: true })
   address: string
+
+  @OneToMany(() => InvoiceEntity, invoice => invoice.order)
+  invoices: InvoiceEntity[]
 }

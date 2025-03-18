@@ -1,7 +1,7 @@
-export class InvoiceDto {
+export class InvoiceResponse {
   id: number
   invoiceCode: string
-  order: number
+  orderId: number
   employeeId: number
   createdAt: Date
   taxCode: string

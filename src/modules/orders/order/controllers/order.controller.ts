@@ -11,6 +11,7 @@ export class OrderController {
 
   @Get('')
   async getAll(@Query() query: GetOrdersQueryDto) {
+    console.log('order - query:::', query)
     return await this.orderService.getAllWithPagination(query)
   }
 
