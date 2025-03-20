@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import { Inject, Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { OrderEntity } from '../../domain/entities/order.entity'
 import { Repository } from 'typeorm'
@@ -11,6 +11,7 @@ import { GetOrdersQueryDto } from '../../domain/dtos/get-orders-query.dto'
 import { OrderDto } from '../../domain/dtos/order.dto'
 import { OrderResponse } from '../../domain/dtos/order.response'
 import { PageMetaDto } from 'src/common/dtos/page-meta.dto'
+import { IUserService } from 'src/modules/users/services/user.service.interface'
 
 @Injectable()
 export class OrderService implements IOrderService {
@@ -18,7 +19,9 @@ export class OrderService implements IOrderService {
     @InjectRepository(OrderEntity)
     private readonly orderRepository: Repository<OrderEntity>,
     @InjectRepository(OrderDetailEntity)
-    private readonly orderDetailRepository: Repository<OrderDetailEntity>
+    private readonly orderDetailRepository: Repository<OrderDetailEntity>,
+    @Inject('IUserService')
+    private readonly userService: IUserService
   ) {}
 
   async getAllWithPagination(query: GetOrdersQueryDto): Promise<PageDto<OrderResponse>> {
@@ -93,13 +96,15 @@ export class OrderService implements IOrderService {
   async getOneById(id: number): Promise<OrderDto> {
     const findOrder = await this.orderRepository.findOne({
       where: { id },
-      relations: ['orderDetails', 'orderDetails.productSerial']
+      relations: ['orderDetails', 'orderDetails.productSerial', 'employee', 'user']
     })
     if (!findOrder) {
       throw new NotFoundException(`Order with id "${id}" not found`)
     }
     return {
       id: findOrder.id,
+      employee: await this.userService.getUserByEmployeeId(findOrder.employee.id),
+      user: await this.userService.getOneById(findOrder.user.id),
       status: findOrder.status,
       orderType: findOrder.orderType,
       shippingAddress: findOrder.shippingAddress,

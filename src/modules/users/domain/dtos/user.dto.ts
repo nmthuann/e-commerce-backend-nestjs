@@ -1,3 +1,4 @@
+import { PickType } from '@nestjs/swagger'
 import { Exclude } from 'class-transformer'
 
 export class UserDto {
@@ -19,3 +20,5 @@ export class UserDto {
   roleType: string
   authMethod: string
 }
+
+export class PublicUserDto extends PickType(UserDto, ['email', 'firstName', 'lastName', 'avatarUrl'] as const) {}

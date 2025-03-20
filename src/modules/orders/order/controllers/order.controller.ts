@@ -17,6 +17,7 @@ export class OrderController {
 
   @Get(':id')
   async getOneById(@Param('id') id: number) {
+    console.log('getOneById:::', id)
     return await this.orderService.getOneById(id)
   }
 }

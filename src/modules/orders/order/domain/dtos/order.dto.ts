@@ -1,7 +1,10 @@
 import { OrderDetailDto } from './order-detail.dto'
+import { PublicUserDto } from 'src/modules/users/domain/dtos/user.dto'
 
 export class OrderDto {
   id: number
+  employee: PublicUserDto
+  user: PublicUserDto
   status: string
   orderType: boolean
   shippingAddress: string
@@ -14,7 +17,5 @@ export class OrderDto {
   shippingFee: number
   discount: number
   postcode?: string
-  // customer: OrderCustomerDto
-  // employee: OrderEmployeeDto
   orderDetails: OrderDetailDto[]
 }

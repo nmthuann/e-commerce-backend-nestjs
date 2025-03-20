@@ -15,12 +15,14 @@ export class CartController {
   @Get()
   @UseGuards(UserRoleGuard)
   async getCart(@Request() req: UserRequest): Promise<CartDto> {
+    console.log('GET /carts:::', req.userId)
     return await this.cartService.getCart(req.userId)
   }
 
   @Post()
-  async createOne(@Body() data: CreateCartDto): Promise<CartDto> {
-    const userId = ''
-    return await this.cartService.createOne(userId, data)
+  @UseGuards(UserRoleGuard)
+  async createOne(@Request() req: UserRequest, @Body() data: CreateCartDto): Promise<CartDto> {
+    console.log('POST /carts:::', req.userId)
+    return await this.cartService.createOne(req.userId, data)
   }
 }

@@ -1,7 +1,7 @@
 import { Controller, Get, Inject, Query, UseGuards, Request } from '@nestjs/common'
 import { IUserService } from '../services/user.service.interface'
-import { UserRoleGuard } from 'src/guards/user-role.guard'
 import { UserRequest } from '../domain/dtos/request/user.request'
+import { CommonRoleGuard } from 'src/guards/common-role.guard'
 
 @Controller('users')
 export class UserController {
@@ -17,7 +17,7 @@ export class UserController {
   }
 
   @Get('me')
-  @UseGuards(UserRoleGuard)
+  @UseGuards(CommonRoleGuard)
   async getProfile(@Request() req: UserRequest) {
     console.log('Thông tin Profile User:', req.userId)
     return await this.userService.getOneById(req.userId)

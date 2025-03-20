@@ -41,6 +41,7 @@ export class UsersModule implements NestModule {
     consumer
       .apply(AuthMiddleware)
       .exclude({ path: 'users', method: RequestMethod.GET })
+
       .forRoutes(UserController, EmployeeController)
   }
 }
