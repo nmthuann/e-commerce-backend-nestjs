@@ -12,6 +12,8 @@ import { OrderService } from './services/impl/order.service'
 import { InvoiceService } from './services/impl/invoice.service'
 import { WarrantyService } from './services/impl/warranty.service'
 import { WarrantyController } from './controllers/warranty.controller'
+import { ConfigService } from '@nestjs/config'
+import { StripeService } from './services/impl/stripe.service'
 
 @Module({
   imports: [
@@ -31,6 +33,13 @@ import { WarrantyController } from './controllers/warranty.controller'
     {
       provide: 'IWarrantyService',
       useClass: WarrantyService
+    },
+
+    {
+      provide: 'STRIPE_API_KEY',
+      useFactory: async (configService: ConfigService) => configService.get('STRIPE_API_KEY'),
+      inject: [ConfigService],
+      useClass: StripeService
     }
   ],
   exports: ['IOrderService', 'IInvoiceService', 'IWarrantyService']

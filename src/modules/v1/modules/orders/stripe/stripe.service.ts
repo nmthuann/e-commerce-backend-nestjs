@@ -88,7 +88,6 @@ export class StripeService {
     switch (event.type) {
       case 'checkout.session.completed':
         const paymentIntent = event.data.object
-
         const address = paymentIntent?.customer_details?.address
         const addressComponents = [
           address?.line1,

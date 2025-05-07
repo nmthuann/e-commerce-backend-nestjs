@@ -21,8 +21,11 @@ export class ProductSkuController {
   }
 
   @Get(':id/prices')
-  async getPrices(@Param('id') id: number) {
+  async getPrices(@Query('current') current: boolean, @Param('id') id: number) {
     console.log('skuID:::', id)
+    if (current) {
+      return await this.productSkuService.getCurrentPriceById(id)
+    }
     return await this.productSkuService.getPricesById(id)
   }
 }

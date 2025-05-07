@@ -17,6 +17,10 @@ export class ProductSerialService implements IProductSerialService {
     private readonly productSerialRepository: Repository<ProductSerialEntity>
   ) {}
 
+  async getProductSerialsBySkuId(productSkuId: number): Promise<ProductSerialResponse[]> {
+    throw new Error('Method not implemented.')
+  }
+
   async getStock(productSkuId: number): Promise<number> {
     const createBuilder: Promise<InventoryDto> = this.productSerialRepository
       .createQueryBuilder('productSerial')

@@ -93,6 +93,7 @@ export class ProductSkuService implements IProductSkuService {
     return res
   }
 
+  // TODO: add pagination
   async getPricesById(id: number): Promise<PriceResponse[]> {
     const prices = await this.priceRepository.find({ where: { productSkuId: id } })
     if (!prices) {
@@ -105,5 +106,22 @@ export class ProductSkuService implements IProductSkuService {
       displayPrice: price.displayPrice,
       createdAt: price.createdAt
     }))
+  }
+
+  async getCurrentPriceById(id: number): Promise<PriceResponse> {
+    const price = await this.priceRepository.findOne({
+      where: { productSkuId: id },
+      order: { beginAt: 'DESC' }
+    })
+    if (!price) {
+      throw new NotFoundException(`Product SKU with id ${id} not found`)
+    }
+    return {
+      productSkuId: price.productSkuId,
+      beginAt: price.beginAt,
+      sellingPrice: price.sellingPrice,
+      displayPrice: price.displayPrice,
+      createdAt: price.createdAt
+    }
   }
 }

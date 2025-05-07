@@ -2,7 +2,7 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { CartItemEntity } from './cart-item.entity'
 import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common'
 import { ICartService } from './cart.service.interface'
-import { Repository } from 'typeorm'
+import { DataSource, Repository } from 'typeorm'
 import { CartDto, CartItemDto } from './dtos/cart.dto'
 import { CreateCartDto } from './dtos/create-cart.dto'
 import { IProductSkuService } from 'src/modules/products/product/services/product-sku.service.interface'
@@ -15,7 +15,8 @@ export class CartService implements ICartService {
     @InjectRepository(CartItemEntity)
     private readonly cartRepository: Repository<CartItemEntity>,
     @Inject('IProductSkuService')
-    private readonly productSkuService: IProductSkuService
+    private readonly productSkuService: IProductSkuService,
+    private readonly dataSource: DataSource
   ) {}
 
   async createOne(userId: string, data: CreateCartDto): Promise<CartDto> {
@@ -90,7 +91,40 @@ export class CartService implements ICartService {
     }
   }
 
-  deleteOne(userId: string, productSkuId: number): Promise<void> {
-    throw new Error('Method not implemented.')
+  async deleteOne(userId: string, productSkuId: number): Promise<void> {
+    try {
+      const result = await this.cartRepository.delete({ userId, productSkuId })
+
+      if (result.affected === 0) {
+        throw new Error('Không tìm thấy sản phẩm trong giỏ hàng')
+      }
+    } catch (error) {
+      console.error(`Lỗi khi xóa sản phẩm SKU ${productSkuId} khỏi giỏ hàng của user ${userId}:`, error)
+      throw new Error('Không thể xóa sản phẩm, vui lòng thử lại')
+    }
+  }
+
+  async deleteAllByUserId(userId: string): Promise<void> {
+    const queryRunner = this.dataSource.createQueryRunner()
+    await queryRunner.connect()
+    await queryRunner.startTransaction()
+
+    try {
+      const carts = await queryRunner.manager.find(CartItemEntity, {
+        where: { user: { id: userId } }
+      })
+
+      if (carts.length > 0) {
+        await queryRunner.manager.remove(CartItemEntity, carts)
+      }
+
+      await queryRunner.commitTransaction()
+    } catch (error) {
+      await queryRunner.rollbackTransaction()
+      console.error('Lỗi khi xóa giỏ hàng:', error)
+      throw new Error('Không thể xóa giỏ hàng, vui lòng thử lại.')
+    } finally {
+      await queryRunner.release()
+    }
   }
 }
