@@ -3,11 +3,11 @@ import { IProductSerialService } from '../product-serial.service.interface'
 import { ProductSerialEntity } from '../../domain/entities/product-serial.entity'
 import { Injectable } from '@nestjs/common'
 import { Repository } from 'typeorm'
-import { PageDto } from 'src/common/dtos/page.dto'
+import { PageDto } from 'src/common/dto/page.dto'
 import { GetProductSerialsQueryDto } from '../../domain/dtos/get-product-serials-query.dto'
 import { ProductSerialResponse } from '../../domain/dtos/product-serial.response'
 import { InventoryDto } from '../../domain/dtos/inventory.dto'
-import { PageMetaDto } from 'src/common/dtos/page-meta.dto'
+import { PageMetaDto } from 'src/common/dto/page-meta.dto'
 import { mapAttributes } from 'src/utils/map'
 
 @Injectable()

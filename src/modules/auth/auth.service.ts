@@ -5,15 +5,18 @@ import { LoginDto } from './dtos/login.dto'
 import { RegisterDto } from './dtos/register.dto'
 import { IUserService } from '../users/services/user.service.interface'
 import * as bcrypt from 'bcrypt'
-import { Payload } from 'src/common/types/payload.type'
+import { JwtPayload } from 'src/common/types/jwt-payload.type'
 import { Tokens } from 'src/common/types/token.type'
 import { JwtService } from '@nestjs/jwt'
-import * as dotenv from 'dotenv'
-dotenv.config()
+import { ConfigService } from '@nestjs/config'
+import { EnvironmentVariables } from 'src/config/env.validation'
+import { Role } from 'src/common/enums/role.enum'
+
 @Injectable()
 export class AuthService implements IAuthService {
   constructor(
     private readonly jwtService: JwtService,
+    private readonly config: ConfigService<EnvironmentVariables, true>,
     @Inject('IUserService')
     private readonly userService: IUserService
   ) {}
@@ -30,10 +33,11 @@ export class AuthService implements IAuthService {
       throw new UnauthorizedException('Email hoặc mật khẩu không đúng!')
     }
 
-    const payload: Payload = {
-      userId: getUser.id,
+    // TODO(P2.2/P2.4): thêm position cho nhân viên STAFF
+    const payload: JwtPayload = {
+      sub: getUser.id,
       email: getUser.email,
-      role: getUser.roleType
+      role: getUser.roleType as Role
     }
     const tokens: Tokens = await this.getTokens(payload)
 
@@ -58,22 +62,14 @@ export class AuthService implements IAuthService {
     return await bcrypt.compare(password, storePasswordHash)
   }
 
-  private async getTokens(payload: Payload): Promise<Tokens> {
+  private async getTokens(payload: JwtPayload): Promise<Tokens> {
     const [jwt, refreshjwt] = await Promise.all([
-      this.jwtService.signAsync(
-        { payload },
-        {
-          secret: process.env.JWT_SECRET_KEY,
-          expiresIn: 60 * 15
-        }
-      ),
-      this.jwtService.signAsync(
-        { payload },
-        {
-          secret: process.env.REFRESH_JWT_SECRET_KEY,
-          expiresIn: 60 * 60 // 60 * 60 * 24
-        }
-      )
+      // Access token dùng secret + thời hạn mặc định của JwtModule (AuthModule)
+      this.jwtService.signAsync(payload),
+      this.jwtService.signAsync(payload, {
+        secret: this.config.get('REFRESH_JWT_SECRET_KEY', { infer: true }),
+        expiresIn: this.config.get('JWT_REFRESH_EXPIRES_IN', { infer: true })
+      })
     ])
 
     return {

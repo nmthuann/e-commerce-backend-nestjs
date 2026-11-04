@@ -1,4 +1,4 @@
-import { PageDto } from 'src/common/dtos/page.dto'
+import { PageDto } from 'src/common/dto/page.dto'
 import { CreatePurchaseOrderDetailDto } from '../domain/dtos/create-purchase-order-detail.dto'
 import { CreatePurchaseOrderDto } from '../domain/dtos/create-purchase-order.dto'
 import { GetPurchaseOrdersQueryDto } from '../domain/dtos/get-purchase-orders-query.dto'

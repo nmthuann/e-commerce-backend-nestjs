@@ -1,6 +1,10 @@
 import { Controller, Get, Inject, Query } from '@nestjs/common'
+import { ApiTags } from '@nestjs/swagger'
+import { Public } from 'src/common/decorators/public.decorator'
 import { ICategoryService } from './category.service.interface'
 
+@ApiTags('Categories')
+@Public()
 @Controller('categories')
 export class CategoryController {
   constructor(

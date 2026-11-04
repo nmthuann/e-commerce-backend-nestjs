@@ -1,11 +1,15 @@
-import { Body, Controller, Get, HttpCode, Inject, Param, Post, Query, Request, UseGuards } from '@nestjs/common'
+import { Body, Controller, Get, HttpCode, Inject, Param, Post, Query } from '@nestjs/common'
+import { ApiTags } from '@nestjs/swagger'
+import { CurrentUser } from 'src/common/decorators/current-user.decorator'
+import { Positions } from 'src/common/decorators/roles.decorator'
+import { Position } from 'src/common/enums/role.enum'
 import { IPurchaseOrderService } from '../services/purchase-order.service.interface'
 import { CreatePurchaseOrderDto } from '../domain/dtos/create-purchase-order.dto'
-import { UserRequest } from 'src/modules/users/domain/dtos/request/user.request'
-import { AdminRoleGuard } from 'src/guards/admin-role.guard'
 import { CreatePurchaseOrderDetailDto } from '../domain/dtos/create-purchase-order-detail.dto'
 import { GetPurchaseOrdersQueryDto } from '../domain/dtos/get-purchase-orders-query.dto'
 
+@ApiTags('Purchase Orders')
+@Positions(Position.WAREHOUSE)
 @Controller('purchaseOrders')
 export class PurchaseOrderController {
   constructor(
@@ -15,7 +19,6 @@ export class PurchaseOrderController {
 
   @Get()
   async getData(@Query() query: GetPurchaseOrdersQueryDto) {
-    console.log(query)
     if (query.orderNumber) {
       return await this.purchaseOrderService.getOneByOrderNumber(query.orderNumber)
     }
@@ -29,21 +32,13 @@ export class PurchaseOrderController {
 
   @Post('')
   @HttpCode(201)
-  @UseGuards(AdminRoleGuard)
-  async createOne(@Request() req: UserRequest, @Body() data: CreatePurchaseOrderDto) {
-    console.log(`<ADMIN> ::: ${req.userId} Đã vừa Thực hiện!, ${JSON.stringify(data)}`)
-    return await this.purchaseOrderService.createOne(req.userId, data)
+  async createOne(@CurrentUser('sub') userId: string, @Body() data: CreatePurchaseOrderDto) {
+    return await this.purchaseOrderService.createOne(userId, data)
   }
 
   @Post(':id/purchaseOrderDetails')
   @HttpCode(201)
-  @UseGuards(AdminRoleGuard)
-  async createPurchaseOrderDetailById(
-    @Request() req: UserRequest,
-    @Param('id') id: number,
-    @Body() data: CreatePurchaseOrderDetailDto
-  ) {
-    console.log(`<ADMIN> ::: ${req.userId} Đã vừa Thực hiện!, ${JSON.stringify(data)}`)
+  async createPurchaseOrderDetailById(@Param('id') id: number, @Body() data: CreatePurchaseOrderDetailDto) {
     return await this.purchaseOrderService.createPurchaseOrderDetailById(id, data)
   }
 }

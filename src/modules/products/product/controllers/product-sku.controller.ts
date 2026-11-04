@@ -1,6 +1,10 @@
 import { Controller, Get, Inject, Param, Query } from '@nestjs/common'
+import { ApiTags } from '@nestjs/swagger'
+import { Public } from 'src/common/decorators/public.decorator'
 import { IProductSkuService } from '../services/product-sku.service.interface'
 
+@ApiTags('Product SKUs')
+@Public()
 @Controller('skus')
 export class ProductSkuController {
   constructor(
@@ -9,21 +13,15 @@ export class ProductSkuController {
   ) {}
 
   @Get(':id')
-  async getOneById(@Param('id') id: number) {
-    console.log('id:::', id)
-    return await this.productSkuService.getOneById(id)
+  async getOneById(@Param('id') id: number) {    return await this.productSkuService.getOneById(id)
   }
 
   @Get()
-  async getData(@Query('productId') productId: number) {
-    console.log('productId:::', productId)
-    return await this.productSkuService.getAllByProductId(productId)
+  async getData(@Query('productId') productId: number) {    return await this.productSkuService.getAllByProductId(productId)
   }
 
   @Get(':id/prices')
-  async getPrices(@Query('current') current: boolean, @Param('id') id: number) {
-    console.log('skuID:::', id)
-    if (current) {
+  async getPrices(@Query('current') current: boolean, @Param('id') id: number) {    if (current) {
       return await this.productSkuService.getCurrentPriceById(id)
     }
     return await this.productSkuService.getPricesById(id)

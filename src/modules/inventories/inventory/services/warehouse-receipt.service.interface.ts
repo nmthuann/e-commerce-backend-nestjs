@@ -1,4 +1,4 @@
-import { PageDto } from 'src/common/dtos/page.dto'
+import { PageDto } from 'src/common/dto/page.dto'
 import { CreateProductSerialDto } from '../domain/dtos/create-product-serial.dto'
 import { CreateWarehouseReceiptDto } from '../domain/dtos/create-warehouse-receipt.dto'
 import { GetWarehouseReceiptsQueryDto } from '../domain/dtos/get-warehouse-receipts-query.dto'

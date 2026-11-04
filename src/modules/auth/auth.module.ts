@@ -1,16 +1,21 @@
 import { Module } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
+import { JwtModule } from '@nestjs/jwt'
+import { EnvironmentVariables } from 'src/config/env.validation'
+import { UsersModule } from '../users/users.module'
 import { AuthController } from './auth.controller'
 import { AuthService } from './auth.service'
-import { JwtModule } from '@nestjs/jwt'
-import { UsersModule } from '../users/users.module'
-import * as dotenv from 'dotenv'
-
-dotenv.config()
 
 @Module({
   imports: [
-    JwtModule.register({
-      secret: process.env.JWT_SECRET_KEY
+    // global: JwtService (mặc định ký/verify access token) dùng được ở mọi nơi, kể cả AuthContextMiddleware
+    JwtModule.registerAsync({
+      global: true,
+      inject: [ConfigService],
+      useFactory: (config: ConfigService<EnvironmentVariables, true>) => ({
+        secret: config.get('JWT_SECRET_KEY', { infer: true }),
+        signOptions: { expiresIn: config.get('JWT_ACCESS_EXPIRES_IN', { infer: true }) }
+      })
     }),
     UsersModule
   ],
