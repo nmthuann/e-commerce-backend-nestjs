@@ -174,7 +174,7 @@ ALL
 
 > Ghi chú khi làm:
 >
-> - Cấu trúc: `modules/users/{users,positions,employees}/` (entity, dto, service, controller), `modules/auth/dto/`. Bỏ interface + token chuỗi; module khác dùng `UsersService` / `EmployeesService` trực tiếp.
+> - Cấu trúc domain user: `modules/users/users.module.ts` + `modules/users/domain/{controllers,dto,entities,services}/` (tên file số ít: `user.*`, `position.*`, `employee.*`, `admin-user.controller.ts`); auth: `modules/auth/dto/`. Các domain sau (P3–P5) theo cùng mẫu này. Bỏ interface + token chuỗi; module khác dùng `UsersService` / `EmployeesService` trực tiếp.
 > - Bỏ `GET /auth/me` vì trùng `GET /users/me` (hồ sơ nhân viên có kèm `employee.position`).
 > - Refresh token: xoay vòng (mỗi token dùng 1 lần), lưu **SHA-256** (không dùng bcrypt vì bcrypt chỉ đọc 72 byte đầu của JWT), có `jti`; dùng lại token cũ → thu hồi phiên. Đổi mật khẩu / khóa tài khoản / nghỉ việc → thu hồi refresh token.
 > - Migration `InitSchema` sinh từ **toàn bộ entity hiện tại** (20 bảng, kể cả bảng product/inventory/order cũ); P3–P5 sẽ thêm migration nối tiếp, có thể gộp lại trước lần phát hành đầu. Đã chạy thử migration + seed + 53 kịch bản API trên DB tạm.

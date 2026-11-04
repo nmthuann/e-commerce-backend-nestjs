@@ -7,71 +7,83 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToMany,
-  OneToOne
-} from 'typeorm'
-import { EmployeeEntity } from 'src/modules/users/employees/employee.entity'
-import { OrderStatus } from 'src/common/enums/order-status.enum'
-import { UserEntity } from 'src/modules/users/users/user.entity'
-import { OrderDetailEntity } from './order-detail.entity'
-import { InvoiceEntity } from './invoice.entity'
+  OneToOne,
+} from 'typeorm';
+import { EmployeeEntity } from 'src/modules/users/domain/entities/employee.entity';
+import { OrderStatus } from 'src/common/enums/order-status.enum';
+import { UserEntity } from 'src/modules/users/domain/entities/user.entity';
+import { OrderDetailEntity } from './order-detail.entity';
+import { InvoiceEntity } from './invoice.entity';
 
 @Entity({ name: 'orders' })
 export class OrderEntity {
   @PrimaryGeneratedColumn()
-  id: number
+  id: number;
 
   @Column({ type: 'enum', enum: OrderStatus, default: OrderStatus.PENDING })
-  status: OrderStatus
+  status: OrderStatus;
 
   @Column({ name: 'order_type', type: 'boolean', default: true })
-  orderType: boolean
+  orderType: boolean;
 
   @Column({ name: 'shipping_address', type: 'text' })
-  shippingAddress: string
+  shippingAddress: string;
 
   @Column({ name: 'contact_phone', type: 'varchar', length: 15 })
-  contactPhone: string
+  contactPhone: string;
 
   @Column({ name: 'shipping_method', type: 'varchar', length: 50 })
-  shippingMethod: string
+  shippingMethod: string;
 
   @Column({ name: 'payment_method', type: 'varchar', length: 50 })
-  paymentMethod: string
+  paymentMethod: string;
 
   @Column({ type: 'text', nullable: true })
-  note?: string
+  note?: string;
 
-  @Column({ name: 'shipping_fee', type: 'numeric', precision: 10, scale: 2, default: 0.0 })
-  shippingFee: number
+  @Column({
+    name: 'shipping_fee',
+    type: 'numeric',
+    precision: 10,
+    scale: 2,
+    default: 0.0,
+  })
+  shippingFee: number;
 
   @Column({ name: 'discount', type: 'numeric', default: 0 })
-  discount: number
+  discount: number;
 
   @Column({ type: 'varchar', nullable: true })
-  postcode?: string
+  postcode?: string;
 
-  @CreateDateColumn({ name: 'created_at', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  createdAt: Date
+  @CreateDateColumn({
+    name: 'created_at',
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  createdAt: Date;
 
   @UpdateDateColumn({
     name: 'updated_at',
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',
-    onUpdate: 'CURRENT_TIMESTAMP'
+    onUpdate: 'CURRENT_TIMESTAMP',
   })
-  updatedAt: Date
+  updatedAt: Date;
 
   @ManyToOne(() => UserEntity, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'user_id' })
-  user: UserEntity
+  user: UserEntity;
 
   @ManyToOne(() => EmployeeEntity, { onDelete: 'SET NULL' })
   @JoinColumn({ name: 'employee_id' })
-  employee: EmployeeEntity
+  employee: EmployeeEntity;
 
-  @OneToMany(() => OrderDetailEntity, orderDetails => orderDetails.order)
-  orderDetails: OrderDetailEntity[]
+  @OneToMany(() => OrderDetailEntity, (orderDetails) => orderDetails.order)
+  orderDetails: OrderDetailEntity[];
 
-  @OneToOne(() => InvoiceEntity, invoice => invoice.order, { onDelete: 'CASCADE' })
-  invoice: InvoiceEntity
+  @OneToOne(() => InvoiceEntity, (invoice) => invoice.order, {
+    onDelete: 'CASCADE',
+  })
+  invoice: InvoiceEntity;
 }

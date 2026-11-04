@@ -1,19 +1,19 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common'
-import { InjectRepository } from '@nestjs/typeorm'
-import { Repository } from 'typeorm'
-import { PurchaseOrderEntity } from '../../domain/entities/purchase-order.entity'
-import { PurchaseOrderDetailEntity } from '../../domain/entities/purchase-order-detail.entity'
-import { IPurchaseOrderService } from '../purchase-order.service.interface'
-import { PageDto } from 'src/common/dto/page.dto'
-import { CreatePurchaseOrderDetailDto } from '../../domain/dtos/create-purchase-order-detail.dto'
-import { CreatePurchaseOrderDto } from '../../domain/dtos/create-purchase-order.dto'
-import { GetPurchaseOrdersQueryDto } from '../../domain/dtos/get-purchase-orders-query.dto'
-import { PurchaseOrderDto } from '../../domain/dtos/purchase-order.dto'
-import { EmployeesService } from 'src/modules/users/employees/employees.service'
-import { PurchaseOrderQueryType } from '../../domain/types/purchase-order-query.type'
-import { mapAttributes } from 'src/utils/map'
-import { PageMetaDto } from 'src/common/dto/page-meta.dto'
-import { PurchaseOrderResponse } from '../../domain/dtos/purchase-order.response'
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { PurchaseOrderEntity } from '../../domain/entities/purchase-order.entity';
+import { PurchaseOrderDetailEntity } from '../../domain/entities/purchase-order-detail.entity';
+import { IPurchaseOrderService } from '../purchase-order.service.interface';
+import { PageDto } from 'src/common/dto/page.dto';
+import { CreatePurchaseOrderDetailDto } from '../../domain/dtos/create-purchase-order-detail.dto';
+import { CreatePurchaseOrderDto } from '../../domain/dtos/create-purchase-order.dto';
+import { GetPurchaseOrdersQueryDto } from '../../domain/dtos/get-purchase-orders-query.dto';
+import { PurchaseOrderDto } from '../../domain/dtos/purchase-order.dto';
+import { EmployeeService } from 'src/modules/users/domain/services/employee.service';
+import { PurchaseOrderQueryType } from '../../domain/types/purchase-order-query.type';
+import { mapAttributes } from 'src/utils/map';
+import { PageMetaDto } from 'src/common/dto/page-meta.dto';
+import { PurchaseOrderResponse } from '../../domain/dtos/purchase-order.response';
 
 @Injectable()
 export class PurchaseOrderService implements IPurchaseOrderService {
@@ -22,16 +22,21 @@ export class PurchaseOrderService implements IPurchaseOrderService {
     private readonly purchaseOrderRepository: Repository<PurchaseOrderEntity>,
     @InjectRepository(PurchaseOrderDetailEntity)
     private readonly purchaseOrderDetailRepository: Repository<PurchaseOrderDetailEntity>,
-    private readonly employeesService: EmployeesService
+    private readonly employeeService: EmployeeService,
   ) {}
 
   async getOneByOrderNumber(orderNumber: string): Promise<PurchaseOrderDto> {
     const findPurchaseOrder = await this.purchaseOrderRepository.findOne({
       where: { orderNumber: orderNumber },
-      relations: ['supplier', 'employee', 'purchaseOrderDetails', 'purchaseOrderDetails.sku']
-    })
+      relations: [
+        'supplier',
+        'employee',
+        'purchaseOrderDetails',
+        'purchaseOrderDetails.sku',
+      ],
+    });
     if (!findPurchaseOrder) {
-      throw new NotFoundException('Purchase Order Not Found')
+      throw new NotFoundException('Purchase Order Not Found');
     }
     return {
       id: findPurchaseOrder.id,
@@ -40,30 +45,37 @@ export class PurchaseOrderService implements IPurchaseOrderService {
       employeeId: findPurchaseOrder.employee.id,
       orderDate: findPurchaseOrder.orderDate,
       createdAt: findPurchaseOrder.createdAt,
-      purchaseOrderDetails: findPurchaseOrder.purchaseOrderDetails.map(dto => ({
-        sku: {
-          id: dto.sku.id,
-          skuNo: dto.sku.skuNo,
-          barcode: dto.sku.barcode,
-          skuName: dto.sku.skuName,
-          image: dto.sku.image,
-          status: dto.sku.status,
-          skuAttributes: mapAttributes(dto.sku.skuAttributes),
-          slug: dto.sku.slug
-        },
-        quantity: dto.quantity,
-        unitPrice: dto.unitPrice
-      }))
-    }
+      purchaseOrderDetails: findPurchaseOrder.purchaseOrderDetails.map(
+        (dto) => ({
+          sku: {
+            id: dto.sku.id,
+            skuNo: dto.sku.skuNo,
+            barcode: dto.sku.barcode,
+            skuName: dto.sku.skuName,
+            image: dto.sku.image,
+            status: dto.sku.status,
+            skuAttributes: mapAttributes(dto.sku.skuAttributes),
+            slug: dto.sku.slug,
+          },
+          quantity: dto.quantity,
+          unitPrice: dto.unitPrice,
+        }),
+      ),
+    };
   }
 
   async getOneById(id: number): Promise<PurchaseOrderDto> {
     const findPurchaseOrder = await this.purchaseOrderRepository.findOne({
       where: { id },
-      relations: ['supplier', 'employee', 'purchaseOrderDetails', 'purchaseOrderDetails.sku']
-    })
+      relations: [
+        'supplier',
+        'employee',
+        'purchaseOrderDetails',
+        'purchaseOrderDetails.sku',
+      ],
+    });
     if (!findPurchaseOrder) {
-      throw new NotFoundException('Purchase Order Not Found')
+      throw new NotFoundException('Purchase Order Not Found');
     }
     return {
       id: findPurchaseOrder.id,
@@ -73,32 +85,37 @@ export class PurchaseOrderService implements IPurchaseOrderService {
       orderDate: findPurchaseOrder.orderDate,
       createdAt: findPurchaseOrder.createdAt,
 
-      purchaseOrderDetails: findPurchaseOrder.purchaseOrderDetails.map(dto => ({
-        sku: {
-          id: dto.sku.id,
-          skuNo: dto.sku.skuNo,
-          barcode: dto.sku.barcode,
-          skuName: dto.sku.skuName,
-          image: dto.sku.image,
-          status: dto.sku.status,
-          skuAttributes: mapAttributes(dto.sku.skuAttributes),
-          slug: dto.sku.slug
-        },
-        quantity: dto.quantity,
-        unitPrice: dto.unitPrice
-      }))
-    }
+      purchaseOrderDetails: findPurchaseOrder.purchaseOrderDetails.map(
+        (dto) => ({
+          sku: {
+            id: dto.sku.id,
+            skuNo: dto.sku.skuNo,
+            barcode: dto.sku.barcode,
+            skuName: dto.sku.skuName,
+            image: dto.sku.image,
+            status: dto.sku.status,
+            skuAttributes: mapAttributes(dto.sku.skuAttributes),
+            slug: dto.sku.slug,
+          },
+          quantity: dto.quantity,
+          unitPrice: dto.unitPrice,
+        }),
+      ),
+    };
   }
 
-  async createOne(userId: string, data: CreatePurchaseOrderDto): Promise<PurchaseOrderDto> {
-    const getEmployee = await this.employeesService.findActiveByUserId(userId)
-    const today = new Date().toISOString().slice(0, 10)
+  async createOne(
+    userId: string,
+    data: CreatePurchaseOrderDto,
+  ): Promise<PurchaseOrderDto> {
+    const getEmployee = await this.employeeService.findActiveByUserId(userId);
+    const today = new Date().toISOString().slice(0, 10);
     const orderCount = await this.purchaseOrderRepository
       .createQueryBuilder('po')
       .where('DATE(po.orderDate) = :today', { today })
-      .getCount()
+      .getCount();
 
-    const orderNumber = `PO-${today.replace(/-/g, '')}-${String(orderCount + 1).padStart(5, '0')}`
+    const orderNumber = `PO-${today.replace(/-/g, '')}-${String(orderCount + 1).padStart(5, '0')}`;
 
     const queryBuilder = await this.purchaseOrderRepository
       .createQueryBuilder()
@@ -108,12 +125,12 @@ export class PurchaseOrderService implements IPurchaseOrderService {
         orderNumber: orderNumber,
         supplier: { id: data.supplierId },
         employee: { id: getEmployee.id },
-        orderDate: data.orderDate
+        orderDate: data.orderDate,
       })
       .returning('*')
-      .execute()
-    const recordCreated: PurchaseOrderQueryType = queryBuilder.raw[0]
-    console.log('recordCreated:::', recordCreated)
+      .execute();
+    const recordCreated: PurchaseOrderQueryType = queryBuilder.raw[0];
+    console.log('recordCreated:::', recordCreated);
     return {
       id: recordCreated.id,
       orderNumber: recordCreated.order_number,
@@ -121,11 +138,14 @@ export class PurchaseOrderService implements IPurchaseOrderService {
       employeeId: recordCreated.employee_id,
       orderDate: recordCreated.order_date,
       createdAt: recordCreated.created_at,
-      purchaseOrderDetails: []
-    }
+      purchaseOrderDetails: [],
+    };
   }
 
-  async createPurchaseOrderDetailById(id: number, data: CreatePurchaseOrderDetailDto): Promise<PurchaseOrderDto> {
+  async createPurchaseOrderDetailById(
+    id: number,
+    data: CreatePurchaseOrderDetailDto,
+  ): Promise<PurchaseOrderDto> {
     const queryBuilder = await this.purchaseOrderDetailRepository
       .createQueryBuilder()
       .insert()
@@ -134,40 +154,47 @@ export class PurchaseOrderService implements IPurchaseOrderService {
         purchaseOrder: { id: id },
         sku: { id: data.skuId },
         quantity: data.quantity,
-        unitPrice: data.unitPrice
+        unitPrice: data.unitPrice,
       })
       .returning('*')
-      .execute()
-    const recordCreated = queryBuilder.raw[0]
-    console.log(recordCreated)
-    return await this.getOneById(id)
+      .execute();
+    const recordCreated = queryBuilder.raw[0];
+    console.log(recordCreated);
+    return await this.getOneById(id);
   }
 
-  async getAllWithPagination(query: GetPurchaseOrdersQueryDto): Promise<PageDto<PurchaseOrderResponse>> {
-    const whereCondition = query.orderDate ? { orderDate: query.orderDate } : {}
+  async getAllWithPagination(
+    query: GetPurchaseOrdersQueryDto,
+  ): Promise<PageDto<PurchaseOrderResponse>> {
+    const whereCondition = query.orderDate
+      ? { orderDate: query.orderDate }
+      : {};
 
     const [data, total] = await this.purchaseOrderRepository.findAndCount({
       where: whereCondition,
       relations: ['supplier', 'employee'],
       order: {
-        id: query.order || 'ASC'
+        id: query.order || 'ASC',
       },
       skip: query.skip,
-      take: query.take
-    })
+      take: query.take,
+    });
 
-    console.log('data', Math.ceil(total / query.take))
-    const pageMeta = new PageMetaDto({ pageOptionsDto: query, itemCount: total })
+    console.log('data', Math.ceil(total / query.take));
+    const pageMeta = new PageMetaDto({
+      pageOptionsDto: query,
+      itemCount: total,
+    });
 
-    const res: PurchaseOrderResponse[] = data.map(response => ({
+    const res: PurchaseOrderResponse[] = data.map((response) => ({
       id: response.id,
       supplierId: response.supplier.id,
       employeeId: response.employee.id,
       orderDate: response.orderDate,
       orderNumber: response.orderNumber,
-      createdAt: response.createdAt
-    }))
+      createdAt: response.createdAt,
+    }));
 
-    return new PageDto(res, pageMeta)
+    return new PageDto(res, pageMeta);
   }
 }

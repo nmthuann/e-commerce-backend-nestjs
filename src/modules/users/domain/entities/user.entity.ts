@@ -3,7 +3,7 @@ import { BeforeInsert, BeforeUpdate, Column, Entity, OneToOne, PrimaryGeneratedC
 import { BaseEntity } from 'src/common/entities/base.entity'
 import { Role } from 'src/common/enums/role.enum'
 import { UserStatus } from 'src/common/enums/user-status.enum'
-import { EmployeeEntity } from '../employees/employee.entity'
+import { EmployeeEntity } from './employee.entity'
 
 @Entity({ name: 'users' })
 export class UserEntity extends BaseEntity {

@@ -3,7 +3,7 @@ import { PageOptionsDto } from 'src/common/dto/page-options.dto'
 import { Role } from 'src/common/enums/role.enum'
 import { UserStatus } from 'src/common/enums/user-status.enum'
 import { PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH } from 'src/common/utils/password.util'
-import { UserEntity } from './user.entity'
+import { UserEntity } from '../entities/user.entity'
 
 // Số điện thoại Việt Nam: 10 số, bắt đầu bằng 0
 export const PHONE_PATTERN = /^0\d{9}$/

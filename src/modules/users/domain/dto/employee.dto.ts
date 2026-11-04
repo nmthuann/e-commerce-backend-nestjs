@@ -15,7 +15,7 @@ import {
 } from 'class-validator'
 import { PageOptionsDto } from 'src/common/dto/page-options.dto'
 import { PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH } from 'src/common/utils/password.util'
-import { PHONE_PATTERN } from '../users/user.dto'
+import { PHONE_PATTERN } from './user.dto'
 
 const toBoolean = ({ value }: { value: unknown }) => (value === 'true' ? true : value === 'false' ? false : value)
 

@@ -1,20 +1,27 @@
-import { Module } from '@nestjs/common'
-import { TypeOrmModule } from '@nestjs/typeorm'
-import { EmployeeEntity } from './employees/employee.entity'
-import { EmployeesController } from './employees/employees.controller'
-import { EmployeesService } from './employees/employees.service'
-import { PositionEntity } from './positions/position.entity'
-import { PositionsController } from './positions/positions.controller'
-import { PositionsService } from './positions/positions.service'
-import { AdminUsersController } from './users/admin-users.controller'
-import { UserEntity } from './users/user.entity'
-import { UsersController } from './users/users.controller'
-import { UsersService } from './users/users.service'
+import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { EmployeeEntity } from './domain/entities/employee.entity';
+import { EmployeeController } from './domain/controllers/employee.controller';
+import { EmployeeService } from './domain/services/employee.service';
+import { PositionEntity } from './domain/entities/position.entity';
+import { PositionController } from './domain/controllers/position.controller';
+import { PositionService } from './domain/services/position.service';
+import { AdminUserController } from './domain/controllers/admin-user.controller';
+import { UserEntity } from './domain/entities/user.entity';
+import { UserController } from './domain/controllers/user.controller';
+import { UserService } from './domain/services/user.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UserEntity, PositionEntity, EmployeeEntity])],
-  controllers: [UsersController, AdminUsersController, PositionsController, EmployeesController],
-  providers: [UsersService, PositionsService, EmployeesService],
-  exports: [UsersService, EmployeesService]
+  imports: [
+    TypeOrmModule.forFeature([UserEntity, PositionEntity, EmployeeEntity]),
+  ],
+  controllers: [
+    UserController,
+    AdminUserController,
+    PositionController,
+    EmployeeController,
+  ],
+  providers: [UserService, PositionService, EmployeeService],
+  exports: [UserService, EmployeeService],
 })
 export class UsersModule {}
