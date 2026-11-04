@@ -1,11 +1,14 @@
-import { Controller, Get, HttpCode, Inject, Param, Post, Query, UseGuards, Request, Body, Put } from '@nestjs/common'
+import { Controller, Get, HttpCode, Inject, Param, Post, Query, Body, Put } from '@nestjs/common'
+import { ApiTags } from '@nestjs/swagger'
+import { CurrentUser } from 'src/common/decorators/current-user.decorator'
+import { Positions, Roles } from 'src/common/decorators/roles.decorator'
+import { Position, Role } from 'src/common/enums/role.enum'
 import { IOrderService } from '../services/order.service.interface'
 import { GetOrdersQueryDto } from '../domain/dtos/get-orders-query.dto'
-import { UserRoleGuard } from 'src/guards/user-role.guard'
-import { UserRequest } from 'src/modules/users/domain/dtos/request/user.request'
 import { CreateOrderDto } from '../domain/dtos/create-order.dto'
-import { AdminRoleGuard } from 'src/guards/admin-role.guard'
+import { UpdateOrderDto } from '../domain/dtos/update-order.dto'
 
+@ApiTags('Orders')
 @Controller('orders')
 export class OrderController {
   constructor(
@@ -14,30 +17,27 @@ export class OrderController {
   ) {}
 
   @Get('')
+  @Positions(Position.SALES)
   async getAll(@Query() query: GetOrdersQueryDto) {
-    console.log('order - query:::', query)
     return await this.orderService.getAllWithPagination(query)
   }
 
   @Get(':id')
+  @Positions(Position.SALES)
   async getOneById(@Param('id') id: number) {
-    console.log('getOneById:::', id)
     return await this.orderService.getOneById(id)
   }
 
   @Post('')
   @HttpCode(201)
-  @UseGuards(UserRoleGuard)
-  async createOne(@Request() req: UserRequest, @Body() data: CreateOrderDto) {
-    console.log(`<USER> ::: ${req.userId} Đã vừa Thực hiện, Create Order!`)
-    return await this.orderService.createOne(req.userId, data)
+  @Roles(Role.CUSTOMER)
+  async createOne(@CurrentUser('sub') userId: string, @Body() data: CreateOrderDto) {
+    return await this.orderService.createOne(userId, data)
   }
 
   @Put('/:id')
-  @HttpCode(201)
-  @UseGuards(AdminRoleGuard)
-  async updateOneById(@Request() req: UserRequest, @Param('id') id: number, @Body() data: CreateOrderDto) {
-    console.log(`<USER> ::: ${req.userId} Đã vừa Thực hiện, Create Order!`)
-    return await this.orderService.updateOneById(id, req.userId, data)
+  @Positions(Position.SALES)
+  async updateOneById(@CurrentUser('sub') userId: string, @Param('id') id: number, @Body() data: UpdateOrderDto) {
+    return await this.orderService.updateOneById(id, userId, data)
   }
 }

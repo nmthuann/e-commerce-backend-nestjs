@@ -1,8 +1,11 @@
-import { Controller, Get, Inject, Query, UseGuards, Request } from '@nestjs/common'
+import { Controller, Get, Inject, Query } from '@nestjs/common'
+import { ApiTags } from '@nestjs/swagger'
+import { CurrentUser } from 'src/common/decorators/current-user.decorator'
+import { Roles } from 'src/common/decorators/roles.decorator'
+import { Role } from 'src/common/enums/role.enum'
 import { IUserService } from '../services/user.service.interface'
-import { UserRequest } from '../domain/dtos/request/user.request'
-import { CommonRoleGuard } from 'src/guards/common-role.guard'
 
+@ApiTags('Users')
 @Controller('users')
 export class UserController {
   constructor(
@@ -10,16 +13,15 @@ export class UserController {
     private readonly userService: IUserService
   ) {}
 
+  // TODO(P2.3): chuyển sang GET /admin/users
   @Get()
+  @Roles(Role.ADMIN)
   async getData(@Query('email') email: string) {
-    console.log(typeof email)
     return await this.userService.getOneByEmail(email)
   }
 
   @Get('me')
-  @UseGuards(CommonRoleGuard)
-  async getProfile(@Request() req: UserRequest) {
-    console.log('Thông tin Profile User:', req.userId)
-    return await this.userService.getOneById(req.userId)
+  async getProfile(@CurrentUser('sub') userId: string) {
+    return await this.userService.getOneById(userId)
   }
 }

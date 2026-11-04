@@ -1,12 +1,13 @@
 import { Controller, Get } from '@nestjs/common'
-import { AppService } from './app.service'
+import { ApiTags } from '@nestjs/swagger'
+import { Public } from './common/decorators/public.decorator'
 
-@Controller()
+@ApiTags('Health')
+@Controller('health')
 export class AppController {
-  constructor(private readonly appService: AppService) {}
-
+  @Public()
   @Get()
-  getHello(): string {
-    return this.appService.getHello()
+  check() {
+    return { status: 'ok', uptime: Math.round(process.uptime()) }
   }
 }

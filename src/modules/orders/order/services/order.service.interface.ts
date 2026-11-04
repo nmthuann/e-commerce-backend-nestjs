@@ -1,4 +1,4 @@
-import { PageDto } from 'src/common/dtos/page.dto'
+import { PageDto } from 'src/common/dto/page.dto'
 import { GetOrdersQueryDto } from '../domain/dtos/get-orders-query.dto'
 import { OrderDto } from '../domain/dtos/order.dto'
 import { OrderResponse } from '../domain/dtos/order.response'

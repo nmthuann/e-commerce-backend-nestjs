@@ -1,7 +1,7 @@
 import { Type } from 'class-transformer'
 import { IsOptional } from 'class-validator'
-import { PageOptionsDto } from 'src/common/dtos/page-options.dto'
-import { OrderStatus } from 'src/constants/order-status.enum'
+import { PageOptionsDto } from 'src/common/dto/page-options.dto'
+import { OrderStatus } from 'src/common/enums/order-status.enum'
 
 export class GetOrdersQueryDto extends PageOptionsDto {
   @IsOptional()

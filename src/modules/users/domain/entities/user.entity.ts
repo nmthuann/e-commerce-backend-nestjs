@@ -58,7 +58,7 @@ export class UserEntity {
   @Column({ type: 'date', nullable: true })
   birthday?: Date
 
-  @Column({ name: 'role_type', type: 'varchar', length: 10, default: 'USER' })
+  @Column({ name: 'role_type', type: 'varchar', length: 10, default: 'CUSTOMER' })
   roleType!: string
 
   @Column({ name: 'auth_method', type: 'varchar', length: 50, nullable: false }) //select: false

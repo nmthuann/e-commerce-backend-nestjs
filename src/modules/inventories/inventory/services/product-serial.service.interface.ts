@@ -1,4 +1,4 @@
-import { PageDto } from 'src/common/dtos/page.dto'
+import { PageDto } from 'src/common/dto/page.dto'
 import { GetProductSerialsQueryDto } from '../domain/dtos/get-product-serials-query.dto'
 import { ProductSerialResponse } from '../domain/dtos/product-serial.response'
 

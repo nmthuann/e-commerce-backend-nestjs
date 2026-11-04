@@ -10,9 +10,9 @@ import { WarehouseReceiptDto } from '../../domain/dtos/warehouse-receipt.dto'
 import { IEmployeeService } from 'src/modules/users/services/employee.service.interface'
 import { WarehouseReceiptQueryType } from '../../domain/types/warehouse-receipt-query.type'
 import { GetWarehouseReceiptsQueryDto } from '../../domain/dtos/get-warehouse-receipts-query.dto'
-import { PageDto } from 'src/common/dtos/page.dto'
+import { PageDto } from 'src/common/dto/page.dto'
 import { WarehouseReceiptResponse } from '../../domain/dtos/warehouse-receipt.response'
-import { PageMetaDto } from 'src/common/dtos/page-meta.dto'
+import { PageMetaDto } from 'src/common/dto/page-meta.dto'
 
 @Injectable()
 export class WarehouseReceiptService implements IWarehouseReceiptService {

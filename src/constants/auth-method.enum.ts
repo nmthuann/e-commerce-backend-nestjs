@@ -1,4 +1,0 @@
-export enum AuthMethod {
-  LOCAL_AUTHENTICATION = 'LOCAL_AUTHENTICATION',
-  GOOGLE = 'GOOGLE_OAUTH'
-}

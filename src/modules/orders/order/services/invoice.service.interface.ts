@@ -1,4 +1,4 @@
-import { PageDto } from 'src/common/dtos/page.dto'
+import { PageDto } from 'src/common/dto/page.dto'
 import { CreateInvoiceDto } from '../domain/dtos/create-invoice.dto'
 import { GetInvoicesQueryDto } from '../domain/dtos/get-invoives-query.dto'
 import { InvoiceDto } from '../domain/dtos/invoice.dto'

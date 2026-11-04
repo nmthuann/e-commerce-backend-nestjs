@@ -1,10 +1,14 @@
-import { Body, Controller, Get, Inject, Post, Request, UseGuards } from '@nestjs/common'
+import { Body, Controller, Get, Inject, Post } from '@nestjs/common'
+import { ApiTags } from '@nestjs/swagger'
+import { CurrentUser } from 'src/common/decorators/current-user.decorator'
+import { Roles } from 'src/common/decorators/roles.decorator'
+import { Role } from 'src/common/enums/role.enum'
 import { ICartService } from './cart.service.interface'
 import { CartDto } from './dtos/cart.dto'
 import { CreateCartDto } from './dtos/create-cart.dto'
-import { UserRoleGuard } from 'src/guards/user-role.guard'
-import { UserRequest } from 'src/modules/users/domain/dtos/request/user.request'
 
+@ApiTags('Carts')
+@Roles(Role.CUSTOMER)
 @Controller('/carts')
 export class CartController {
   constructor(
@@ -13,16 +17,12 @@ export class CartController {
   ) {}
 
   @Get()
-  @UseGuards(UserRoleGuard)
-  async getCart(@Request() req: UserRequest): Promise<CartDto> {
-    console.log('GET /carts:::', req.userId)
-    return await this.cartService.getCart(req.userId)
+  async getCart(@CurrentUser('sub') userId: string): Promise<CartDto> {
+    return await this.cartService.getCart(userId)
   }
 
   @Post()
-  @UseGuards(UserRoleGuard)
-  async createOne(@Request() req: UserRequest, @Body() data: CreateCartDto): Promise<CartDto> {
-    console.log('POST /carts:::', req.userId)
-    return await this.cartService.createOne(req.userId, data)
+  async createOne(@CurrentUser('sub') userId: string, @Body() data: CreateCartDto): Promise<CartDto> {
+    return await this.cartService.createOne(userId, data)
   }
 }

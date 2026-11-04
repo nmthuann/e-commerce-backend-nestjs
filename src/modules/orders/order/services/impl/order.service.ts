@@ -1,16 +1,17 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common'
+import { Inject, Injectable, NotFoundException, NotImplementedException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { OrderEntity } from '../../domain/entities/order.entity'
-import { In, Repository } from 'typeorm'
+import { Repository } from 'typeorm'
+import { EmployeeEntity } from 'src/modules/users/domain/entities/employee.entity'
 import { IOrderService } from '../order.service.interface'
 import { OrderDetailEntity } from '../../domain/entities/order-detail.entity'
-import { PageDto } from 'src/common/dtos/page.dto'
+import { PageDto } from 'src/common/dto/page.dto'
 import { CreateOrderDetailDto } from '../../domain/dtos/create-order-detail.dto'
 import { CreateOrderDto } from '../../domain/dtos/create-order.dto'
 import { GetOrdersQueryDto } from '../../domain/dtos/get-orders-query.dto'
 import { OrderDto } from '../../domain/dtos/order.dto'
 import { OrderResponse } from '../../domain/dtos/order.response'
-import { PageMetaDto } from 'src/common/dtos/page-meta.dto'
+import { PageMetaDto } from 'src/common/dto/page-meta.dto'
 import { IUserService } from 'src/modules/users/services/user.service.interface'
 import { UpdateOrderDto } from '../../domain/dtos/update-order.dto'
 import { IEmployeeService } from 'src/modules/users/services/employee.service.interface'
@@ -140,28 +141,9 @@ export class OrderService implements IOrderService {
     throw new Error('Method not implemented.')
   }
 
-  async createOne(userId: string, data: CreateOrderDto): Promise<OrderDto> {
-    const user = await this.userService.getOneById(userId)
-    const newOrder = new OrderEntity()
-    newOrder.user = user
-    newOrder.status = data.status
-    newOrder.orderType = data.orderType 
-    newOrder.shippingAddress = data.shippingAddress
-    newOrder.contactPhone = data.contactPhone
-    newOrder.shippingMethod = data.shippingMethod
-    newOrder.paymentMethod = data.paymentMethod
-    newOrder.note = data.note
-    newOrder.shippingFee = 0
-    newOrder.discount = 0
-    newOrder.postcode = ''
-    newOrder.orderDetails = data.orderDetails.map(detail => {
-      const serial = this.productSerialService.getProductSerialsBySkuId(detail.productSerialId)
-      const orderDetail = new OrderDetailEntity()
-      orderDetail.productSerial = detail.
-      orderDetail.unitPrice = detail.unitPrice
-      orderDetail.tax = detail.tax
-      return orderDetail
-    })
+  // TODO(P5.3): tạo đơn trong transaction — lấy giá hiện hành, giữ serial FIFO (FOR UPDATE SKIP LOCKED)
+  async createOne(_userId: string, _data: CreateOrderDto): Promise<OrderDto> {
+    throw new NotImplementedException('Tạo đơn hàng sẽ được triển khai ở P5.3.')
   }
 
   async updateOneById(id: number, userId: string, data: UpdateOrderDto): Promise<OrderDto> {
@@ -170,8 +152,9 @@ export class OrderService implements IOrderService {
       throw new NotFoundException(`Order with id "${id}" not found`)
     }
     findOrder.status = data.status
-    findOrder.employee = await this.employeeService.getOneByUserId(userId)
-    const orderUpdated = await this.orderRepository.save(findOrder)
-    return {}
+    const employee = await this.employeeService.getOneByUserId(userId)
+    findOrder.employee = { id: employee.id } as EmployeeEntity
+    await this.orderRepository.save(findOrder)
+    return await this.getOneById(id)
   }
 }

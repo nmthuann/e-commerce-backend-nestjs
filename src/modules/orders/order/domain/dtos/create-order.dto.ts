@@ -1,4 +1,4 @@
-import { OrderStatus } from 'src/constants/order-status.enum'
+import { OrderStatus } from 'src/common/enums/order-status.enum'
 import { CreateOrderDetailDto } from './create-order-detail.dto'
 
 // export class CreateOrderDto {
