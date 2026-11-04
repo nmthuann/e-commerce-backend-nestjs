@@ -1,5 +1,5 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { toSkuDto } from '../../domain/dtos/purchase-order-detail.dto'
+import { toSkuDto } from '../../domain/dtos/purchase-order-detail.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { PurchaseOrderEntity } from '../../domain/entities/purchase-order.entity';
@@ -10,7 +10,7 @@ import { CreatePurchaseOrderDetailDto } from '../../domain/dtos/create-purchase-
 import { CreatePurchaseOrderDto } from '../../domain/dtos/create-purchase-order.dto';
 import { GetPurchaseOrdersQueryDto } from '../../domain/dtos/get-purchase-orders-query.dto';
 import { PurchaseOrderDto } from '../../domain/dtos/purchase-order.dto';
-import { EmployeeService } from 'src/modules/users/domain/services/employee.service';
+import { EmployeeService } from 'src/modules/users/services/employee.service';
 import { PurchaseOrderQueryType } from '../../domain/types/purchase-order-query.type';
 import { PageMetaDto } from 'src/common/dto/page-meta.dto';
 import { PurchaseOrderResponse } from '../../domain/dtos/purchase-order.response';

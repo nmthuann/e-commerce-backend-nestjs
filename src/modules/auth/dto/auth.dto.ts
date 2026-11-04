@@ -12,8 +12,8 @@ import {
   PASSWORD_MAX_LENGTH,
   PASSWORD_MIN_LENGTH,
 } from 'src/common/utils/password.util';
-import { PHONE_PATTERN } from 'src/modules/users/domain/dto/user.dto';
-import { UserEntity } from 'src/modules/users/domain/entities/user.entity';
+import { PHONE_PATTERN } from 'src/modules/users/dto/user.dto';
+import { UserEntity } from 'src/modules/users/entities/user.entity';
 
 export class RegisterDto {
   @IsEmail()

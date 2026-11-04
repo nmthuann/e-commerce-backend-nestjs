@@ -13,8 +13,8 @@ import { UserStatus } from 'src/common/enums/user-status.enum';
 import { JwtPayload } from 'src/common/types/jwt-payload.type';
 import { comparePassword, hashPassword } from 'src/common/utils/password.util';
 import { EnvironmentVariables } from 'src/config/env.validation';
-import { UserEntity } from 'src/modules/users/domain/entities/user.entity';
-import { UserService } from 'src/modules/users/domain/services/user.service';
+import { UserEntity } from 'src/modules/users/entities/user.entity';
+import { UserService } from 'src/modules/users/services/user.service';
 import {
   AuthResponseDto,
   LoginDto,

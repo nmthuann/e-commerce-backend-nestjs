@@ -7,7 +7,7 @@ import { ProductSerialEntity } from '../../domain/entities/product-serial.entity
 import { CreateProductSerialDto } from '../../domain/dtos/create-product-serial.dto';
 import { CreateWarehouseReceiptDto } from '../../domain/dtos/create-warehouse-receipt.dto';
 import { WarehouseReceiptDto } from '../../domain/dtos/warehouse-receipt.dto';
-import { EmployeeService } from 'src/modules/users/domain/services/employee.service';
+import { EmployeeService } from 'src/modules/users/services/employee.service';
 import { WarehouseReceiptQueryType } from '../../domain/types/warehouse-receipt-query.type';
 import { GetWarehouseReceiptsQueryDto } from '../../domain/dtos/get-warehouse-receipts-query.dto';
 import { PageDto } from 'src/common/dto/page.dto';

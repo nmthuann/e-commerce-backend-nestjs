@@ -6,38 +6,53 @@ import {
   JoinColumn,
   CreateDateColumn,
   OneToMany,
-  OneToOne
-} from 'typeorm'
-import { SupplierEntity } from '../../../supplier/supplier.entity'
-import { EmployeeEntity } from 'src/modules/users/domain/entities/employee.entity'
-import { PurchaseOrderDetailEntity } from './purchase-order-detail.entity'
-import { WarehouseReceiptEntity } from './warehouse-receipt.entity'
+  OneToOne,
+} from 'typeorm';
+import { SupplierEntity } from '../../../supplier/supplier.entity';
+import { EmployeeEntity } from 'src/modules/users/entities/employee.entity';
+import { PurchaseOrderDetailEntity } from './purchase-order-detail.entity';
+import { WarehouseReceiptEntity } from './warehouse-receipt.entity';
 
 @Entity({ name: 'purchase_orders' })
 export class PurchaseOrderEntity {
   @PrimaryGeneratedColumn()
-  id: number
+  id: number;
 
   @Column({ name: 'order_number', type: 'varchar', length: 50, unique: true })
-  orderNumber: string
+  orderNumber: string;
 
-  @ManyToOne(() => SupplierEntity, supplier => supplier.id, { onDelete: 'CASCADE' })
+  @ManyToOne(() => SupplierEntity, (supplier) => supplier.id, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'supplier_id' })
-  supplier: SupplierEntity
+  supplier: SupplierEntity;
 
-  @ManyToOne(() => EmployeeEntity, employee => employee.id, { onDelete: 'SET NULL' })
+  @ManyToOne(() => EmployeeEntity, (employee) => employee.id, {
+    onDelete: 'SET NULL',
+  })
   @JoinColumn({ name: 'employee_id' })
-  employee: EmployeeEntity
+  employee: EmployeeEntity;
 
   @Column({ name: 'order_date', type: 'date', nullable: false })
-  orderDate: Date
+  orderDate: Date;
 
-  @CreateDateColumn({ name: 'created_at', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  createdAt: Date
+  @CreateDateColumn({
+    name: 'created_at',
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  createdAt: Date;
 
-  @OneToMany(() => PurchaseOrderDetailEntity, purchaseOrderDetail => purchaseOrderDetail.purchaseOrder)
-  purchaseOrderDetails!: PurchaseOrderDetailEntity[]
+  @OneToMany(
+    () => PurchaseOrderDetailEntity,
+    (purchaseOrderDetail) => purchaseOrderDetail.purchaseOrder,
+  )
+  purchaseOrderDetails!: PurchaseOrderDetailEntity[];
 
-  @OneToOne(() => WarehouseReceiptEntity, warehouseReceipt => warehouseReceipt.purchaseOrder, { onDelete: 'SET NULL' })
-  warehouseReceipt: WarehouseReceiptEntity
+  @OneToOne(
+    () => WarehouseReceiptEntity,
+    (warehouseReceipt) => warehouseReceipt.purchaseOrder,
+    { onDelete: 'SET NULL' },
+  )
+  warehouseReceipt: WarehouseReceiptEntity;
 }

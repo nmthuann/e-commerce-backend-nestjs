@@ -17,8 +17,8 @@ import { OrderDto } from '../../domain/dtos/order.dto';
 import { OrderResponse } from '../../domain/dtos/order.response';
 import { PageMetaDto } from 'src/common/dto/page-meta.dto';
 import { UpdateOrderDto } from '../../domain/dtos/update-order.dto';
-import { EmployeeService } from 'src/modules/users/domain/services/employee.service';
-import { toPublicUser } from 'src/modules/users/domain/dto/user.dto';
+import { EmployeeService } from 'src/modules/users/services/employee.service';
+import { toPublicUser } from 'src/modules/users/dto/user.dto';
 import { IProductSerialService } from 'src/modules/inventories/inventory/services/product-serial.service.interface';
 
 @Injectable()

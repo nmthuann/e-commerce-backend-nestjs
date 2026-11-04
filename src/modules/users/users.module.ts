@@ -1,15 +1,15 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { EmployeeEntity } from './domain/entities/employee.entity';
-import { EmployeeController } from './domain/controllers/employee.controller';
-import { EmployeeService } from './domain/services/employee.service';
-import { PositionEntity } from './domain/entities/position.entity';
-import { PositionController } from './domain/controllers/position.controller';
-import { PositionService } from './domain/services/position.service';
-import { AdminUserController } from './domain/controllers/admin-user.controller';
-import { UserEntity } from './domain/entities/user.entity';
-import { UserController } from './domain/controllers/user.controller';
-import { UserService } from './domain/services/user.service';
+import { EmployeeEntity } from './entities/employee.entity';
+import { EmployeeController } from './controllers/employee.controller';
+import { EmployeeService } from './services/employee.service';
+import { PositionEntity } from './entities/position.entity';
+import { PositionController } from './controllers/position.controller';
+import { PositionService } from './services/position.service';
+import { AdminUserController } from './controllers/admin-user.controller';
+import { UserEntity } from './entities/user.entity';
+import { UserController } from './controllers/user.controller';
+import { UserService } from './services/user.service';
 
 @Module({
   imports: [

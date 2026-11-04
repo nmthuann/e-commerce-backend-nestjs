@@ -1,5 +1,5 @@
 import { Position } from 'src/common/enums/role.enum';
-import { PositionEntity } from 'src/modules/users/domain/entities/position.entity';
+import { PositionEntity } from 'src/modules/users/entities/position.entity';
 import type { Seeder } from './run-seed';
 
 const POSITIONS: Pick<PositionEntity, 'code' | 'name' | 'description'>[] = [

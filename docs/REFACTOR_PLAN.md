@@ -52,22 +52,52 @@ src/
 │  ├─ decorators/               # @Public, @Roles, @Positions, @CurrentUser
 │  ├─ middlewares/              # request-id, logger, auth-context (parse token mềm)
 │  ├─ guards/                   # auth.guard, roles.guard
-│  ├─ interceptors/             # transform (envelope response), logging/timing
+│  ├─ interceptors/             # transform (envelope response)
 │  ├─ filters/                  # all-exceptions.filter (HttpException + QueryFailedError)
 │  ├─ dto/                      # pagination (page-options, page-meta, page)
 │  ├─ enums/                    # role, position, order-status, payment, serial-status…
-│  └─ entities/base.entity.ts
-└─ modules/
-   ├─ auth/                     # register, login, refresh, logout, me
+│  ├─ entities/base.entity.ts
+│  ├─ types/                    # jwt-payload, auth-request
+│  └─ utils/                    # password, slug, decimal.transformer
+└─ modules/                     # mỗi domain = 1 Nest module, chia theo 3 lớp (mục 2.2)
+   ├─ auth/                     # register, login, refresh, logout
    ├─ users/                    # users, employees, positions
    ├─ products/                 # brands, categories, products, skus, prices
    ├─ inventory/                # suppliers, purchase-orders, warehouse-receipts, serials
    └─ orders/                   # orders, payments (stripe), invoices, warranties
 ```
 
-Quy ước mỗi sub-feature: `x.entity.ts`, `x.dto.ts` (hoặc `dto/`), `x.service.ts`, `x.controller.ts`. **Bỏ interface + token chuỗi**, inject class trực tiếp.
+Cấu trúc bên trong 1 domain (ví dụ `products`):
 
-### 2.2 Request lifecycle (theo docs NestJS)
+```
+modules/products/
+├─ products.module.ts           # khai báo controller, provider, TypeOrmModule.forFeature, exports
+├─ controllers/                 # lớp trình bày: brand.controller.ts, product.controller.ts, admin-product.controller.ts…
+├─ services/                    # lớp nghiệp vụ: brand.service.ts, product.service.ts, price.service.ts…
+├─ entities/                    # lớp dữ liệu: brand.entity.ts, product.entity.ts, price.entity.ts…
+└─ dto/                         # hợp đồng vào/ra giữa client ↔ controller ↔ service: brand.dto.ts, product.dto.ts…
+```
+
+Quy ước: tên file và tên class **số ít** (`user.controller.ts` → `UserController`, `price.service.ts` → `PriceService`); route admin tách file `admin-*.controller.ts` khi nhiều. **Không** có thư mục `domain/`, **không** `interface` + token chuỗi `'IXService'` — inject class trực tiếp.
+
+### 2.2 Kiến trúc 3 lớp
+
+```
+Controller  ──▶  Service  ──▶  Entity / Repository (TypeORM)  ──▶  PostgreSQL
+ (HTTP)          (nghiệp vụ)    (truy cập dữ liệu)
+```
+
+| Lớp | Thư mục | Trách nhiệm | Không làm |
+|---|---|---|---|
+| Trình bày | `controllers/` | Khai báo route, nhận / trả DTO, gắn decorator phân quyền (`@Public`, `@Roles`, `@Positions`), pipe (`ParseIntPipe`…), lấy user hiện tại (`@CurrentUser`), Swagger (`@ApiTags`) | Không chứa nghiệp vụ, không gọi repository |
+| Nghiệp vụ | `services/` | Quy tắc nghiệp vụ, kiểm tra ràng buộc, transaction (`dataSource.transaction`), ném `HttpException` có thông báo từ `common/enums/errors.enum.ts` | Không đọc `req` / `res` |
+| Dữ liệu | `entities/` (+ `Repository<T>` inject bằng `@InjectRepository`) | Ánh xạ bảng, cột, quan hệ, index; truy vấn đọc phức tạp dùng QueryBuilder / SQL tham số hóa trong service | Không chứa nghiệp vụ |
+
+- **DTO** (`dto/`) là hợp đồng giữa các lớp: DTO request có `class-validator` (ValidationPipe kiểm ở lớp trình bày), DTO response mô tả dữ liệu trả về cho Swagger.
+- **Giữa các domain**: chỉ gọi qua service được `exports` trong module (vd `UserService`, `EmployeeService`, `ProductSkuService`, `PriceService`); entity của domain khác chỉ dùng để khai báo quan hệ TypeORM.
+- **Cross-cutting** (`common/`): middleware, guard, interceptor, filter, decorator dùng chung — xem mục 2.3.
+
+### 2.3 Request lifecycle (theo docs NestJS)
 
 ```
 Request
@@ -148,6 +178,8 @@ ALL
 > - Package manager là **yarn** (`yarn add`, `yarn remove`, `yarn <script>`); không dùng npm, không commit `package-lock.json`.
 > - File cấu hình DB là `src/database/datasource.ts` (**không** đổi tên thành `data-source.ts`).
 >
+> - Mỗi domain theo kiến trúc 3 lớp `controllers/ → services/ → entities/` (+ `dto/`), không có thư mục `domain/` (mục 2.1–2.2). P4 (inventory) và P5 (orders) chuyển code cũ (`domain/`, `services/impl/`, interface) sang cấu trúc này.
+>
 > Mỗi task kết thúc bằng: `yarn build` xanh + kiểm tra trên Swagger. Thứ tự là thứ tự phụ thuộc.
 
 ### P0 — Dọn dẹp & cho app boot được ✅ (2026-11-04)
@@ -174,7 +206,7 @@ ALL
 
 > Ghi chú khi làm:
 >
-> - Cấu trúc domain user: `modules/users/users.module.ts` + `modules/users/domain/{controllers,dto,entities,services}/` (tên file số ít: `user.*`, `position.*`, `employee.*`, `admin-user.controller.ts`); auth: `modules/auth/dto/`. Các domain sau (P3–P5) theo cùng mẫu này. Bỏ interface + token chuỗi; module khác dùng `UserService` / `EmployeeService` trực tiếp; tên class số ít khớp tên file.
+> - Cấu trúc: `modules/users/users.module.ts` + `{controllers,dto,entities,services}/` theo kiến trúc 3 lớp (mục 2.1–2.2); tên file số ít: `user.*`, `position.*`, `employee.*`, `admin-user.controller.ts`; auth: `modules/auth/dto/`. Bỏ interface + token chuỗi; module khác dùng `UserService` / `EmployeeService` trực tiếp; tên class số ít khớp tên file.
 > - Bỏ `GET /auth/me` vì trùng `GET /users/me` (hồ sơ nhân viên có kèm `employee.position`).
 > - Refresh token: xoay vòng (mỗi token dùng 1 lần), lưu **SHA-256** (không dùng bcrypt vì bcrypt chỉ đọc 72 byte đầu của JWT), có `jti`; dùng lại token cũ → thu hồi phiên. Đổi mật khẩu / khóa tài khoản / nghỉ việc → thu hồi refresh token.
 > - Migration: **giữ 1 file `InitSchema` duy nhất, sinh lại ở mỗi phase cho tới lần deploy đầu tiên** (chưa DB thật nào chạy nó). Sau khi deploy, mọi thay đổi schema phải là migration nối tiếp. Đã chạy thử migration + seed + 53 kịch bản API trên DB tạm.
@@ -193,7 +225,7 @@ ALL
 
 > Ghi chú khi làm:
 >
-> - Cấu trúc: `modules/products/products.module.ts` + `{controllers,dto,entities,services}/` (không có cấp `domain/`) (1 module thay cho 3 sub-module brand/category/product). Controller brand/category gộp route public (`/brands`) và admin (`/admin/brands`); catalog admin ở `admin-product.controller.ts`.
+> - Cấu trúc: `modules/products/products.module.ts` + `{controllers,dto,entities,services}/` theo kiến trúc 3 lớp (mục 2.1–2.2); 1 module thay cho 3 sub-module brand/category/product. Controller brand/category gộp route public (`/brands`) và admin (`/admin/brands`); catalog admin ở `admin-product.controller.ts`.
 > - Không có API xóa sản phẩm / SKU (đã gắn serial, đơn hàng) → ngừng bán bằng `isActive=false`. `skuCode` không sửa được.
 > - Giá: ghi bằng `insert()` (không dùng `save()` vì `save()` sẽ UPDATE khi trùng PK); `beginAt` không được ở quá khứ; trùng `(sku, beginAt)` → 409.
 > - Catalog list: 1 query SQL (LATERAL) tính giá hiện hành min/max + tồn kho + thumbnail cho cả trang, +1 query đếm; chi tiết: 3 query. `ProductsModule` export `ProductSkuService` (tồn kho) và `PriceService` (giá hiện hành) cho P5.

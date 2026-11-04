@@ -6,7 +6,7 @@ import {
   PASSWORD_MAX_LENGTH,
   PASSWORD_MIN_LENGTH,
 } from 'src/common/utils/password.util';
-import { UserEntity } from 'src/modules/users/domain/entities/user.entity';
+import { UserEntity } from 'src/modules/users/entities/user.entity';
 import type { Seeder } from './run-seed';
 
 // Tài khoản ADMIN đầu tiên, lấy từ biến môi trường SEED_ADMIN_* (xem .env.example)
