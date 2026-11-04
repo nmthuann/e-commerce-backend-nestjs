@@ -2,6 +2,7 @@ import { Logger } from '@nestjs/common'
 import { DataSource } from 'typeorm'
 import { AppDataSource } from '../datasource'
 import { adminSeeder } from './admin.seed'
+import { catalogSeeder } from './catalog.seed'
 import { positionsSeeder } from './positions.seed'
 
 export type Seeder = {
@@ -9,9 +10,9 @@ export type Seeder = {
   run: (dataSource: DataSource) => Promise<void>
 }
 
-// Thêm seeder theo thứ tự phụ thuộc (P3: brand/category/product mẫu).
+// Thêm seeder theo thứ tự phụ thuộc.
 // Mỗi seeder phải idempotent: chạy lại nhiều lần không sinh dữ liệu trùng.
-const seeders: Seeder[] = [positionsSeeder, adminSeeder]
+const seeders: Seeder[] = [positionsSeeder, adminSeeder, catalogSeeder]
 
 async function runSeeds() {
   const logger = new Logger('Seed')

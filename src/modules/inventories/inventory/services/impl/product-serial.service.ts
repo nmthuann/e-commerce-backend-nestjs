@@ -1,4 +1,5 @@
 import { InjectRepository } from '@nestjs/typeorm'
+import { toSkuDto } from '../../domain/dtos/purchase-order-detail.dto'
 import { IProductSerialService } from '../product-serial.service.interface'
 import { ProductSerialEntity } from '../../domain/entities/product-serial.entity'
 import { Injectable } from '@nestjs/common'
@@ -8,7 +9,6 @@ import { GetProductSerialsQueryDto } from '../../domain/dtos/get-product-serials
 import { ProductSerialResponse } from '../../domain/dtos/product-serial.response'
 import { InventoryDto } from '../../domain/dtos/inventory.dto'
 import { PageMetaDto } from 'src/common/dto/page-meta.dto'
-import { mapAttributes } from 'src/utils/map'
 
 @Injectable()
 export class ProductSerialService implements IProductSerialService {
@@ -48,15 +48,13 @@ export class ProductSerialService implements IProductSerialService {
         'warehouseReceipt.receiptDate',
         'warehouseReceipt.createdAt',
         'productSku.id',
-        'productSku.skuNo',
-        'productSku.barcode',
-        'productSku.skuName',
-        'productSku.image',
-        'productSku.status',
-        'productSku.skuAttributes',
-        'productSku.slug'
+        'productSku.skuCode',
+        'productSku.name',
+        'productSku.imageUrl',
+        'productSku.isActive',
+        'productSku.attributes'
       ])
-      .where('productSku.status = :status', { status: true })
+      .where('productSku.isActive = :status', { status: true })
 
     if (warehouseReceiptId) {
       queryBuilder.andWhere('warehouseReceipt.id = :warehouseReceiptId', { warehouseReceiptId })
@@ -84,16 +82,7 @@ export class ProductSerialService implements IProductSerialService {
         receiptDate: serial.warehouseReceipt.receiptDate,
         createdAt: serial.warehouseReceipt.createdAt
       },
-      sku: {
-        id: serial.productSku.id,
-        skuNo: serial.productSku.skuNo,
-        barcode: serial.productSku.barcode,
-        skuName: serial.productSku.skuName,
-        image: serial.productSku.image,
-        status: serial.productSku.status,
-        skuAttributes: mapAttributes(serial.productSku.skuAttributes),
-        slug: serial.productSku.slug
-      }
+      sku: toSkuDto(serial.productSku)
     }))
 
     const pageMeta = new PageMetaDto({ pageOptionsDto: query, itemCount })

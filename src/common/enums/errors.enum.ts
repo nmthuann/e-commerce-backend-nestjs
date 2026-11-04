@@ -69,15 +69,14 @@ export enum PipeError {
 }
 
 export enum ProductError {
-  CREATE_PRODUCT_ERROR = 'Đã xảy ra lỗi khi tạo một sản phẩm.',
+  BRAND_NOT_FOUND = 'Không tìm thấy thương hiệu.',
+  CATEGORY_NOT_FOUND = 'Không tìm thấy danh mục.',
+  PRODUCT_NOT_FOUND = 'Không tìm thấy sản phẩm.',
+  SKU_NOT_FOUND = 'Không tìm thấy SKU.',
   PRODUCT_INVENTORY_ERROR = 'Số lượng sản phẩm không đủ.',
-  PRODUCT_ID_NOT_EXIST = 'Mã sản phẩm không tồn tại.',
-  FILTER_PRODUCT_ERROR = 'không lọc được sản phẩm phù hợp.',
-  PRODUCT_DUPLICATE = 'Model Sản phẩm đã tồn tại.'
-}
-
-export enum ImageError {
-  CREATE_IMAGE_ERROR = 'Đã xảy ra lỗi khi lưu hình ảnh.'
+  PRICE_IN_PAST = 'Thời điểm áp dụng giá không được ở quá khứ.',
+  DISPLAY_PRICE_TOO_LOW = 'Giá niêm yết phải lớn hơn hoặc bằng giá bán.',
+  PRICE_RANGE_INVALID = 'minPrice phải nhỏ hơn hoặc bằng maxPrice.'
 }
 
 export enum OrderError {

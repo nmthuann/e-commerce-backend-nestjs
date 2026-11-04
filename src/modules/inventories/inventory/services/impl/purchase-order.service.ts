@@ -1,4 +1,5 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { toSkuDto } from '../../domain/dtos/purchase-order-detail.dto'
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { PurchaseOrderEntity } from '../../domain/entities/purchase-order.entity';
@@ -11,7 +12,6 @@ import { GetPurchaseOrdersQueryDto } from '../../domain/dtos/get-purchase-orders
 import { PurchaseOrderDto } from '../../domain/dtos/purchase-order.dto';
 import { EmployeeService } from 'src/modules/users/domain/services/employee.service';
 import { PurchaseOrderQueryType } from '../../domain/types/purchase-order-query.type';
-import { mapAttributes } from 'src/utils/map';
 import { PageMetaDto } from 'src/common/dto/page-meta.dto';
 import { PurchaseOrderResponse } from '../../domain/dtos/purchase-order.response';
 
@@ -47,16 +47,7 @@ export class PurchaseOrderService implements IPurchaseOrderService {
       createdAt: findPurchaseOrder.createdAt,
       purchaseOrderDetails: findPurchaseOrder.purchaseOrderDetails.map(
         (dto) => ({
-          sku: {
-            id: dto.sku.id,
-            skuNo: dto.sku.skuNo,
-            barcode: dto.sku.barcode,
-            skuName: dto.sku.skuName,
-            image: dto.sku.image,
-            status: dto.sku.status,
-            skuAttributes: mapAttributes(dto.sku.skuAttributes),
-            slug: dto.sku.slug,
-          },
+          sku: toSkuDto(dto.sku),
           quantity: dto.quantity,
           unitPrice: dto.unitPrice,
         }),
@@ -87,16 +78,7 @@ export class PurchaseOrderService implements IPurchaseOrderService {
 
       purchaseOrderDetails: findPurchaseOrder.purchaseOrderDetails.map(
         (dto) => ({
-          sku: {
-            id: dto.sku.id,
-            skuNo: dto.sku.skuNo,
-            barcode: dto.sku.barcode,
-            skuName: dto.sku.skuName,
-            image: dto.sku.image,
-            status: dto.sku.status,
-            skuAttributes: mapAttributes(dto.sku.skuAttributes),
-            slug: dto.sku.slug,
-          },
+          sku: toSkuDto(dto.sku),
           quantity: dto.quantity,
           unitPrice: dto.unitPrice,
         }),
