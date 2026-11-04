@@ -47,6 +47,23 @@ export enum GuardError {
   ACCESS_DENIED = 'Truy cập bị từ chối.'
 }
 
+export enum AuthError {
+  INVALID_CREDENTIALS = 'Email hoặc mật khẩu không đúng.',
+  ACCOUNT_NOT_ACTIVE = 'Tài khoản đã bị khóa hoặc ngừng hoạt động.',
+  EMAIL_EXISTS = 'Email đã được sử dụng.',
+  REFRESH_TOKEN_INVALID = 'Refresh token không hợp lệ hoặc đã bị thu hồi.',
+  WRONG_PASSWORD = 'Mật khẩu hiện tại không đúng.'
+}
+
+export enum UserError {
+  USER_NOT_FOUND = 'Không tìm thấy người dùng.',
+  EMPLOYEE_NOT_FOUND = 'Không tìm thấy nhân viên.',
+  POSITION_NOT_FOUND = 'Không tìm thấy vị trí.',
+  NOT_ACTIVE_EMPLOYEE = 'Tài khoản không phải nhân viên đang làm việc.',
+  CANNOT_CHANGE_OWN_STATUS = 'Không thể tự thay đổi trạng thái tài khoản của chính mình.',
+  STAFF_STATUS_VIA_EMPLOYEE = 'Trạng thái tài khoản nhân viên được quản lý qua API nhân viên.'
+}
+
 export enum PipeError {
   VALIDATOR_MISSING = 'Dữ liệu thiếu.'
 }

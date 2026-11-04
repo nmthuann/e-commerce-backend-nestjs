@@ -170,12 +170,21 @@ ALL
 | P1.4 | Lifecycle: `RequestIdMiddleware`, `LoggerMiddleware`, `AuthContextMiddleware` (đăng ký `forRoutes('{*splat}')` trong `AppModule`); `AuthGuard`, `RolesGuard` (APP_GUARD); `TransformInterceptor`; `AllExceptionsFilter`. Bỏ `LoggingInterceptor` vì `LoggerMiddleware` đã log method, status, thời gian, user và requestId cho mọi request (kể cả request bị guard chặn). | Route không `@Public` trả 401 khi thiếu token; sai role trả 403; mọi response cùng 1 envelope. |
 | P1.5 | Swagger: CLI plugin `@nestjs/swagger` trong `nest-cli.json` (tự sinh schema DTO), `addBearerAuth`, `@ApiTags` mỗi controller, mount tại `/docs`.                                                                                        | Mở `/docs` thấy đủ nhóm API, nút Authorize hoạt động.                                          |
 
-### P2 — Domain User & Auth
+### P2 — Domain User & Auth ✅ (2026-11-04)
+
+> Ghi chú khi làm:
+>
+> - Cấu trúc: `modules/users/{users,positions,employees}/` (entity, dto, service, controller), `modules/auth/dto/`. Bỏ interface + token chuỗi; module khác dùng `UsersService` / `EmployeesService` trực tiếp.
+> - Bỏ `GET /auth/me` vì trùng `GET /users/me` (hồ sơ nhân viên có kèm `employee.position`).
+> - Refresh token: xoay vòng (mỗi token dùng 1 lần), lưu **SHA-256** (không dùng bcrypt vì bcrypt chỉ đọc 72 byte đầu của JWT), có `jti`; dùng lại token cũ → thu hồi phiên. Đổi mật khẩu / khóa tài khoản / nghỉ việc → thu hồi refresh token.
+> - Migration `InitSchema` sinh từ **toàn bộ entity hiện tại** (20 bảng, kể cả bảng product/inventory/order cũ); P3–P5 sẽ thêm migration nối tiếp, có thể gộp lại trước lần phát hành đầu. Đã chạy thử migration + seed + 53 kịch bản API trên DB tạm.
+> - DB dev hiện có (dữ liệu mẫu cũ) **chưa** được migrate — cần tạo DB trống mới hoặc xóa schema cũ rồi `yarn migration:run && yarn seed` (D6).
+> - Seed admin đọc `SEED_ADMIN_EMAIL`, `SEED_ADMIN_PASSWORD`, `SEED_ADMIN_NAME` từ `.env`.
 
 | ID   | Task                                                                                                                                                            | Kết quả / Done khi                          |
 | ---- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------- |
 | P2.1 | Entity `users`, `positions`, `employees` theo mục 4; bỏ `sub_id`, `auth_method`, `avatar_url` bắt buộc.                                                         | Migration khởi tạo phần user.               |
-| P2.2 | Auth: `POST /auth/register` (tạo CUSTOMER), `POST /auth/login`, `POST /auth/refresh`, `POST /auth/logout`, `GET /auth/me`. bcrypt, refresh token lưu dạng hash. | Đăng ký → đăng nhập → gọi API cần token OK. |
+| P2.2 | Auth: `POST /auth/register` (tạo CUSTOMER), `POST /auth/login`, `POST /auth/refresh`, `POST /auth/logout`. bcrypt cho mật khẩu, refresh token lưu dạng hash.     | Đăng ký → đăng nhập → gọi API cần token OK. |
 | P2.3 | Users: `GET/PATCH /users/me`, `PATCH /users/me/password`; admin: `GET /admin/users`, `PATCH /admin/users/:id/status`.                                           | —                                           |
 | P2.4 | Positions CRUD (ADMIN); Employees: ADMIN tạo nhân viên = tạo user role STAFF + employee trong 1 transaction, đổi vị trí, nghỉ việc.                             | STAFF đăng nhập có `position` trong token.  |
 | P2.5 | Seed: tài khoản ADMIN, 2 position SALES/WAREHOUSE.                                                                                                              | `yarn seed` idempotent.                     |
@@ -233,7 +242,7 @@ ALL
 | Nhóm       | Endpoint                                                                                                      | Quyền                  |
 | ---------- | ------------------------------------------------------------------------------------------------------------- | ---------------------- |
 | Auth       | `POST /auth/register` · `POST /auth/login` · `POST /auth/refresh`                                             | Public                 |
-|            | `POST /auth/logout` · `GET /auth/me`                                                                          | Đã đăng nhập           |
+|            | `POST /auth/logout`                                                                                           | Đã đăng nhập           |
 | Users      | `GET/PATCH /users/me` · `PATCH /users/me/password`                                                            | CUSTOMER/STAFF/ADMIN   |
 |            | `GET /admin/users` · `PATCH /admin/users/:id/status`                                                          | ADMIN (SALES: chỉ xem) |
 | Nhân sự    | `CRUD /admin/positions` · `CRUD /admin/employees`                                                             | ADMIN                  |

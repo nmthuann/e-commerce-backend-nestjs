@@ -1,5 +1,5 @@
 import { OrderDetailDto } from './order-detail.dto'
-import { PublicUserDto } from 'src/modules/users/domain/dtos/user.dto'
+import { PublicUserDto } from 'src/modules/users/users/user.dto'
 
 export class OrderDto {
   id: number

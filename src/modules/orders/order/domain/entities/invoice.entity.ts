@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, CreateDateColumn, OneToOne } from 'typeorm'
 import { OrderEntity } from './order.entity'
-import { EmployeeEntity } from 'src/modules/users/domain/entities/employee.entity'
+import { EmployeeEntity } from 'src/modules/users/employees/employee.entity'
 
 @Entity({ name: 'invoices' })
 export class InvoiceEntity {
@@ -20,7 +20,7 @@ export class InvoiceEntity {
   @JoinColumn({ name: 'order_id' })
   order: OrderEntity
 
-  @ManyToOne(() => EmployeeEntity, employee => employee.invoices, { onDelete: 'SET NULL' })
+  @ManyToOne(() => EmployeeEntity, { onDelete: 'SET NULL' })
   @JoinColumn({ name: 'employee_id' })
   employee: EmployeeEntity
 }

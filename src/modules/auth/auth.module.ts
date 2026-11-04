@@ -20,11 +20,6 @@ import { AuthService } from './auth.service'
     UsersModule
   ],
   controllers: [AuthController],
-  providers: [
-    {
-      provide: 'IAuthService',
-      useClass: AuthService
-    }
-  ]
+  providers: [AuthService]
 })
 export class AuthModule {}

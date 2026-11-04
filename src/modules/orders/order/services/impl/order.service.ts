@@ -2,7 +2,6 @@ import { Inject, Injectable, NotFoundException, NotImplementedException } from '
 import { InjectRepository } from '@nestjs/typeorm'
 import { OrderEntity } from '../../domain/entities/order.entity'
 import { Repository } from 'typeorm'
-import { EmployeeEntity } from 'src/modules/users/domain/entities/employee.entity'
 import { IOrderService } from '../order.service.interface'
 import { OrderDetailEntity } from '../../domain/entities/order-detail.entity'
 import { PageDto } from 'src/common/dto/page.dto'
@@ -12,9 +11,9 @@ import { GetOrdersQueryDto } from '../../domain/dtos/get-orders-query.dto'
 import { OrderDto } from '../../domain/dtos/order.dto'
 import { OrderResponse } from '../../domain/dtos/order.response'
 import { PageMetaDto } from 'src/common/dto/page-meta.dto'
-import { IUserService } from 'src/modules/users/services/user.service.interface'
 import { UpdateOrderDto } from '../../domain/dtos/update-order.dto'
-import { IEmployeeService } from 'src/modules/users/services/employee.service.interface'
+import { EmployeesService } from 'src/modules/users/employees/employees.service'
+import { toPublicUser } from 'src/modules/users/users/user.dto'
 import { IProductSerialService } from 'src/modules/inventories/inventory/services/product-serial.service.interface'
 
 @Injectable()
@@ -24,10 +23,7 @@ export class OrderService implements IOrderService {
     private readonly orderRepository: Repository<OrderEntity>,
     @InjectRepository(OrderDetailEntity)
     private readonly orderDetailRepository: Repository<OrderDetailEntity>,
-    @Inject('IUserService')
-    private readonly userService: IUserService,
-    @Inject('IEmployeeService')
-    private readonly employeeService: IEmployeeService,
+    private readonly employeesService: EmployeesService,
     @Inject('IProductSerialService')
     private readonly productSerialService: IProductSerialService
   ) {}
@@ -104,15 +100,15 @@ export class OrderService implements IOrderService {
   async getOneById(id: number): Promise<OrderDto> {
     const findOrder = await this.orderRepository.findOne({
       where: { id },
-      relations: ['orderDetails', 'orderDetails.productSerial', 'employee', 'user']
+      relations: ['orderDetails', 'orderDetails.productSerial', 'employee', 'employee.user', 'user']
     })
     if (!findOrder) {
       throw new NotFoundException(`Order with id "${id}" not found`)
     }
     return {
       id: findOrder.id,
-      employee: await this.userService.getUserByEmployeeId(findOrder.employee.id),
-      user: await this.userService.getOneById(findOrder.user.id),
+      employee: toPublicUser(findOrder.employee?.user),
+      user: toPublicUser(findOrder.user),
       status: findOrder.status,
       orderType: findOrder.orderType,
       shippingAddress: findOrder.shippingAddress,
@@ -152,8 +148,7 @@ export class OrderService implements IOrderService {
       throw new NotFoundException(`Order with id "${id}" not found`)
     }
     findOrder.status = data.status
-    const employee = await this.employeeService.getOneByUserId(userId)
-    findOrder.employee = { id: employee.id } as EmployeeEntity
+    findOrder.employee = await this.employeesService.findActiveByUserId(userId)
     await this.orderRepository.save(findOrder)
     return await this.getOneById(id)
   }

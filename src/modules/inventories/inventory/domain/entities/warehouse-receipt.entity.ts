@@ -9,7 +9,7 @@ import {
   OneToMany
 } from 'typeorm'
 import { PurchaseOrderEntity } from './purchase-order.entity'
-import { EmployeeEntity } from 'src/modules/users/domain/entities/employee.entity'
+import { EmployeeEntity } from 'src/modules/users/employees/employee.entity'
 import { ProductSerialEntity } from './product-serial.entity'
 
 @Entity({ name: 'warehouse_receipts' })

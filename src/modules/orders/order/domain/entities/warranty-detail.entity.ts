@@ -1,6 +1,6 @@
 import { Entity, PrimaryColumn, ManyToOne, JoinColumn, Column } from 'typeorm'
 import { WarrantyEntity } from './warranty.entity'
-import { EmployeeEntity } from 'src/modules/users/domain/entities/employee.entity'
+import { EmployeeEntity } from 'src/modules/users/employees/employee.entity'
 
 @Entity({ name: 'warranty_details' })
 export class WarrantyDetailEntity {

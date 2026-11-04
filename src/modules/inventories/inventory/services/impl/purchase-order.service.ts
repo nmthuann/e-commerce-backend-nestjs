@@ -9,7 +9,7 @@ import { CreatePurchaseOrderDetailDto } from '../../domain/dtos/create-purchase-
 import { CreatePurchaseOrderDto } from '../../domain/dtos/create-purchase-order.dto'
 import { GetPurchaseOrdersQueryDto } from '../../domain/dtos/get-purchase-orders-query.dto'
 import { PurchaseOrderDto } from '../../domain/dtos/purchase-order.dto'
-import { IEmployeeService } from 'src/modules/users/services/employee.service.interface'
+import { EmployeesService } from 'src/modules/users/employees/employees.service'
 import { PurchaseOrderQueryType } from '../../domain/types/purchase-order-query.type'
 import { mapAttributes } from 'src/utils/map'
 import { PageMetaDto } from 'src/common/dto/page-meta.dto'
@@ -22,8 +22,7 @@ export class PurchaseOrderService implements IPurchaseOrderService {
     private readonly purchaseOrderRepository: Repository<PurchaseOrderEntity>,
     @InjectRepository(PurchaseOrderDetailEntity)
     private readonly purchaseOrderDetailRepository: Repository<PurchaseOrderDetailEntity>,
-    @Inject('IEmployeeService')
-    private readonly employeeService: IEmployeeService
+    private readonly employeesService: EmployeesService
   ) {}
 
   async getOneByOrderNumber(orderNumber: string): Promise<PurchaseOrderDto> {
@@ -92,7 +91,7 @@ export class PurchaseOrderService implements IPurchaseOrderService {
   }
 
   async createOne(userId: string, data: CreatePurchaseOrderDto): Promise<PurchaseOrderDto> {
-    const getEmployee = await this.employeeService.getOneByUserId(userId)
+    const getEmployee = await this.employeesService.findActiveByUserId(userId)
     const today = new Date().toISOString().slice(0, 10)
     const orderCount = await this.purchaseOrderRepository
       .createQueryBuilder('po')

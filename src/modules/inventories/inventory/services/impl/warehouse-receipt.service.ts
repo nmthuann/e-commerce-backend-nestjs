@@ -7,7 +7,7 @@ import { ProductSerialEntity } from '../../domain/entities/product-serial.entity
 import { CreateProductSerialDto } from '../../domain/dtos/create-product-serial.dto'
 import { CreateWarehouseReceiptDto } from '../../domain/dtos/create-warehouse-receipt.dto'
 import { WarehouseReceiptDto } from '../../domain/dtos/warehouse-receipt.dto'
-import { IEmployeeService } from 'src/modules/users/services/employee.service.interface'
+import { EmployeesService } from 'src/modules/users/employees/employees.service'
 import { WarehouseReceiptQueryType } from '../../domain/types/warehouse-receipt-query.type'
 import { GetWarehouseReceiptsQueryDto } from '../../domain/dtos/get-warehouse-receipts-query.dto'
 import { PageDto } from 'src/common/dto/page.dto'
@@ -21,8 +21,7 @@ export class WarehouseReceiptService implements IWarehouseReceiptService {
     private readonly warehouseReceiptRepository: Repository<WarehouseReceiptEntity>,
     @InjectRepository(ProductSerialEntity)
     private readonly productSerialRepository: Repository<WarehouseReceiptEntity>,
-    @Inject('IEmployeeService')
-    private readonly employeeService: IEmployeeService
+    private readonly employeesService: EmployeesService
   ) {}
 
   async getOneById(id: number): Promise<WarehouseReceiptDto> {
@@ -45,7 +44,7 @@ export class WarehouseReceiptService implements IWarehouseReceiptService {
   }
 
   async createOne(userId: string, data: CreateWarehouseReceiptDto): Promise<WarehouseReceiptDto> {
-    const getEmployee = await this.employeeService.getOneByUserId(userId)
+    const getEmployee = await this.employeesService.findActiveByUserId(userId)
     const today = new Date().toISOString().slice(0, 10)
     const orderCount = await this.warehouseReceiptRepository
       .createQueryBuilder('po')

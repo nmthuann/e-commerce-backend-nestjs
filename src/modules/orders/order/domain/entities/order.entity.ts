@@ -9,9 +9,9 @@ import {
   OneToMany,
   OneToOne
 } from 'typeorm'
-import { EmployeeEntity } from 'src/modules/users/domain/entities/employee.entity'
+import { EmployeeEntity } from 'src/modules/users/employees/employee.entity'
 import { OrderStatus } from 'src/common/enums/order-status.enum'
-import { UserEntity } from 'src/modules/users/domain/entities/user.entity'
+import { UserEntity } from 'src/modules/users/users/user.entity'
 import { OrderDetailEntity } from './order-detail.entity'
 import { InvoiceEntity } from './invoice.entity'
 

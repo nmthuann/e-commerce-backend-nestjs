@@ -9,7 +9,7 @@ import {
   OneToOne
 } from 'typeorm'
 import { SupplierEntity } from '../../../supplier/supplier.entity'
-import { EmployeeEntity } from 'src/modules/users/domain/entities/employee.entity'
+import { EmployeeEntity } from 'src/modules/users/employees/employee.entity'
 import { PurchaseOrderDetailEntity } from './purchase-order-detail.entity'
 import { WarehouseReceiptEntity } from './warehouse-receipt.entity'
 
